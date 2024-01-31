@@ -19,7 +19,7 @@ public class Character : MonoBehaviour
     Rigidbody2D rigid;
     SpriteRenderer sprite;
     Vector2 hitposition;
-    Vector2 hitBox = new Vector2(1, 2);
+    Vector2 hitBox = new Vector2(2, 2);
 
     private void Awake()
     {
@@ -85,7 +85,16 @@ public class Character : MonoBehaviour
 
             Collider2D enemy = Physics2D.OverlapBox(hitposition, hitBox, 0, LayerMask.GetMask("Enemy"));
             if (enemy != null)
-                Debug.Log(enemy.name);
+            {
+                if (enemy.tag == "Enemy")
+                {
+
+                }
+                else if (enemy.tag == "Bullet")
+                {
+                    enemy.GetComponent<ParringBullet>().parried();
+                }
+            }
         }
     }
 
@@ -101,7 +110,16 @@ public class Character : MonoBehaviour
 
         Collider2D enemy = Physics2D.OverlapBox(hitposition, hitBox, 0, LayerMask.GetMask("Enemy"));
         if (enemy != null)
-            Debug.Log(enemy.name);
+        {
+            if (enemy.tag == "Enemy")
+            {
+
+            }
+            else if (enemy.tag == "Bullet")
+            {
+                enemy.GetComponent<ParringBullet>().parried();
+            }
+        }
     }
 
     IEnumerator detectCombo()
