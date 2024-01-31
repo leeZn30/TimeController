@@ -10,12 +10,16 @@ public class Character : MonoBehaviour
     [SerializeField] float speed = 10f;
     [SerializeField] float jumpPower = 5f;
 
+    [Header("Prefabs")]
+    [SerializeField] GameObject amingPfb;
+
+    GameObject point;
+    bool isTeleport = false;
     Animator anim;
     Rigidbody2D rigid;
     SpriteRenderer sprite;
     Vector2 hitposition;
     Vector2 hitBox = new Vector2(1, 2);
-    // float[] comboTimes = new float[]{}
 
     private void Awake()
     {
@@ -29,6 +33,7 @@ public class Character : MonoBehaviour
     {
         move();
         attack();
+        teleport();
     }
 
     private void FixedUpdate()
@@ -73,7 +78,7 @@ public class Character : MonoBehaviour
             hitposition = new Vector2(rigid.position.x + transform.localScale.x / 2, rigid.position.y);
 
 
-        if (Input.GetMouseButtonDown(0) && !anim.GetBool("isAttacking"))
+        if (Input.GetMouseButtonDown(0) && !anim.GetBool("isAttacking") && !isTeleport)
         {
             StartCoroutine(detectCombo());
             anim.SetBool("isAttacking", true);
@@ -109,7 +114,7 @@ public class Character : MonoBehaviour
         {
             duration += Time.deltaTime;
 
-            if (comboStart <= duration && duration < limit)
+            if (comboStart <= duration && duration <= limit)
             {
                 if (Input.GetMouseButtonDown(0) && anim.GetBool("isAttacking"))
                 {
@@ -124,9 +129,32 @@ public class Character : MonoBehaviour
         anim.SetBool("isAttacking", false);
     }
 
-    void calcHitBox()
+    void teleport()
     {
+        if (Input.GetMouseButtonDown(1) && !isTeleport)
+        {
+            isTeleport = true;
+            point = Instantiate(amingPfb);
+            // Debug.Log("Teleport Start!");
+        }
+        else if (Input.GetMouseButtonDown(1) && isTeleport)
+        {
+            isTeleport = false;
+            Destroy(point);
+            // Debug.Log("Teleport Cancel!");
+        }
+        else if (Input.GetMouseButtonDown(0) && isTeleport)
+        {
+            isTeleport = false;
+            transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Destroy(point);
+            // Debug.Log("Teleport complete!");
+        }
 
+        if (isTeleport)
+        {
+            point.transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
     }
 
 
