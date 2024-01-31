@@ -1467,7 +1467,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   jumpPower: 20
-  isJump: 0
 --- !u!95 &2096804623
 Animator:
   serializedVersion: 5

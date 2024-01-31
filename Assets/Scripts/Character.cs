@@ -15,8 +15,7 @@ public class Character : MonoBehaviour
     SpriteRenderer sprite;
     Vector2 hitposition;
     Vector2 hitBox = new Vector2(1, 2);
-
-    public bool isJump = false;
+    // float[] comboTimes = new float[]{}
 
     private void Awake()
     {
@@ -66,7 +65,6 @@ public class Character : MonoBehaviour
 
     }
 
-
     void attack()
     {
         if (sprite.flipX)
@@ -74,15 +72,63 @@ public class Character : MonoBehaviour
         else
             hitposition = new Vector2(rigid.position.x + transform.localScale.x / 2, rigid.position.y);
 
-        if (Input.GetMouseButtonDown(0))
+
+        if (Input.GetMouseButtonDown(0) && !anim.GetBool("isAttacking"))
         {
-            anim.SetTrigger("Attack");
+            StartCoroutine(detectCombo());
+            anim.SetBool("isAttacking", true);
 
             Collider2D enemy = Physics2D.OverlapBox(hitposition, hitBox, 0, LayerMask.GetMask("Enemy"));
             if (enemy != null)
                 Debug.Log(enemy.name);
         }
     }
+
+    void comboAttack()
+    {
+        anim.SetTrigger("Combo1");
+
+        float moveDistance = 15f;
+        if (sprite.flipX)
+            transform.Translate(Vector2.left * speed * moveDistance * Time.deltaTime);
+        else
+            transform.Translate(Vector2.right * speed * moveDistance * Time.deltaTime);
+
+        Collider2D enemy = Physics2D.OverlapBox(hitposition, hitBox, 0, LayerMask.GetMask("Enemy"));
+        if (enemy != null)
+            Debug.Log(enemy.name);
+    }
+
+    IEnumerator detectCombo()
+    {
+        float limit = anim.GetCurrentAnimatorStateInfo(0).length; //animation 길이로 측정
+        float duration = 0f;
+        float comboStart = limit * 0.7f; // 비율
+
+        while (duration <= limit)
+        {
+            duration += Time.deltaTime;
+
+            if (comboStart <= duration && duration < limit)
+            {
+                if (Input.GetMouseButtonDown(0) && anim.GetBool("isAttacking"))
+                {
+                    // Debug.Log("Combo Enter");
+                    comboAttack();
+                }
+            }
+            yield return null;
+        }
+
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("isAttacking", false);
+    }
+
+    void calcHitBox()
+    {
+
+    }
+
 
     void land()
     {
