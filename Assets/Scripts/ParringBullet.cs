@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Cinemachine;
 
 public class ParringBullet : MonoBehaviour
 {
@@ -11,12 +12,14 @@ public class ParringBullet : MonoBehaviour
     float interval = 1f; // 3초
     float nextTime = 0f;
     [SerializeField] List<Vector3> poses = new List<Vector3>();
+    public CinemachineVirtualCamera cinevirtual;
 
     private void Awake()
     {
         character = FindObjectOfType<Character>();
         lineRenderer = GetComponent<LineRenderer>();
         poses.Add(transform.position);
+        cinevirtual = FindObjectOfType<CinemachineVirtualCamera>();
     }
     // Start is called before the first frame update
     void Start()
@@ -47,6 +50,7 @@ public class ParringBullet : MonoBehaviour
     public void parried()
     {
         isParried = true;
+        poses.Add(transform.position);
         lineRenderer.positionCount = poses.Count;
         lineRenderer.SetPositions(poses.ToArray());
         StartCoroutine(softCameraZoom());
@@ -63,26 +67,40 @@ public class ParringBullet : MonoBehaviour
             while (transform.position != lineRenderer.GetPosition(i))
             {
                 transform.position = Vector2.MoveTowards(transform.position, lineRenderer.GetPosition(i), 15f * Time.unscaledDeltaTime);
-                Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);
+
                 yield return null;
             }
             yield return null;
         }
 
-        Camera.main.orthographicSize = 5f;
-        Camera.main.transform.position = new Vector3(0, 0, -10);
+        Debug.Log("Back!");
+        cinevirtual.m_Lens.OrthographicSize = 6f;
+        cinevirtual.Follow = character.transform;
+
         Time.timeScale = 1;
     }
 
     IEnumerator softCameraZoom()
     {
-        while (Camera.main.orthographicSize > 1.5f)
+        cinevirtual.LookAt = transform;
+        cinevirtual.Follow = transform;
+
+        while (cinevirtual.m_Lens.OrthographicSize > 1.5f)
         {
-            Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);
-            Camera.main.orthographicSize -= Time.unscaledDeltaTime * 20f;
+            cinevirtual.m_Lens.OrthographicSize -= Time.unscaledDeltaTime * 20f;
+
             yield return null;
         }
 
         StartCoroutine(followLine());
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (isParried && other.tag.Equals("Enemy"))
+        {
+            Debug.Log("DEtect");
+            other.GetComponent<Enemy>().OnDamaged();
+        }
     }
 }

@@ -57,6 +57,9 @@ TagManager:
   - name: Player
     uniqueID: 1209168635
     locked: 0
+  - name: Enemy
+    uniqueID: 3073643287
+    locked: 0
   - name: OverPlayerMap
     uniqueID: 27682925
     locked: 0

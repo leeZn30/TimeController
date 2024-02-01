@@ -37,8 +37,6 @@ public class Character : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
 
         hitposition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
-
-        Debug.Log(rigid.position + " " + transform.position);
     }
 
     private void Update()
