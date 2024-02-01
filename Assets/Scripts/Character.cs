@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 
 public class Character : MonoBehaviour
@@ -49,7 +50,7 @@ public class Character : MonoBehaviour
     private void FixedUpdate()
     {
         move();
-        jumpping();
+        // jumpping();
         land();
     }
 
@@ -136,31 +137,64 @@ public class Character : MonoBehaviour
     }
     */
 
+    int jumpCnt = 0;
     void jump()
     {
-        if (Input.GetButtonDown("Jump") && !anim.GetBool("isJumpping"))
+        if (Input.GetButtonDown("Jump"))
         {
-            anim.SetBool("isJumpping", true);
-            isJumpping = true;
-            rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            if (!anim.GetBool("isJumpping"))
+            {
+                jumpCnt++;
+                anim.SetBool("isJumpping", true);
+                // isJumpping = true;
+                rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            }
+            else
+            {
+                if (jumpCnt < 2)
+                {
+                    jumpCnt++;
+                    rigid.velocity = new Vector2(rigid.velocity.x, 0f);
+                    rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+                }
+            }
         }
+
     }
 
-    // fixed
-    void jumpping()
-    {
-        if (Input.GetButton("Jump") && isJumpping)
-        {
-            rigid.AddForce(Vector2.up, ForceMode2D.Impulse);
-            jumpTimer += Time.fixedDeltaTime;
-        }
+    /* 이하 체공점프인데 좀 이상하게 되는 것 같아서 일단 삭제
+    // void jump()
+    // {
+    //     if (Input.GetButtonDown("Jump") && !anim.GetBool("isJumpping"))
+    //     {
+    //         anim.SetBool("isJumpping", true);
+    //         isJumpping = true;
+    //         rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+    //     }
+    // }
 
-        if (isJumpping && (Input.GetButtonUp("Jump") || jumpTimer > 1f)) // 1초 이상 점프하면
-        {
-            jumpTimer = 0f;
-            isJumpping = false;
-        }
-    }
+    // public float maxJump;
+    // // fixed
+    // void jumpping()
+    // {
+    //     if (Input.GetButton("Jump") && isJumpping)
+    //     {
+    //         rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+
+    //         if (rigid.velocity.y > maxJump)
+    //         {
+    //             rigid.velocity = new Vector2(rigid.velocity.x, maxJump);
+    //         }
+    //         jumpTimer += Time.fixedDeltaTime;
+    //     }
+
+    //     if (isJumpping && (Input.GetButtonUp("Jump") || jumpTimer > 1f)) // 1초 이상 점프하면
+    //     {
+    //         jumpTimer = 0f;
+    //         isJumpping = false;
+    //     }
+    // }
+    */
 
     void land()
     {
@@ -171,8 +205,9 @@ public class Character : MonoBehaviour
 
             if (hit.collider != null && hit.collider.tag == "Ground")
             {
-                jumpTimer = 0f;
-                isJumpping = false;
+                // jumpTimer = 0f;
+                // isJumpping = false;
+                jumpCnt = 0;
                 anim.SetBool("isJumpping", false);
             }
         }
