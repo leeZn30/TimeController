@@ -128,7 +128,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 80
+        width: 90
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -147,9 +147,9 @@ TextureImporter:
       name: "\uB9C8\uB140attack2-Sheet_1"
       rect:
         serializedVersion: 2
-        x: 80
+        x: 90
         y: 0
-        width: 80
+        width: 90
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -168,9 +168,9 @@ TextureImporter:
       name: "\uB9C8\uB140attack2-Sheet_2"
       rect:
         serializedVersion: 2
-        x: 160
+        x: 180
         y: 0
-        width: 80
+        width: 90
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}

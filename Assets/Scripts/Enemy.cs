@@ -15,9 +15,10 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            Instantiate(pb, transform.position, Quaternion.identity);
-        }
+    }
+
+    public void OnDamaged()
+    {
+        Debug.Log("Hurt!");
     }
 }

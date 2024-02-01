@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
@@ -10,7 +11,7 @@ public class Character : MonoBehaviour
     [SerializeField] float maxSpeed = 30f;
     [SerializeField] float jumpPower = 5f;
     float damageTime = 0.3f;
-    float jumpTimer = 0f;
+    // float jumpTimer = 0f;
 
     [Header("Prefabs")]
     [SerializeField] GameObject amingPfb;
@@ -26,8 +27,8 @@ public class Character : MonoBehaviour
 
     bool isSlow = false;
     bool isTeleport = false;
-    bool isJumpping = false;
-    bool isLabber = false;
+    // bool isJumpping = false;
+    // bool isLabber = false;
 
     private void Awake()
     {
@@ -36,6 +37,8 @@ public class Character : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
 
         hitposition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
+
+        Debug.Log(rigid.position + " " + transform.position);
     }
 
     private void Update()
@@ -58,6 +61,7 @@ public class Character : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(hitposition, hitBox);
+        // Gizmos.DrawCube()
     }
 
     void move()
@@ -237,7 +241,7 @@ public class Character : MonoBehaviour
             {
                 if (enemy.tag == "Enemy")
                 {
-
+                    enemy.GetComponent<Enemy>().OnDamaged();
                 }
                 else if (enemy.tag == "Bullet")
                 {
