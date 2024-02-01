@@ -63,11 +63,13 @@ public class Character : MonoBehaviour
     {
         if (!isSlow)
         {
+            // Debug.Log(Mathf.Abs(rigid.velocity.normalized.x));
+
             float h = Input.GetAxisRaw("Horizontal");
             rigid.AddForce(Vector2.right * h * speed, ForceMode2D.Impulse);
 
             // 최대 가속 지정
-            if (Mathf.Abs(rigid.velocity.normalized.x) >= maxSpeed)
+            if (Mathf.Abs(rigid.velocity.x) > maxSpeed)
             {
                 rigid.velocity = new Vector2(maxSpeed * h, rigid.velocity.y);
             }
@@ -79,8 +81,8 @@ public class Character : MonoBehaviour
         // 바로 멈추기
         if (Input.GetButtonUp("Horizontal"))
         {
-            // rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
-            rigid.velocity = new Vector2(0f, rigid.velocity.y);
+            rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
+            // rigid.velocity = new Vector2(0f, rigid.velocity.y);
         }
 
         // 플립
@@ -127,7 +129,7 @@ public class Character : MonoBehaviour
 
     void land()
     {
-        if (rigid.velocity.normalized.y < 0 && anim.GetBool("isJumpping")) // 내려가고 있음
+        if (rigid.velocity.normalized.y <= 0 && anim.GetBool("isJumpping")) // 내려가고 있음
         {
             Debug.DrawRay(rigid.position, Vector2.down, Color.red);
             RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, 1f, LayerMask.GetMask("Map"));
@@ -179,10 +181,10 @@ public class Character : MonoBehaviour
     {
         anim.SetTrigger("Combo1");
 
-        if (sprite.flipX)
-            transform.position += Vector3.left * 2;
-        else
-            transform.position += Vector3.right * 2;
+        // if (sprite.flipX)
+        //     transform.position += Vector3.left * 2;
+        // else
+        //     transform.position += Vector3.right * 2;
 
         Collider2D enemy = Physics2D.OverlapBox(hitposition, hitBox, 0, LayerMask.GetMask("Enemy"));
         if (enemy != null)
