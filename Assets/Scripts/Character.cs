@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.Tilemaps;
 
 public class Character : MonoBehaviour
@@ -23,17 +19,21 @@ public class Character : MonoBehaviour
     Animator anim;
     Rigidbody2D rigid;
     SpriteRenderer sprite;
+
     Vector2 hitposition;
     Vector2 hitBox = new Vector2(1f, 2);
+
     bool isSlow = false;
     bool isTeleport = false;
     bool isJumpping = false;
+    bool isLabber = false;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+
         hitposition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
     }
 
@@ -86,7 +86,7 @@ public class Character : MonoBehaviour
         }
 
         // 플립
-        if (Input.GetButton("Horizontal"))
+        if (Input.GetButtonDown("Horizontal"))
         {
             sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
         }
@@ -100,6 +100,41 @@ public class Character : MonoBehaviour
             anim.SetBool("isRunning", false);
         }
     }
+
+
+    // 사다리 너무 어려워서 일단 제외
+    /*
+    bool isClimbing = false;
+    void climb()
+    {
+        if (isLabber && Input.GetButtonDown("Vertical"))
+        {
+            isClimbing = true;
+        }
+    }
+
+    void climbimg()
+    {
+        if (isClimbing)
+        {
+            Physics2D.IgnoreCollision(collider, groundCollider, true);
+            rigid.gravityScale = 0f;
+            rigid.velocity = new Vector2(rigid.velocity.x, speed * Input.GetAxisRaw("Vertical"));
+
+            if (rigid.velocity.normalized.y < 0) // 내려가고 있음
+            {
+                Debug.DrawRay(rigid.position, Vector2.down, Color.red);
+                RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, 1f, LayerMask.GetMask("Map"));
+
+                if (hit.collider != null && hit.collider.tag == "Ground")
+                {
+                    Physics2D.IgnoreCollision(collider, groundCollider, false);
+                    Debug.Log("Ground");
+                }
+            }
+        }
+    }
+    */
 
     void jump()
     {
@@ -290,5 +325,13 @@ public class Character : MonoBehaviour
         }
     }
 
+    // 충돌 감지 + 물리적 영향X
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+    }
 
 }

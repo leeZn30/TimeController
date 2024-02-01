@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Bullet
   - Enemy
+  - Labber
   layers:
   - Default
   - TransparentFX
@@ -49,6 +50,9 @@ TagManager:
     locked: 0
   - name: Map
     uniqueID: 3165427269
+    locked: 0
+  - name: Object
+    uniqueID: 2974491891
     locked: 0
   - name: Player
     uniqueID: 1209168635
