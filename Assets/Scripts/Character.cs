@@ -13,6 +13,7 @@ public class Character : MonoBehaviour
     [SerializeField] float maxSpeed = 30f;
     [SerializeField] float jumpPower = 5f;
     float damageTime = 0.3f;
+    float jumpTimer = 0f;
 
     [Header("Prefabs")]
     [SerializeField] GameObject amingPfb;
@@ -26,6 +27,7 @@ public class Character : MonoBehaviour
     Vector2 hitBox = new Vector2(1f, 2);
     bool isSlow = false;
     bool isTeleport = false;
+    bool isJumpping = false;
 
     private void Awake()
     {
@@ -47,6 +49,7 @@ public class Character : MonoBehaviour
     private void FixedUpdate()
     {
         move();
+        jumpping();
         land();
     }
 
@@ -64,7 +67,7 @@ public class Character : MonoBehaviour
             rigid.AddForce(Vector2.right * h * speed, ForceMode2D.Impulse);
 
             // 최대 가속 지정
-            if (Mathf.Abs(rigid.velocity.normalized.x) > maxSpeed)
+            if (Mathf.Abs(rigid.velocity.normalized.x) >= maxSpeed)
             {
                 rigid.velocity = new Vector2(maxSpeed * h, rigid.velocity.y);
             }
@@ -101,7 +104,24 @@ public class Character : MonoBehaviour
         if (Input.GetButtonDown("Jump") && !anim.GetBool("isJumpping"))
         {
             anim.SetBool("isJumpping", true);
+            isJumpping = true;
             rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        }
+    }
+
+    // fixed
+    void jumpping()
+    {
+        if (Input.GetButton("Jump") && isJumpping)
+        {
+            rigid.AddForce(Vector2.up, ForceMode2D.Impulse);
+            jumpTimer += Time.fixedDeltaTime;
+        }
+
+        if (isJumpping && (Input.GetButtonUp("Jump") || jumpTimer > 1f)) // 1초 이상 점프하면
+        {
+            jumpTimer = 0f;
+            isJumpping = false;
         }
     }
 
@@ -114,7 +134,8 @@ public class Character : MonoBehaviour
 
             if (hit.collider != null && hit.collider.tag == "Ground")
             {
-                // isJump = false;
+                jumpTimer = 0f;
+                isJumpping = false;
                 anim.SetBool("isJumpping", false);
             }
         }
@@ -132,7 +153,7 @@ public class Character : MonoBehaviour
 
     void attack()
     {
-        if (Input.GetMouseButtonDown(0) && !anim.GetBool("isAttacking") && !isTeleport)
+        if (Input.GetMouseButtonDown(0) && !anim.GetBool("isAttacking") && !isTeleport && !anim.GetBool("isJumpping"))
         {
             rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
 
@@ -204,27 +225,33 @@ public class Character : MonoBehaviour
 
     void teleport()
     {
+        // 텔레포트 시작
         if (Input.GetMouseButtonDown(1) && !isTeleport)
         {
-            Time.timeScale = 0.2f;
             isTeleport = true;
+            Time.timeScale = 0.05f;
             point = Instantiate(amingPfb);
-            // Debug.Log("Teleport Start!");
         }
+        // 텔레포트 중단
         else if (Input.GetMouseButtonDown(1) && isTeleport)
         {
-            Time.timeScale = 1f;
             isTeleport = false;
+            Time.timeScale = 1f;
             Destroy(point);
-            // Debug.Log("Teleport Cancel!");
         }
+        // 텔레포트 완료
         else if (Input.GetMouseButtonDown(0) && isTeleport)
         {
             isTeleport = false;
             transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            // 점프계속 누르고 있는거 방지 (근데 굳이 필요 없을듯?)
+            // rigid.velocity = Vector2.zero;
+            // isJumpping = false;
+            // anim.SetBool("isJumpping", false);
+
             Destroy(point);
             Time.timeScale = 1f;
-            // Debug.Log("Teleport complete!");
         }
 
         if (isTeleport)
@@ -235,7 +262,7 @@ public class Character : MonoBehaviour
 
     void OnDamaged(Vector2 targetPos)
     {
-        Debug.Log("Charter hurt!");
+        // 무적
         gameObject.layer = 9;
         sprite.color = new Color(1, 1, 1, 0.5f);
 
