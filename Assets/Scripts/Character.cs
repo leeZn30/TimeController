@@ -1,25 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Tilemaps;
 
 public class Character : MonoBehaviour
 {
     [Header("Inspector")]
     [SerializeField] float speed = 10f;
+    [SerializeField] float maxSpeed = 30f;
     [SerializeField] float jumpPower = 5f;
 
     [Header("Prefabs")]
     [SerializeField] GameObject amingPfb;
 
+
     GameObject point;
-    bool isTeleport = false;
     Animator anim;
     Rigidbody2D rigid;
     SpriteRenderer sprite;
     Vector2 hitposition;
     Vector2 hitBox = new Vector2(2, 2);
+    bool isSlow = false;
+    bool isTeleport = false;
 
     private void Awake()
     {
@@ -31,13 +36,15 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        move();
+        movingSupport();
         attack();
         teleport();
+        jump();
     }
 
     private void FixedUpdate()
     {
+        move();
         land();
     }
 
@@ -47,27 +54,66 @@ public class Character : MonoBehaviour
         Gizmos.DrawWireCube(hitposition, hitBox);
     }
 
+
     void move()
     {
-        if (Input.GetKey(KeyCode.D))
+        if (!isSlow)
         {
-            sprite.flipX = false;
-            transform.Translate(new Vector3(1.0f, 0, 0) * speed * Time.deltaTime);
+            float h = Input.GetAxisRaw("Horizontal");
+            rigid.AddForce(Vector2.right * h * speed, ForceMode2D.Impulse);
+
+            // 최대 가속 지정
+            if (Mathf.Abs(rigid.velocity.normalized.x) > maxSpeed)
+            {
+                rigid.velocity = new Vector2(maxSpeed * h, rigid.velocity.y);
+            }
+        }
+    }
+
+    void movingSupport()
+    {
+        // 바로 멈추기
+        if (Input.GetButtonUp("Horizontal"))
+        {
+            rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
         }
 
-        if (Input.GetKey(KeyCode.A))
-        {
-            sprite.flipX = true;
-            transform.Translate(new Vector3(-1.0f, 0, 0) * speed * Time.deltaTime);
-        }
+        // 플립
+        if (Input.GetButton("Horizontal"))
+            sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
 
-        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("isJumpping"))
+        if (Mathf.Abs(rigid.velocity.normalized.x) > 0) // 움직이고 있음
         {
-            // isJump = true;
+            anim.SetBool("isRunning", true);
+        }
+        else
+        {
+            anim.SetBool("isRunning", false);
+        }
+    }
+
+    void jump()
+    {
+        if (Input.GetButtonDown("Jump") && !anim.GetBool("isJumpping"))
+        {
             anim.SetBool("isJumpping", true);
             rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
         }
+    }
 
+    void land()
+    {
+        if (rigid.velocity.normalized.y < 0 && anim.GetBool("isJumpping")) // 내려가고 있음
+        {
+            Debug.DrawRay(rigid.position, Vector2.down, Color.red);
+            RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, 1f, LayerMask.GetMask("Map"));
+
+            if (hit.collider != null && hit.collider.tag == "Ground")
+            {
+                // isJump = false;
+                anim.SetBool("isJumpping", false);
+            }
+        }
     }
 
     void attack()
@@ -80,6 +126,8 @@ public class Character : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && !anim.GetBool("isAttacking") && !isTeleport)
         {
+            rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
+
             StartCoroutine(detectCombo());
             anim.SetBool("isAttacking", true);
 
@@ -102,11 +150,10 @@ public class Character : MonoBehaviour
     {
         anim.SetTrigger("Combo1");
 
-        float moveDistance = 15f;
         if (sprite.flipX)
-            transform.Translate(Vector2.left * speed * moveDistance * Time.deltaTime);
+            transform.position += Vector3.left * 2;
         else
-            transform.Translate(Vector2.right * speed * moveDistance * Time.deltaTime);
+            transform.position += Vector3.right * 2;
 
         Collider2D enemy = Physics2D.OverlapBox(hitposition, hitBox, 0, LayerMask.GetMask("Enemy"));
         if (enemy != null)
@@ -176,18 +223,4 @@ public class Character : MonoBehaviour
     }
 
 
-    void land()
-    {
-        if (rigid.velocity.y < 0 && anim.GetBool("isJumpping")) // 내려가고 있음
-        {
-            Debug.DrawRay(rigid.position, Vector2.down, Color.red);
-            RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, 1f, LayerMask.GetMask("Map"));
-
-            if (hit.collider != null && hit.collider.tag == "Ground")
-            {
-                // isJump = false;
-                anim.SetBool("isJumpping", false);
-            }
-        }
-    }
 }

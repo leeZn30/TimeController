@@ -38,7 +38,7 @@ public class ParringBullet : MonoBehaviour
         // 상위 불렛에 따라 일직선일지 유도탄일지 결정
         if (!isParried)
         {
-            transform.Translate(Vector3.left * 10f * Time.unscaledDeltaTime);
+            transform.Translate(Vector3.left * 10f * Time.deltaTime);
         }
 
     }
