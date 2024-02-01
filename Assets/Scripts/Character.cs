@@ -12,6 +12,7 @@ public class Character : MonoBehaviour
     [SerializeField] float speed = 10f;
     [SerializeField] float maxSpeed = 30f;
     [SerializeField] float jumpPower = 5f;
+    float damageTime = 0.3f;
 
     [Header("Prefabs")]
     [SerializeField] GameObject amingPfb;
@@ -22,7 +23,7 @@ public class Character : MonoBehaviour
     Rigidbody2D rigid;
     SpriteRenderer sprite;
     Vector2 hitposition;
-    Vector2 hitBox = new Vector2(2, 2);
+    Vector2 hitBox = new Vector2(1f, 2);
     bool isSlow = false;
     bool isTeleport = false;
 
@@ -31,7 +32,7 @@ public class Character : MonoBehaviour
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        hitposition = new Vector2(rigid.position.x + transform.localScale.x / 2, rigid.position.y);
+        hitposition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
     }
 
     private void Update()
@@ -40,6 +41,7 @@ public class Character : MonoBehaviour
         attack();
         teleport();
         jump();
+        hitboxFollowing();
     }
 
     private void FixedUpdate()
@@ -53,7 +55,6 @@ public class Character : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(hitposition, hitBox);
     }
-
 
     void move()
     {
@@ -75,12 +76,15 @@ public class Character : MonoBehaviour
         // 바로 멈추기
         if (Input.GetButtonUp("Horizontal"))
         {
-            rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
+            // rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
+            rigid.velocity = new Vector2(0f, rigid.velocity.y);
         }
 
         // 플립
         if (Input.GetButton("Horizontal"))
+        {
             sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
+        }
 
         if (Mathf.Abs(rigid.velocity.normalized.x) > 0) // 움직이고 있음
         {
@@ -116,14 +120,18 @@ public class Character : MonoBehaviour
         }
     }
 
+    void hitboxFollowing()
+    {
+        float direction;
+        if (sprite.flipX)
+            direction = -1f;
+        else direction = 1f;
+
+        hitposition = new Vector2(rigid.position.x + direction * transform.localScale.x, rigid.position.y);
+    }
+
     void attack()
     {
-        if (sprite.flipX)
-            hitposition = new Vector2(rigid.position.x - transform.localScale.x / 2, rigid.position.y);
-        else
-            hitposition = new Vector2(rigid.position.x + transform.localScale.x / 2, rigid.position.y);
-
-
         if (Input.GetMouseButtonDown(0) && !anim.GetBool("isAttacking") && !isTeleport)
         {
             rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
@@ -198,12 +206,14 @@ public class Character : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) && !isTeleport)
         {
+            Time.timeScale = 0.2f;
             isTeleport = true;
             point = Instantiate(amingPfb);
             // Debug.Log("Teleport Start!");
         }
         else if (Input.GetMouseButtonDown(1) && isTeleport)
         {
+            Time.timeScale = 1f;
             isTeleport = false;
             Destroy(point);
             // Debug.Log("Teleport Cancel!");
@@ -213,12 +223,41 @@ public class Character : MonoBehaviour
             isTeleport = false;
             transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Destroy(point);
+            Time.timeScale = 1f;
             // Debug.Log("Teleport complete!");
         }
 
         if (isTeleport)
         {
             point.transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+    }
+
+    void OnDamaged(Vector2 targetPos)
+    {
+        Debug.Log("Charter hurt!");
+        gameObject.layer = 9;
+        sprite.color = new Color(1, 1, 1, 0.5f);
+
+        // 넉백
+        int dirc = transform.position.x - targetPos.x > 0 ? 1 : -1;
+        rigid.AddForce(new Vector2(dirc, 1) * 7, ForceMode2D.Impulse);
+
+        Invoke("OffDamaged", damageTime);
+    }
+
+    // 무적 해제
+    void OffDamaged()
+    {
+        gameObject.layer = 8;
+        sprite.color = Color.white;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Bullet")
+        {
+            OnDamaged(other.transform.position);
         }
     }
 
