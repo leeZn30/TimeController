@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
+using Cinemachine;
 
 public class Character : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Character : MonoBehaviour
     [SerializeField] float speed = 10f;
     [SerializeField] float maxSpeed = 30f;
     [SerializeField] float jumpPower = 5f;
+    [SerializeField] float maxEyeRange = 10;
     float damageTime = 0.3f;
     // float jumpTimer = 0f;
 
@@ -21,12 +23,16 @@ public class Character : MonoBehaviour
     Animator anim;
     Rigidbody2D rigid;
     SpriteRenderer sprite;
+    CinemachineVirtualCamera camera;
+
+    Vector3 targetEye;
 
     Vector2 hitposition;
     Vector2 hitBox = new Vector2(1f, 2);
 
     bool isSlow = false;
     bool isTeleport = false;
+    public bool isLooking = false;
     // bool isJumpping = false;
     // bool isLabber = false;
 
@@ -35,6 +41,7 @@ public class Character : MonoBehaviour
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        camera = FindObjectOfType<CinemachineVirtualCamera>();
 
         hitposition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
     }
@@ -45,6 +52,7 @@ public class Character : MonoBehaviour
         attack();
         teleport();
         jump();
+        eyeMove();
         hitboxFollowing();
     }
 
@@ -212,6 +220,52 @@ public class Character : MonoBehaviour
                 anim.SetBool("isJumpping", false);
             }
         }
+    }
+
+    void eyeMove()
+    {
+        if (Input.GetButtonDown("Vertical"))
+        {
+            if (Input.GetAxisRaw("Vertical") == 1)
+                targetEye = new Vector3(camera.transform.position.x, transform.position.y + maxEyeRange, camera.transform.position.z);
+            else
+                targetEye = new Vector3(camera.transform.position.x, transform.position.y - maxEyeRange, camera.transform.position.z);
+            isLooking = true;
+            camera.Follow = null;
+        }
+
+        if (Input.GetButtonUp("Vertical"))
+        {
+            targetEye = Vector3.zero;
+            isLooking = false;
+            camera.Follow = transform;
+        }
+
+        if (isLooking)
+        {
+            float v = Input.GetAxisRaw("Vertical");
+            if (v == 1)
+            {
+                if (camera.transform.position.y > targetEye.y)
+                {
+                    camera.transform.position = targetEye;
+                }
+                camera.transform.Translate(Vector3.up * 15 * Time.unscaledDeltaTime);
+            }
+            else if (v == -1)
+            {
+                if (camera.transform.position.y < targetEye.y)
+                {
+                    camera.transform.position = targetEye;
+                }
+                camera.transform.Translate(Vector3.down * 15 * Time.unscaledDeltaTime);
+
+            }
+
+        }
+
+
+
     }
 
     void hitboxFollowing()

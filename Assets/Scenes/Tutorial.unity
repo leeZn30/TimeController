@@ -1868,7 +1868,9 @@ MonoBehaviour:
   speed: 5
   maxSpeed: 10
   jumpPower: 17
+  maxEyeRange: 5
   amingPfb: {fileID: 3266036853785965160, guid: 6742604e6f34c5b4286f8b475c52f211, type: 3}
+  isLooking: 0
 --- !u!95 &1031556404
 Animator:
   serializedVersion: 5
@@ -7866,7 +7868,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791943028}
   m_LocalRotation: {x: 0.0000075101852, y: 0.0000008095714, z: -6.0800314e-12, w: 1}
-  m_LocalPosition: {x: -2.4319305, y: 3.9697096, z: -11}
+  m_LocalPosition: {x: -2.4835577, y: 6.686297, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8027,8 +8029,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 46.539635, y: 10}
-      - {x: -34.100338, y: 10}
+    - - {x: 46.64055, y: 13.128464}
+      - {x: -34.22218, y: 12.715815}
       - {x: -34, y: -5}
       - {x: 46.53865, y: -5}
   m_UseDelaunayMesh: 0
