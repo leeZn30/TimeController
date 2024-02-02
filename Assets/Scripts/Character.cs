@@ -85,11 +85,10 @@ public class Character : MonoBehaviour
         if (Input.GetButtonUp("Horizontal"))
         {
             rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
-            // rigid.velocity = new Vector2(0f, rigid.velocity.y);
         }
 
         // 플립
-        if (Input.GetButtonDown("Horizontal"))
+        if (Input.GetButton("Horizontal"))
         {
             sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
         }
@@ -252,11 +251,6 @@ public class Character : MonoBehaviour
     void comboAttack()
     {
         anim.SetTrigger("Combo1");
-
-        // if (sprite.flipX)
-        //     transform.position += Vector3.left * 2;
-        // else
-        //     transform.position += Vector3.right * 2;
 
         Collider2D enemy = Physics2D.OverlapBox(hitposition, hitBox, 0, LayerMask.GetMask("Enemy"));
         if (enemy != null)
