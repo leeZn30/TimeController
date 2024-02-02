@@ -75,8 +75,6 @@ public class Character : MonoBehaviour
     {
         if (!isSlow)
         {
-            // Debug.Log(Mathf.Abs(rigid.velocity.normalized.x));
-
             float h = Input.GetAxisRaw("Horizontal");
             rigid.AddForce(Vector2.right * h * speed, ForceMode2D.Impulse);
 
@@ -312,7 +310,7 @@ public class Character : MonoBehaviour
         {
             if (enemy.tag == "Enemy")
             {
-
+                enemy.GetComponent<Enemy>().OnDamaged(10);
             }
             else if (enemy.tag == "Bullet")
             {

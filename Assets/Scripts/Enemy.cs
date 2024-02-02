@@ -19,7 +19,8 @@ public abstract class Enemy : MonoBehaviour
 
     protected void dead()
     {
-        anim.SetTrigger("Dead");
+        // anim.SetTrigger("Dead");
+        Destroy(gameObject);
     }
 
     abstract protected void detectPlayer();

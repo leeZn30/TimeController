@@ -7,6 +7,7 @@ public class Box : MonoBehaviour
     Canvas canvas;
     GameObject go;
     public GameObject info;
+    public GameObject pfb;
 
     bool isPlayerIn;
 
@@ -43,7 +44,7 @@ public class Box : MonoBehaviour
     {
         if (other.tag.Equals("Player"))
         {
-            go = Instantiate(Resources.Load<GameObject>("Prefabs/상호작용 UI"), transform.position + new Vector3(0, 3, 0), Quaternion.identity, canvas.transform);
+            go = Instantiate(pfb, transform.position + new Vector3(0, 2, 0), Quaternion.identity, canvas.transform);
             isPlayerIn = true;
         }
     }
