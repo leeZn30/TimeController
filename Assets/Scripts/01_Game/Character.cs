@@ -12,7 +12,7 @@ public class Character : MonoBehaviour
     [SerializeField] float hp;
     [SerializeField] float speed;
     [SerializeField] float maxSpeed;
-    [SerializeField] float jumpPower;
+    [SerializeField] float jumpPower;          // 점프 힘
     [SerializeField] float Atk = 10f;
     float damageTime = 0.3f;
     float maxSightRange = 5f;
@@ -30,7 +30,12 @@ public class Character : MonoBehaviour
     // **************** 상태 확인 변수 *************
     bool isTeleport = false;
     bool isLooking = false;
+    bool isJumping = false;
+    float jumpTime = 0f;
     int jumpCnt = 0;
+    float maxJumpTime = 1f;         // 최대 점프 시간
+    float jumpTimeMultiplier = 7f;  // 점프 시간에 대한 곱셈 계수
+
 
     // **************** 프리팹 ********************
     [Header("Prefabs")]
@@ -75,6 +80,7 @@ public class Character : MonoBehaviour
     private void FixedUpdate()
     {
         move();
+        jumping();
         land();
     }
 
@@ -102,16 +108,13 @@ public class Character : MonoBehaviour
         if (Input.GetButtonUp("Horizontal"))
         {
             rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
+            // anim.SetBool("isRunning", false);
         }
 
         // 플립
         if (Input.GetButton("Horizontal"))
         {
             sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
-        }
-
-        if (Mathf.Abs(rigid.velocity.normalized.x) > 0) // 움직이고 있음
-        {
             anim.SetBool("isRunning", true);
         }
         else
@@ -122,12 +125,13 @@ public class Character : MonoBehaviour
 
     void jump()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!anim.GetBool("isJumpping"))
             {
-                jumpCnt++;
+                isJumping = true;
                 anim.SetBool("isJumpping", true);
+                jumpCnt++;
                 rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             }
             else
@@ -140,7 +144,27 @@ public class Character : MonoBehaviour
                 }
             }
         }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            isJumping = false;
+            jumpTime = 0f;
+        }
+    }
 
+    void jumping()
+    {
+        if (Input.GetKey(KeyCode.Space) && isJumping)
+        {
+            if (jumpTime < maxJumpTime)
+            {
+                rigid.velocity = new Vector2(rigid.velocity.x, jumpPower);
+                jumpTime += Time.deltaTime * jumpTimeMultiplier;
+            }
+            else
+            {
+                isJumping = false;
+            }
+        }
     }
 
     void land()
@@ -152,8 +176,8 @@ public class Character : MonoBehaviour
 
             if (hit.collider != null && hit.collider.tag == "Ground")
             {
-                // jumpTimer = 0f;
-                // isJumpping = false;
+                jumpTime = 0f;
+                isJumping = false;
                 jumpCnt = 0;
                 anim.SetBool("isJumpping", false);
             }
