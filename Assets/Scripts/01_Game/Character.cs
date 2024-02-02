@@ -63,6 +63,7 @@ public class Character : MonoBehaviour
         camera = FindObjectOfType<CinemachineVirtualCamera>();
 
         hitposition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
+
     }
 
     private void Update()
@@ -93,13 +94,20 @@ public class Character : MonoBehaviour
 
     void move()
     {
-        float h = Input.GetAxisRaw("Horizontal");
-        rigid.AddForce(Vector2.right * h * speed, ForceMode2D.Impulse);
-
-        // 최대 가속 지정
-        if (Mathf.Abs(rigid.velocity.x) > maxSpeed)
+        // 플립
+        if (Input.GetButton("Horizontal"))
         {
-            rigid.velocity = new Vector2(maxSpeed * h, rigid.velocity.y);
+            sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
+            anim.SetBool("isRunning", true);
+
+            float h = Input.GetAxisRaw("Horizontal");
+            rigid.AddForce(Vector2.right * h * speed, ForceMode2D.Impulse);
+
+            // 최대 가속 지정
+            if (Mathf.Abs(rigid.velocity.x) > maxSpeed)
+            {
+                rigid.velocity = new Vector2(maxSpeed * h, rigid.velocity.y);
+            }
         }
     }
 
@@ -109,17 +117,6 @@ public class Character : MonoBehaviour
         if (Input.GetButtonUp("Horizontal"))
         {
             rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
-            // anim.SetBool("isRunning", false);
-        }
-
-        // 플립
-        if (Input.GetButton("Horizontal"))
-        {
-            sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
-            anim.SetBool("isRunning", true);
-        }
-        else
-        {
             anim.SetBool("isRunning", false);
         }
     }
