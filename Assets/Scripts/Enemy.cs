@@ -2,33 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
-    [SerializeField] ParringBullet pb;
-    [SerializeField] float Hp;
+    [SerializeField] protected EnemyData enemyData;
+    public float hp;
 
-    // Start is called before the first frame update
-    void Start()
+    Animator anim;
+
+    protected void Awake()
     {
-        ;
+        hp = enemyData.Hp;
+        anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    abstract protected void attack();
+
+    protected void dead()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
-            Instantiate(pb, transform.position, Quaternion.identity);
+        anim.SetTrigger("Dead");
     }
 
-    public void OnDamaged()
-    {
-        Hp -= 10f;
+    abstract protected void detectPlayer();
 
-        if (Hp <= -0)
-        {
-            Destroy(gameObject);
-        }
+    public void OnDamaged(float damage)
+    {
+        anim.SetTrigger("Hit");
+
+        // 치명타 계산
+        hp -= damage;
+
+        if (hp <= 0)
+            dead();
     }
 
-
+    public void DoDestroy()
+    {
+        Destroy(gameObject);
+    }
 }

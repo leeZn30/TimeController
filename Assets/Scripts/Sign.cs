@@ -13,7 +13,7 @@ public class Sign : MonoBehaviour
 
     private void Awake()
     {
-        canvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
+        canvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)

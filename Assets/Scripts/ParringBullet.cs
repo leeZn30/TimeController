@@ -21,11 +21,6 @@ public class ParringBullet : MonoBehaviour
         poses.Add(transform.position);
         cinevirtual = FindObjectOfType<CinemachineVirtualCamera>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
@@ -46,7 +41,6 @@ public class ParringBullet : MonoBehaviour
 
     }
 
-
     public void parried()
     {
         isParried = true;
@@ -54,7 +48,6 @@ public class ParringBullet : MonoBehaviour
         lineRenderer.positionCount = poses.Count;
         lineRenderer.SetPositions(poses.ToArray());
         StartCoroutine(softCameraZoom());
-        // StartCoroutine(followLine());
     }
 
     IEnumerator followLine()
@@ -72,11 +65,8 @@ public class ParringBullet : MonoBehaviour
             }
             yield return null;
         }
-
-        Debug.Log("Back!");
         cinevirtual.m_Lens.OrthographicSize = 6f;
         cinevirtual.Follow = character.transform;
-
         Time.timeScale = 1;
     }
 
@@ -99,8 +89,8 @@ public class ParringBullet : MonoBehaviour
     {
         if (isParried && other.tag.Equals("Enemy"))
         {
-            Debug.Log("DEtect");
-            other.GetComponent<Enemy>().OnDamaged();
+            other.GetComponent<Enemy>().OnDamaged(10);
+            Destroy(gameObject);
         }
     }
 }

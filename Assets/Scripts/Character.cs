@@ -13,6 +13,7 @@ public class Character : MonoBehaviour
     [SerializeField] float jumpPower = 5f;
     [SerializeField] float maxEyeRange = 10;
     float damageTime = 0.3f;
+    float attackPower = 10f;
     // float jumpTimer = 0f;
 
     [Header("Prefabs")]
@@ -292,7 +293,7 @@ public class Character : MonoBehaviour
             {
                 if (enemy.tag == "Enemy")
                 {
-                    enemy.GetComponent<Enemy>().OnDamaged();
+                    enemy.GetComponent<Enemy>().OnDamaged(10);
                 }
                 else if (enemy.tag == "Bullet")
                 {
