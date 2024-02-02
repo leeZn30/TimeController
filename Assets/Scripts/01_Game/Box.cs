@@ -27,6 +27,7 @@ public class Box : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isPlayerIn)
         {
+            FindObjectOfType<Character>().activeSkill("Teleport");
             info.SetActive(true);
             StartCoroutine(delay());
         }

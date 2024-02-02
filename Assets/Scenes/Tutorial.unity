@@ -1920,12 +1920,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f8a00f09e5017c4c954d9ca8467e7a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 0
   speed: 5
   maxSpeed: 10
   jumpPower: 17
-  maxEyeRange: 5
+  Atk: 10
+  TeleportActive: 0
+  teleportGauge: 0
+  maxTeleportGauge: 0
+  RewindActive: 0
+  RewindGauge: 0
+  maxRewindGauge: 0
+  SlowActive: 0
   amingPfb: {fileID: 3266036853785965160, guid: 6742604e6f34c5b4286f8b475c52f211, type: 3}
-  isLooking: 0
 --- !u!95 &1031556404
 Animator:
   serializedVersion: 5
