@@ -4,6 +4,7 @@ using Cinemachine;
 using System.Collections.Generic;
 using System;
 using UnityEditor;
+using Unity.VisualScripting;
 
 public class Character : MonoBehaviour
 {
@@ -234,8 +235,8 @@ public class Character : MonoBehaviour
             {
                 rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
 
-                StartCoroutine(detectCombo());
                 anim.SetBool("isAttacking", true);
+                StartCoroutine(detectCombo());
 
                 Collider2D enemy = Physics2D.OverlapBox(hitposition, hitBox, 0, LayerMask.GetMask("Enemy"));
                 if (enemy != null)
@@ -271,10 +272,17 @@ public class Character : MonoBehaviour
         }
     }
 
+
     IEnumerator detectCombo()
     {
-        // 걸을때 길이가 달라짐 확인해야함
-        float limit = anim.GetCurrentAnimatorStateInfo(0).length; //animation 길이로 측정
+        // 앞에 다른 애니메이션이 들어오지 않게 한 프레임 쉬기
+        yield return null;
+
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+
+        // Debug.LogFormat("[{0}]: {1}", info.IsName("Attack1") ? "Attack1" : info.shortNameHash.ToString(), info.length);
+
+        float limit = info.length; //animation 길이로 측정
         float duration = 0f;
         float comboStart = limit * 0.7f; // 비율
 
