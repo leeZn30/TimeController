@@ -327,6 +327,8 @@ public class Character : MonoBehaviour
 
     IEnumerator CharacterZoom()
     {
+        yield return null;
+
         Vignette vignette;
         FindObjectOfType<Volume>().profile.TryGet(out vignette);
         CC.Instance.ChangeSoftZone(new Vector2(0, 0));
@@ -420,7 +422,7 @@ public class Character : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag.Equals("Enemy"))
         {
             OnDamaged(other.transform.position, other.gameObject.GetComponent<Enemy>().atk);
         }

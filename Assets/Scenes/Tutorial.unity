@@ -128,26 +128,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4295434505715506246, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
   m_PrefabInstance: {fileID: 2010239882}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &45995600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 45995599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edae4282fadb2aa418bb23c496a568d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: 7a98f894f6cb5d840a21ccd04b26b450, type: 2}
-  hp: 0
-  atk: 0
-  anim: {fileID: 0}
-  isPlayerFound: 0
-  PbulletPfb: {fileID: 1738679410416012540, guid: 726ed2d0ab08b1b42962abae82aa1898, type: 3}
-  interval: 2
-  duration: 0
 --- !u!95 &45995601
 Animator:
   serializedVersion: 5
@@ -169,6 +149,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &45995606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45995599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3419dda08ab27d64cb4d4920f5fb2600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyData: {fileID: 11400000, guid: 7a98f894f6cb5d840a21ccd04b26b450, type: 2}
+  hp: 0
+  atk: 0
+  PbulletPfb: {fileID: 1738679410416012540, guid: 4ac8db999ca237b47a05e35bc6126ddb, type: 3}
 --- !u!1 &79279713
 GameObject:
   m_ObjectHideFlags: 0
@@ -3262,7 +3258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3419dda08ab27d64cb4d4920f5fb2600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: 5841c2017e371a748a875f457f428e14, type: 2}
+  enemyData: {fileID: 11400000, guid: 9ff1ca2ce9e438747a8f79b04c766cc0, type: 2}
   hp: 0
   atk: 0
   PbulletPfb: {fileID: 1738679410416012540, guid: 4ac8db999ca237b47a05e35bc6126ddb, type: 3}
@@ -11285,7 +11281,7 @@ GameObject:
   - component: {fileID: 1791943029}
   - component: {fileID: 1791943032}
   - component: {fileID: 1791943033}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -11987,7 +11983,7 @@ PrefabInstance:
       addedObject: {fileID: 45995601}
     - targetCorrespondingSourceObject: {fileID: 4295434505715506246, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 45995600}
+      addedObject: {fileID: 45995606}
   m_SourcePrefab: {fileID: 100100000, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
 --- !u!1001 &2039622114
 PrefabInstance:
