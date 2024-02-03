@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class Character : MonoBehaviour
 {
@@ -294,11 +296,15 @@ public class Character : MonoBehaviour
 
     IEnumerator softCameraZoom()
     {
+        Vignette vignette;
+        FindObjectOfType<Volume>().profile.TryGet(out vignette);
         cinevirtual.ChangeSoftZone(new Vector2(0, 0));
 
         while (cinevirtual.OrthographicSize > 1.5f)
         {
             cinevirtual.OrthographicSize -= Time.unscaledDeltaTime * 20f;
+            float newIntensity = Mathf.Clamp(vignette.intensity.value + 3 * Time.unscaledDeltaTime, 0f, 0.5f);
+            vignette.intensity.value = newIntensity;
 
             yield return null;
         }

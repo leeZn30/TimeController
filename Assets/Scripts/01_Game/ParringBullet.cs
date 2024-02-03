@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering;
 
 public class ParringBullet : MonoBehaviour
 {
@@ -32,13 +34,13 @@ public class ParringBullet : MonoBehaviour
         }
 
         // 상위 불렛에 따라 일직선일지 유도탄일지 결정
-        // if (!isParried)
-        // {
-        //     if (poses.Count != 0 && poses.Last() != transform.position)
-        //         poses.Add(transform.position);
+        if (!isParried)
+        {
+            // if (poses.Count != 0 && poses.Last() != transform.position)
+            //     poses.Add(transform.position);
 
-        //     // transform.Translate(Vector3.left * 10f * Time.deltaTime);
-        // }
+            transform.Translate(Vector3.left * 10f * Time.deltaTime);
+        }
 
     }
 
@@ -53,7 +55,7 @@ public class ParringBullet : MonoBehaviour
         lineRenderer.positionCount = poses.Count;
         lineRenderer.SetPositions(poses.ToArray());
 
-        CinemachineCamera.Instance.LookAt = transform;
+        // CinemachineCamera.Instance.LookAt = transform;
         CinemachineCamera.Instance.Follow = transform;
         StartCoroutine(rotateBullet());
     }
@@ -92,7 +94,11 @@ public class ParringBullet : MonoBehaviour
             }
             yield return null;
         }
+
         CinemachineCamera.Instance.ResetCamera();
+        Vignette vignette;
+        FindObjectOfType<Volume>().profile.TryGet(out vignette);
+        vignette.intensity.value = 0f;
         Time.timeScale = 1;
     }
 
