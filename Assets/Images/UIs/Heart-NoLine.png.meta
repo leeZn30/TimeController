@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: debcd533b0a6c2e4eb85aad0af9e9106
+guid: 28b180d92df94ba429aca0a86f8677ef
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 35
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uB9C8\uB140attack2-Sheet_0"
+      name: Heart-NoLine_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 90
-        height: 64
+        width: 35
+        height: 35
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,20 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dfde3f4d85c81914a84e502432637386
-      internalID: 2029594360
+      spriteID: be9c70ab4b606944fbcfa45278381322
+      internalID: -604555225
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uB9C8\uB140attack2-Sheet_1"
+      name: Heart-NoLine_1
       rect:
         serializedVersion: 2
-        x: 90
+        x: 35
         y: 0
-        width: 90
-        height: 64
+        width: 35
+        height: 35
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ab9c98cdee940994098f941e4e62b266
-      internalID: -1119942744
+      spriteID: 219fdaee44e478043be8f268cae141a9
+      internalID: 321198861
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uB9C8\uB140attack2-Sheet_2"
+      name: Heart-NoLine_2
       rect:
         serializedVersion: 2
-        x: 180
+        x: 70
         y: 0
-        width: 90
-        height: 64
+        width: 35
+        height: 35
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,20 +179,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dd5b3a3fb1ff0954b92939fcc8ad19e7
-      internalID: -514171871
+      spriteID: 3e18bedc9040d8a41b6623a365ccda89
+      internalID: 1391192717
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uB9C8\uB140attack2-Sheet_3"
+      name: Heart-NoLine_3
       rect:
         serializedVersion: 2
-        x: 270
+        x: 105
         y: 0
-        width: 90
-        height: 64
+        width: 35
+        height: 35
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,29 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d4a0fb69ab00e04bba7bdbbf11faa75
-      internalID: 2056268038
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "\uB9C8\uB140attack2-Sheet_4"
-      rect:
-        serializedVersion: 2
-        x: 360
-        y: 0
-        width: 90
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 68ebb1aa8c64c854396edc195a18dd78
-      internalID: 1375593756
+      spriteID: fb93f30d3da8cd64ba069efa046cd3f1
+      internalID: 1976196751
       vertices: []
       indices: 
       edges: []
@@ -238,11 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      "\uB9C8\uB140attack2-Sheet_0": 2029594360
-      "\uB9C8\uB140attack2-Sheet_1": -1119942744
-      "\uB9C8\uB140attack2-Sheet_2": -514171871
-      "\uB9C8\uB140attack2-Sheet_3": 2056268038
-      "\uB9C8\uB140attack2-Sheet_4": 1375593756
+      Heart-NoLine_0: -604555225
+      Heart-NoLine_1: 321198861
+      Heart-NoLine_2: 1391192717
+      Heart-NoLine_3: 1976196751
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
