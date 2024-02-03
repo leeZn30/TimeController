@@ -313,17 +313,6 @@ public class Character : MonoBehaviour
         bullet.parried();
     }
 
-    // IEnumerator waitParryingAnimation()
-    // {
-    //     AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-    //     Debug.LogFormat("[{0}]: {1}", info.IsName("Parry") ? "Parry" : info.shortNameHash.ToSafeString(), info.length);
-
-    //     float duration = 0f;
-    //     while()
-    //     bullet.GetComponent<ParringBullet>().parried();
-    // }
-
-
     IEnumerator detectCombo()
     {
         // 앞에 다른 애니메이션이 들어오지 않게 한 프레임 쉬기
@@ -426,7 +415,7 @@ public class Character : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Bullet")
+        if (other.gameObject.tag == "Enemy")
         {
             OnDamaged(other.transform.position, other.gameObject.GetComponent<Enemy>().atk);
         }
