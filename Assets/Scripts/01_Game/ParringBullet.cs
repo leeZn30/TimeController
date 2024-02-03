@@ -55,7 +55,7 @@ public class ParringBullet : MonoBehaviour
         lineRenderer.positionCount = poses.Count;
         lineRenderer.SetPositions(poses.ToArray());
 
-        // CinemachineCamera.Instance.LookAt = transform;
+        CinemachineCamera.Instance.LookAt = transform;
         CinemachineCamera.Instance.Follow = transform;
         StartCoroutine(rotateBullet());
     }
@@ -69,7 +69,6 @@ public class ParringBullet : MonoBehaviour
         float rotationSpeed = 150f;
         while (transform.rotation != Quaternion.Euler(targetRotation))
         {
-            Debug.Log(transform.rotation);
             // 부드럽게 회전시키기
             float step = rotationSpeed * Time.unscaledDeltaTime;
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(targetRotation), step);
