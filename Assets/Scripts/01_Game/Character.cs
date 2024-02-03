@@ -1,10 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using Cinemachine;
-using System.Collections.Generic;
-using System;
-using UnityEditor;
-using Unity.VisualScripting;
 
 public class Character : MonoBehaviour
 {
@@ -37,6 +32,11 @@ public class Character : MonoBehaviour
     float maxJumpTime = 1f;         // 최대 점프 시간
     float jumpTimeMultiplier = 7f;  // 점프 시간에 대한 곱셈 계수
 
+    // *************** 상호작용 박스 *************
+    Vector2 hitPosition;
+    Vector2 hitBox = new Vector2(1f, 2);
+    Vector2 parryingPosition;
+    Vector2 parryingBox = new Vector2(3f, 1); // default = 0.3f
 
     // **************** 프리팹 ********************
     [Header("Prefabs")]
@@ -46,26 +46,23 @@ public class Character : MonoBehaviour
     Animator anim;
     Rigidbody2D rigid;
     SpriteRenderer sprite;
-    CinemachineVirtualCamera camera;
     GameObject teleportPointer;
     GameObject rewindPointer;
     Background background;
 
     // ************* 그 외 *************
     Vector3 sightRange;
-    Vector2 hitposition;
-    Vector2 hitBox = new Vector2(1f, 2);
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        camera = FindObjectOfType<CinemachineVirtualCamera>();
         background = FindObjectOfType<Background>();
+        cinevirtual = FindObjectOfType<CinemachineCamera>();
 
-        hitposition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
-
+        hitPosition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
+        parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
     }
 
     private void Update()
@@ -74,7 +71,9 @@ public class Character : MonoBehaviour
         attack();
         sightMove();
         extraMove();
-        hitposition = new Vector2(rigid.position.x + (sprite.flipX ? -1 : 1) * transform.localScale.x, rigid.position.y);
+        parry();
+        hitPosition = new Vector2(rigid.position.x + (sprite.flipX ? -1 : 1) * transform.localScale.x, rigid.position.y);
+        parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
 
         // 스킬
         if (TeleportActive)
@@ -91,7 +90,9 @@ public class Character : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(hitposition, hitBox);
+        Gizmos.DrawWireCube(hitPosition, hitBox);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(parryingPosition, parryingBox);
     }
 
     void move()
@@ -176,7 +177,7 @@ public class Character : MonoBehaviour
             Debug.DrawRay(rigid.position, Vector2.down, Color.red);
             RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, 1f, LayerMask.GetMask("Map"));
 
-            if (hit.collider != null && hit.collider.tag == "Ground")
+            if (hit.collider != null && hit.collider.tag.Equals("Ground"))
             {
                 jumpTime = 0f;
                 isJumping = false;
@@ -191,18 +192,18 @@ public class Character : MonoBehaviour
         if (Input.GetButtonDown("Vertical"))
         {
             if (Input.GetAxisRaw("Vertical") == 1)
-                sightRange = new Vector3(camera.transform.position.x, transform.position.y + maxSightRange, camera.transform.position.z);
+                sightRange = new Vector3(cinevirtual.transform.position.x, transform.position.y + maxSightRange, cinevirtual.transform.position.z);
             else
-                sightRange = new Vector3(camera.transform.position.x, transform.position.y - maxSightRange, camera.transform.position.z);
+                sightRange = new Vector3(cinevirtual.transform.position.x, transform.position.y - maxSightRange, cinevirtual.transform.position.z);
             isLooking = true;
-            camera.Follow = null;
+            cinevirtual.Follow = null;
         }
 
         if (Input.GetButtonUp("Vertical"))
         {
             sightRange = Vector3.zero;
             isLooking = false;
-            camera.Follow = transform;
+            cinevirtual.Follow = transform;
         }
 
         if (isLooking)
@@ -210,19 +211,19 @@ public class Character : MonoBehaviour
             float v = Input.GetAxisRaw("Vertical");
             if (v == 1)
             {
-                if (camera.transform.position.y > sightRange.y)
+                if (cinevirtual.transform.position.y > sightRange.y)
                 {
-                    camera.transform.position = sightRange;
+                    cinevirtual.transform.position = sightRange;
                 }
-                camera.transform.Translate(Vector3.up * 15 * Time.unscaledDeltaTime);
+                cinevirtual.transform.Translate(Vector3.up * 15 * Time.unscaledDeltaTime);
             }
             else if (v == -1)
             {
-                if (camera.transform.position.y < sightRange.y)
+                if (cinevirtual.transform.position.y < sightRange.y)
                 {
-                    camera.transform.position = sightRange;
+                    cinevirtual.transform.position = sightRange;
                 }
-                camera.transform.Translate(Vector3.down * 15 * Time.unscaledDeltaTime);
+                cinevirtual.transform.Translate(Vector3.down * 15 * Time.unscaledDeltaTime);
             }
         }
     }
@@ -239,16 +240,12 @@ public class Character : MonoBehaviour
                 anim.SetBool("isAttacking", true);
                 StartCoroutine(detectCombo());
 
-                Collider2D enemy = Physics2D.OverlapBox(hitposition, hitBox, 0, LayerMask.GetMask("Enemy"));
+                Collider2D enemy = Physics2D.OverlapBox(hitPosition, hitBox, 0, LayerMask.GetMask("Enemy"));
                 if (enemy != null)
                 {
                     if (enemy.tag == "Enemy")
                     {
                         enemy.GetComponent<Enemy>().OnDamaged(Atk);
-                    }
-                    else if (enemy.tag == "Bullet")
-                    {
-                        enemy.GetComponent<ParringBullet>().parried();
                     }
                 }
             }
@@ -259,19 +256,72 @@ public class Character : MonoBehaviour
     {
         anim.SetTrigger("Combo1");
 
-        Collider2D enemy = Physics2D.OverlapBox(hitposition, hitBox, 0, LayerMask.GetMask("Enemy"));
+        Collider2D enemy = Physics2D.OverlapBox(hitPosition, hitBox, 0, LayerMask.GetMask("Enemy"));
         if (enemy != null)
         {
             if (enemy.tag == "Enemy")
             {
                 enemy.GetComponent<Enemy>().OnDamaged(Atk);
             }
-            else if (enemy.tag == "Bullet")
-            {
-                enemy.GetComponent<ParringBullet>().parried();
-            }
         }
     }
+
+    public CinemachineCamera cinevirtual;
+    ParringBullet bullet;
+
+    void parry()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            // 패링 조건
+            if (!isTeleport)
+            {
+                Collider2D bullet = Physics2D.OverlapBox(parryingPosition, parryingBox, 0, LayerMask.GetMask("Bullet"));
+                if (bullet != null)
+                {
+                    if (bullet.tag == "Bullet")
+                    {
+                        Time.timeScale = 0f;
+                        this.bullet = bullet.GetComponent<ParringBullet>();
+                        this.bullet.stopBullet();
+                        StartCoroutine(softCameraZoom());
+                    }
+                }
+            }
+
+        }
+    }
+
+    IEnumerator softCameraZoom()
+    {
+        cinevirtual.ChangeSoftZone(new Vector2(0, 0));
+
+        while (cinevirtual.OrthographicSize > 1.5f)
+        {
+            cinevirtual.OrthographicSize -= Time.unscaledDeltaTime * 20f;
+
+            yield return null;
+        }
+
+        anim.updateMode = AnimatorUpdateMode.UnscaledTime;
+        anim.SetTrigger("Parry");
+    }
+
+    public void DoParry()
+    {
+        anim.updateMode = AnimatorUpdateMode.Normal;
+        bullet.parried();
+    }
+
+    // IEnumerator waitParryingAnimation()
+    // {
+    //     AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+    //     Debug.LogFormat("[{0}]: {1}", info.IsName("Parry") ? "Parry" : info.shortNameHash.ToSafeString(), info.length);
+
+    //     float duration = 0f;
+    //     while()
+    //     bullet.GetComponent<ParringBullet>().parried();
+    // }
 
 
     IEnumerator detectCombo()
@@ -305,7 +355,8 @@ public class Character : MonoBehaviour
         yield return new WaitForEndOfFrame();
         anim.SetBool("isAttacking", false);
     }
-    void OnDamaged(Vector2 targetPos)
+
+    void OnDamaged(Vector2 targetPos, float Damage)
     {
         // 무적
         gameObject.layer = 9;
@@ -377,13 +428,17 @@ public class Character : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Bullet")
         {
-            OnDamaged(other.transform.position);
+            OnDamaged(other.transform.position, other.gameObject.GetComponent<Enemy>().atk);
         }
     }
 
     // 충돌 감지 + 물리적 영향X
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject.tag == "Trap" || other.gameObject.tag == "Bullet")
+        {
+            OnDamaged(other.transform.position, 0);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)

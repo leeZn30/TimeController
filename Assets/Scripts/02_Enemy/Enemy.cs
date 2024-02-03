@@ -6,12 +6,14 @@ public abstract class Enemy : MonoBehaviour
 {
     [SerializeField] protected EnemyData enemyData;
     public float hp;
+    public float atk;
 
     Animator anim;
 
     protected void Awake()
     {
         hp = enemyData.Hp;
+        atk = enemyData.Damage;
         anim = GetComponent<Animator>();
     }
 
