@@ -49,6 +49,7 @@ public class Character : MonoBehaviour
     CinemachineVirtualCamera camera;
     GameObject teleportPointer;
     GameObject rewindPointer;
+    Background background;
 
     // ************* 그 외 *************
     Vector3 sightRange;
@@ -61,6 +62,7 @@ public class Character : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         camera = FindObjectOfType<CinemachineVirtualCamera>();
+        background = FindObjectOfType<Background>();
 
         hitposition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
 
@@ -102,6 +104,8 @@ public class Character : MonoBehaviour
 
             float h = Input.GetAxisRaw("Horizontal");
             rigid.AddForce(Vector2.right * h * speed, ForceMode2D.Impulse);
+
+            background.BackgroundScroll(h);
 
             // 최대 가속 지정
             if (Mathf.Abs(rigid.velocity.x) > maxSpeed)
