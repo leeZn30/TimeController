@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class FrogEnemy : Enemy
 {
-    bool isPlayerFound;
-    // [SerializeField] Bullet bulletPfb;
+    public bool isPlayerFound;
     [SerializeField] Bullet PbulletPfb;
     float interval = 2f;
     float duration = 0f;
@@ -16,22 +16,26 @@ public class FrogEnemy : Enemy
         Gizmos.DrawWireCube(transform.position, new Vector2(enemyData.SightRange, 2f));
     }
 
-    // Start is called before the first frame update
-    void Start()
+    protected override void Update()
     {
+        base.Update();
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        detectPlayer();
-        attack();
+        if (isPlayerFound)
+        {
+            if (Character.Instance.transform.position.x <= transform.position.x)
+            {
+                sprite.flipX = true;
+            }
+            else
+            {
+                sprite.flipX = false;
+            }
+        }
     }
 
     protected override void detectPlayer()
     {
-        Collider2D player = Physics2D.OverlapBox(transform.position, new Vector2(enemyData.SightRange, 1f), LayerMask.GetMask("Player"));
+        Collider2D player = Physics2D.OverlapBox(transform.position, new Vector2(enemyData.SightRange, 2f), 0, LayerMask.GetMask("Player"));
         if (player != null)
         {
             isPlayerFound = true;
@@ -51,7 +55,7 @@ public class FrogEnemy : Enemy
 
             if (duration > interval)
             {
-                Instantiate(PbulletPfb, transform.position, Quaternion.identity);
+                Instantiate(PbulletPfb, transform.position, transform.rotation);
                 duration = 0f;
             }
         }

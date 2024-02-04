@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 
 using CC = CinemachineCamera;
 
-public class Character : MonoBehaviour
+public class Character : Singleton<Character>
 {
     // **************** 캐릭터 데이터 *****************
     [Header("Character Data")]
@@ -352,7 +352,7 @@ public class Character : MonoBehaviour
         bullet.parried();
     }
 
-    void OnDamaged(Vector2 targetPos, float Damage)
+    public void OnDamaged(Vector2 targetPos, float Damage)
     {
         // 무적
         gameObject.layer = 9;
@@ -431,7 +431,7 @@ public class Character : MonoBehaviour
     // 충돌 감지 + 물리적 영향X
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Trap" || other.gameObject.tag == "Bullet")
+        if (other.gameObject.tag == "Trap")
         {
             OnDamaged(other.transform.position, 0);
         }
@@ -443,41 +443,6 @@ public class Character : MonoBehaviour
 
 
     #region 더미 메서드
-    // bool isJumpping = false;
-    /* 이하 체공점프인데 좀 이상하게 되는 것 같아서 일단 삭제
-    // void jump()
-    // {
-    //     if (Input.GetButtonDown("Jump") && !anim.GetBool("isJumpping"))
-    //     {
-    //         anim.SetBool("isJumpping", true);
-    //         isJumpping = true;
-    //         rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-    //     }
-    // }
-
-    // public float maxJump;
-    // // fixed
-    // void jumpping()
-    // {
-    //     if (Input.GetButton("Jump") && isJumpping)
-    //     {
-    //         rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-
-    //         if (rigid.velocity.y > maxJump)
-    //         {
-    //             rigid.velocity = new Vector2(rigid.velocity.x, maxJump);
-    //         }
-    //         jumpTimer += Time.fixedDeltaTime;
-    //     }
-
-    //     if (isJumpping && (Input.GetButtonUp("Jump") || jumpTimer > 1f)) // 1초 이상 점프하면
-    //     {
-    //         jumpTimer = 0f;
-    //         isJumpping = false;
-    //     }
-    // }
-    */
-
     // 사다리 너무 어려워서 일단 제외
     /*
     /* bool isLabber = false;

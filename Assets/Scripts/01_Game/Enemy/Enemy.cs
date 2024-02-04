@@ -5,16 +5,25 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour
 {
     [SerializeField] protected EnemyData enemyData;
+
     public float hp;
     public float atk;
 
     Animator anim;
+    protected SpriteRenderer sprite;
 
-    protected void Awake()
+    virtual protected void Awake()
     {
         hp = enemyData.Hp;
         atk = enemyData.Damage;
         anim = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+    }
+
+    virtual protected void Update()
+    {
+        detectPlayer();
+        attack();
     }
 
     abstract protected void attack();
