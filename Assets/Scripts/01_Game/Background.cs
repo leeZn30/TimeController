@@ -1,7 +1,8 @@
 using UnityEngine.UI;
 using UnityEngine;
+using System.Linq.Expressions;
 
-public class Background : MonoBehaviour
+public class Background : Singleton<Background>
 {
     [SerializeField] float[] speeds = new float[1];
     [SerializeField] Image[] backgrounds = new Image[1];
@@ -13,12 +14,7 @@ public class Background : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // for (int i = 0; i < backgrounds.Length; i++)
-        // {
-        //     Material material = backgrounds[i].material;
-        //     float offset = Time.deltaTime * speeds[i] * 0.01f;
-        //     material.mainTextureOffset += new Vector2(offset, 0);
-        // }
+
     }
 
     public void BackgroundScroll(float direction)
@@ -26,8 +22,9 @@ public class Background : MonoBehaviour
         for (int i = 0; i < backgrounds.Length; i++)
         {
             Material material = backgrounds[i].material;
-            float offset = Time.deltaTime * speeds[i] * 0.1f * direction;
-            material.mainTextureOffset += new Vector2(offset, 0);
+            float offsetX = Time.deltaTime * speeds[i] * direction;
+            // float offsetY = Time.deltaTime * speeds[i] * direction.y;
+            material.mainTextureOffset += new Vector2(offsetX, 0);
         }
     }
 

@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21fac5bebcffdcf4fb44fe7521b32950, type: 3}
-  m_Name: Frog Data
+  m_Script: {fileID: 11500000, guid: 47c73ae0cd5c93f4c87d7c7cb50d7625, type: 3}
+  m_Name: Bullet Data
   m_EditorClassIdentifier: 
-  EnemyName: Frog
-  hp: 50
-  damage: 5
-  sightRange: 10
+  BulletName: 
+  damage: 0
   moveSpeed: 0
+  rotateSpeed: 0
+  parryPercent: 0
+  material: {fileID: 2100000, guid: ff3d780da2104304d99ab1208dc48ff4, type: 2}

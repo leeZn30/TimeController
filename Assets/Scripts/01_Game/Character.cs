@@ -53,7 +53,7 @@ public class Character : MonoBehaviour
     GameObject teleportPointer;
     GameObject rewindPointer;
     Background background;
-    ParringBullet bullet;
+    Parriable bullet;
 
     // ************* 그 외 *************
     Vector3 sightRange;
@@ -215,19 +215,19 @@ public class Character : MonoBehaviour
             float v = Input.GetAxisRaw("Vertical");
             if (v == 1)
             {
-                if (CC.Instance.transform.position.y > sightRange.y)
+                CC.Instance.transform.Translate(Vector3.up * 15 * Time.unscaledDeltaTime);
+                if (CC.Instance.transform.position.y >= sightRange.y)
                 {
                     CC.Instance.transform.position = sightRange;
                 }
-                CC.Instance.transform.Translate(Vector3.up * 15 * Time.unscaledDeltaTime);
             }
             else if (v == -1)
             {
-                if (CC.Instance.transform.position.y < sightRange.y)
+                CC.Instance.transform.Translate(Vector3.down * 15 * Time.unscaledDeltaTime);
+                if (CC.Instance.transform.position.y <= sightRange.y)
                 {
                     CC.Instance.transform.position = sightRange;
                 }
-                CC.Instance.transform.Translate(Vector3.down * 15 * Time.unscaledDeltaTime);
             }
         }
     }
@@ -315,7 +315,7 @@ public class Character : MonoBehaviour
                     if (bullet.tag == "Bullet")
                     {
                         Time.timeScale = 0f;
-                        this.bullet = bullet.GetComponent<ParringBullet>();
+                        this.bullet = bullet.GetComponent<Parriable>();
                         this.bullet.stopBullet();
                         StartCoroutine(CharacterZoom());
                     }

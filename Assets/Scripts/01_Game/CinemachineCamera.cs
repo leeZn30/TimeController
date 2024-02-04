@@ -1,5 +1,6 @@
 using System;
 using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CinemachineCamera : Singleton<CinemachineCamera>
@@ -16,10 +17,16 @@ public class CinemachineCamera : Singleton<CinemachineCamera>
     public Vector2 DeadZone;
     public Vector2 SoftZone;
 
+    Vector3 LastPosition;
+
     private void Awake()
     {
         Camera = GetComponent<CinemachineVirtualCamera>();
         composer = Camera.GetCinemachineComponent<CinemachineFramingTransposer>();
+    }
+
+    private void Update()
+    {
     }
 
     public void ResetCamera()

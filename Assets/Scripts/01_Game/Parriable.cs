@@ -6,19 +6,21 @@ using Cinemachine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
 
-public class ParringBullet : MonoBehaviour
+public class Parriable : MonoBehaviour
 {
-    Character character;
+    [SerializeField] Material material;
+
     public bool isParried = false;
     LineRenderer lineRenderer;
     float interval = 0.1f; // 3초
     float nextTime = 0f;
     [SerializeField] List<Vector3> poses = new List<Vector3>();
 
+
     private void Awake()
     {
-        character = FindObjectOfType<Character>();
         lineRenderer = GetComponent<LineRenderer>();
+
         poses.Add(transform.position);
     }
 
@@ -32,16 +34,6 @@ public class ParringBullet : MonoBehaviour
             if (poses.Count != 0 && poses.Last() != transform.position)
                 poses.Add(transform.position);
         }
-
-        // 상위 불렛에 따라 일직선일지 유도탄일지 결정
-        if (!isParried)
-        {
-            // if (poses.Count != 0 && poses.Last() != transform.position)
-            //     poses.Add(transform.position);
-
-            transform.Translate(Vector3.left * 10f * Time.deltaTime);
-        }
-
     }
 
     public void stopBullet()
