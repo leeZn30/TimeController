@@ -10,7 +10,7 @@ public class Character : Singleton<Character>
 {
     // **************** 캐릭터 데이터 *****************
     [Header("Character Data")]
-    [SerializeField] float hp;
+    public float Hp;
     [SerializeField] float speed;
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;          // 점프 힘
@@ -379,6 +379,12 @@ public class Character : Singleton<Character>
         // anim.updateMode = AnimatorUpdateMode.Normal; // 슬로우한 상태로 패링하면 풀릴 수 있음
         // rigid.gravityScale = 7f;
 
+        Hp -= Damage;
+        if (Hp <= 0)
+            Dead();
+
+        HeartManager.Instance.calculateHeart(Damage);
+
         // 무적
         gameObject.layer = 9;
         sprite.color = new Color(1, 1, 1, 0.5f);
@@ -396,6 +402,11 @@ public class Character : Singleton<Character>
         // isSlowable = true;
         gameObject.layer = 8;
         sprite.color = Color.white;
+    }
+
+    public void Dead()
+    {
+        Debug.Log("You Dead");
     }
 
     public void activeSkill(string skill)
