@@ -75,11 +75,9 @@ public class Parriable : MonoBehaviour
     {
         for (int i = lineRenderer.positionCount - 1; i >= 0; i--)
         {
-            Debug.LogFormat("Position [{0}]", i);
             while (transform.position != lineRenderer.GetPosition(i))
             {
-                Debug.Log("Go!");
-                transform.position = Vector2.MoveTowards(transform.position, lineRenderer.GetPosition(i), 15f * Time.unscaledDeltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, lineRenderer.GetPosition(i), 15f * Time.unscaledDeltaTime);
 
                 yield return null;
             }

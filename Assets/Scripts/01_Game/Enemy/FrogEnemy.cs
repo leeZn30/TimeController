@@ -7,13 +7,13 @@ public class FrogEnemy : Enemy
 {
     public bool isPlayerFound;
     [SerializeField] Bullet PbulletPfb;
-    float interval = 2f;
+    float interval = 0.5f;
     float duration = 0f;
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;
-        Gizmos.DrawWireCube(transform.position, new Vector2(enemyData.SightRange, 2f));
+        Gizmos.DrawWireCube(transform.position, new Vector2(enemyData.SightRange, 1.5f));
     }
 
     protected override void Update()
@@ -24,18 +24,18 @@ public class FrogEnemy : Enemy
         {
             if (Character.Instance.transform.position.x <= transform.position.x)
             {
-                sprite.flipX = true;
+                sprite.flipX = false;
             }
             else
             {
-                sprite.flipX = false;
+                sprite.flipX = true;
             }
         }
     }
 
     protected override void detectPlayer()
     {
-        Collider2D player = Physics2D.OverlapBox(transform.position, new Vector2(enemyData.SightRange, 2f), 0, LayerMask.GetMask("Player"));
+        Collider2D player = Physics2D.OverlapBox(transform.position, new Vector2(enemyData.SightRange, 1.5f), 0, LayerMask.GetMask("Player"));
         if (player != null)
         {
             isPlayerFound = true;

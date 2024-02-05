@@ -1,4 +1,5 @@
 using System.Collections;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -16,6 +17,9 @@ public class Character : Singleton<Character>
     [SerializeField] float Atk = 10f;
     float damageTime = 0.3f;
     float maxSightRange = 5f;
+    float slowDelay = 1f;
+    float trailSpawnTime = 0.05f; // 스프라이트 생성 간격
+    float trailTimer = 0f;
 
     // **************** 스킬 상태 ******************
     [Header("스킬")]
@@ -27,7 +31,9 @@ public class Character : Singleton<Character>
     [SerializeField] float maxRewindGauge;
     [SerializeField] bool SlowActive = false;
 
-    // **************** 상태 확인 변수 *************
+    // **************** 변수 *************
+    // bool isSlowable = true;
+    bool isSlow = false;
     bool isTeleport = false;
     bool isLooking = false;
     bool isJumping = false;
@@ -35,6 +41,7 @@ public class Character : Singleton<Character>
     int jumpCnt = 0;
     float maxJumpTime = 1f;         // 최대 점프 시간
     float jumpTimeMultiplier = 7f;  // 점프 시간에 대한 곱셈 계수
+    Vector3 sightRange;
 
     // *************** 상호작용 박스 *************
     Vector2 hitPosition;
@@ -45,6 +52,7 @@ public class Character : Singleton<Character>
     // **************** 프리팹 ********************
     [Header("Prefabs")]
     [SerializeField] GameObject amingPfb;
+    [SerializeField] Trail trailPrefab; // 사용할 스프라이트 프리팹
 
     // ************* 컴포넌트&오브젝트 *************
     Animator anim;
@@ -56,7 +64,6 @@ public class Character : Singleton<Character>
     Parriable bullet;
 
     // ************* 그 외 *************
-    Vector3 sightRange;
 
     private void Awake()
     {
@@ -80,8 +87,11 @@ public class Character : Singleton<Character>
         parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
 
         // 스킬
-        if (TeleportActive)
-            teleport();
+        teleport();
+        OnSlow();
+        // SlowMove();
+        // SlowJump();
+        SlowRun();
     }
 
     private void FixedUpdate()
@@ -101,21 +111,23 @@ public class Character : Singleton<Character>
 
     void move()
     {
-        // 플립
-        if (Input.GetButton("Horizontal"))
+        if (!isSlow)
         {
-            sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
-            anim.SetBool("isRunning", true);
-
-            float h = Input.GetAxisRaw("Horizontal");
-            rigid.AddForce(Vector2.right * h * speed, ForceMode2D.Impulse);
-
-            background.BackgroundScroll(h);
-
-            // 최대 가속 지정
-            if (Mathf.Abs(rigid.velocity.x) > maxSpeed)
+            if (Input.GetButton("Horizontal"))
             {
-                rigid.velocity = new Vector2(maxSpeed * h, rigid.velocity.y);
+                sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
+                anim.SetBool("isRunning", true);
+
+                float h = Input.GetAxisRaw("Horizontal");
+                rigid.AddForce(Vector2.right * h * speed, ForceMode2D.Impulse);
+
+                background.BackgroundScroll(h);
+
+                // 최대 가속 지정
+                if (Mathf.Abs(rigid.velocity.x) > maxSpeed)
+                {
+                    rigid.velocity = new Vector2(maxSpeed * h, rigid.velocity.y);
+                }
             }
         }
     }
@@ -132,29 +144,32 @@ public class Character : Singleton<Character>
 
     void jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!isSlow)
         {
-            if (!anim.GetBool("isJumpping"))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                isJumping = true;
-                anim.SetBool("isJumpping", true);
-                jumpCnt++;
-                rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-            }
-            else
-            {
-                if (jumpCnt < 2)
+                if (!anim.GetBool("isJumpping"))
                 {
+                    isJumping = true;
+                    anim.SetBool("isJumpping", true);
                     jumpCnt++;
-                    rigid.velocity = new Vector2(rigid.velocity.x, 0f);
                     rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
                 }
+                else
+                {
+                    if (jumpCnt < 2)
+                    {
+                        jumpCnt++;
+                        rigid.velocity = new Vector2(rigid.velocity.x, 0f);
+                        rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+                    }
+                }
             }
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            isJumping = false;
-            jumpTime = 0f;
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                isJumping = false;
+                jumpTime = 0f;
+            }
         }
     }
 
@@ -193,40 +208,43 @@ public class Character : Singleton<Character>
 
     void sightMove()
     {
-        if (Input.GetButtonDown("Vertical"))
+        if (!isSlow)
         {
-            if (Input.GetAxisRaw("Vertical") == 1)
-                sightRange = new Vector3(CC.Instance.transform.position.x, transform.position.y + maxSightRange, CC.Instance.transform.position.z);
-            else
-                sightRange = new Vector3(CC.Instance.transform.position.x, transform.position.y - maxSightRange, CC.Instance.transform.position.z);
-            isLooking = true;
-            CC.Instance.Follow = null;
-        }
-
-        if (Input.GetButtonUp("Vertical"))
-        {
-            sightRange = Vector3.zero;
-            isLooking = false;
-            CC.Instance.Follow = transform;
-        }
-
-        if (isLooking)
-        {
-            float v = Input.GetAxisRaw("Vertical");
-            if (v == 1)
+            if (Input.GetButtonDown("Vertical"))
             {
-                CC.Instance.transform.Translate(Vector3.up * 15 * Time.unscaledDeltaTime);
-                if (CC.Instance.transform.position.y >= sightRange.y)
-                {
-                    CC.Instance.transform.position = sightRange;
-                }
+                if (Input.GetAxisRaw("Vertical") == 1)
+                    sightRange = new Vector3(CC.Instance.transform.position.x, transform.position.y + maxSightRange, CC.Instance.transform.position.z);
+                else
+                    sightRange = new Vector3(CC.Instance.transform.position.x, transform.position.y - maxSightRange, CC.Instance.transform.position.z);
+                isLooking = true;
+                CC.Instance.Follow = null;
             }
-            else if (v == -1)
+
+            if (Input.GetButtonUp("Vertical"))
             {
-                CC.Instance.transform.Translate(Vector3.down * 15 * Time.unscaledDeltaTime);
-                if (CC.Instance.transform.position.y <= sightRange.y)
+                sightRange = Vector3.zero;
+                isLooking = false;
+                CC.Instance.Follow = transform;
+            }
+
+            if (isLooking)
+            {
+                float v = Input.GetAxisRaw("Vertical");
+                if (v == 1)
                 {
-                    CC.Instance.transform.position = sightRange;
+                    CC.Instance.transform.Translate(Vector3.up * 15 * Time.unscaledDeltaTime);
+                    if (CC.Instance.transform.position.y >= sightRange.y)
+                    {
+                        CC.Instance.transform.position = sightRange;
+                    }
+                }
+                else if (v == -1)
+                {
+                    CC.Instance.transform.Translate(Vector3.down * 15 * Time.unscaledDeltaTime);
+                    if (CC.Instance.transform.position.y <= sightRange.y)
+                    {
+                        CC.Instance.transform.position = sightRange;
+                    }
                 }
             }
         }
@@ -234,22 +252,25 @@ public class Character : Singleton<Character>
 
     void attack()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!isSlow)
         {
-            // attack 하면 안되는 조건 
-            if (!anim.GetBool("isAttacking") && !anim.GetBool("isJumpping") && !isTeleport)
+            if (Input.GetMouseButtonDown(0))
             {
-                rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
-
-                anim.SetBool("isAttacking", true);
-                StartCoroutine(detectCombo());
-
-                Collider2D enemy = Physics2D.OverlapBox(hitPosition, hitBox, 0, LayerMask.GetMask("Enemy"));
-                if (enemy != null)
+                // attack 하면 안되는 조건 
+                if (!anim.GetBool("isAttacking") && !anim.GetBool("isJumpping") && !isTeleport)
                 {
-                    if (enemy.tag == "Enemy")
+                    rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
+
+                    anim.SetBool("isAttacking", true);
+                    StartCoroutine(detectCombo());
+
+                    Collider2D enemy = Physics2D.OverlapBox(hitPosition, hitBox, 0, LayerMask.GetMask("Enemy"));
+                    if (enemy != null)
                     {
-                        enemy.GetComponent<Enemy>().OnDamaged(Atk);
+                        if (enemy.tag == "Enemy")
+                        {
+                            enemy.GetComponent<Enemy>().OnDamaged(Atk);
+                        }
                     }
                 }
             }
@@ -304,10 +325,9 @@ public class Character : Singleton<Character>
 
     void parry()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (!isTeleport && !isSlow)
         {
-            // 패링 조건
-            if (!isTeleport)
+            if (Input.GetMouseButtonDown(1))
             {
                 Collider2D bullet = Physics2D.OverlapBox(parryingPosition, parryingBox, 0, LayerMask.GetMask("Bullet"));
                 if (bullet != null)
@@ -321,8 +341,8 @@ public class Character : Singleton<Character>
                     }
                 }
             }
-
         }
+
     }
 
     IEnumerator CharacterZoom()
@@ -354,6 +374,13 @@ public class Character : Singleton<Character>
 
     public void OnDamaged(Vector2 targetPos, float Damage)
     {
+        // 다시 슬로우 걸 수 있을때까지 딜레이 줘야함
+        // isSlowable = false;
+        // isSlow = false;
+        // Time.timeScale = 1f;
+        // anim.updateMode = AnimatorUpdateMode.Normal; // 슬로우한 상태로 패링하면 풀릴 수 있음
+        // rigid.gravityScale = 7f;
+
         // 무적
         gameObject.layer = 9;
         sprite.color = new Color(1, 1, 1, 0.5f);
@@ -368,6 +395,7 @@ public class Character : Singleton<Character>
     // 무적 해제
     void OffDamaged()
     {
+        // isSlowable = true;
         gameObject.layer = 8;
         sprite.color = Color.white;
     }
@@ -389,34 +417,105 @@ public class Character : Singleton<Character>
     #region 캐릭터 스킬
     void teleport()
     {
-        // 텔레포트 시작
-        if (Input.GetMouseButtonDown(1) && !isTeleport)
+        if (TeleportActive)
         {
-            isTeleport = true;
-            Time.timeScale = 0.05f;
-            teleportPointer = Instantiate(amingPfb);
-        }
-        // 텔레포트 중단
-        else if (Input.GetMouseButtonDown(1) && isTeleport)
-        {
-            isTeleport = false;
-            Time.timeScale = 1f;
-            Destroy(teleportPointer);
-        }
-        // 텔레포트 완료
-        else if (Input.GetMouseButtonDown(0) && isTeleport)
-        {
-            isTeleport = false;
-            transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Destroy(teleportPointer);
-            Time.timeScale = 1f;
-        }
+            // 텔레포트 시작
+            if (Input.GetKeyDown(KeyCode.Z) && !isTeleport)
+            {
+                isTeleport = true;
+                Time.timeScale = 0.05f;
+                teleportPointer = Instantiate(amingPfb);
+            }
+            // 텔레포트 중단
+            else if (Input.GetMouseButtonDown(1) && isTeleport)
+            {
+                isTeleport = false;
+                Time.timeScale = 1f;
+                Destroy(teleportPointer);
+            }
+            // 텔레포트 완료
+            else if (Input.GetMouseButtonDown(0) && isTeleport)
+            {
+                isTeleport = false;
+                transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Destroy(teleportPointer);
+                Time.timeScale = 1f;
+            }
 
-        if (isTeleport)
-        {
-            teleportPointer.transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (isTeleport)
+            {
+                teleportPointer.transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            }
+
         }
     }
+
+    void OnSlow()
+    {
+        if (SlowActive)
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                isSlow = true;
+                anim.SetBool("isSlow", true);
+                Time.timeScale = 0.1f;
+                // 애니메이션
+                anim.updateMode = AnimatorUpdateMode.UnscaledTime;
+                rigid.gravityScale = 0f;
+                rigid.velocity = Vector2.zero;
+                isJumping = false;
+            }
+            else
+            {
+                isSlow = false;
+                anim.SetBool("isSlow", false);
+                Time.timeScale = 1f;
+                anim.updateMode = AnimatorUpdateMode.Normal; // 슬로우한 상태로 패링하면 풀릴 수 있음
+                rigid.gravityScale = 7f;
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift) && !anim.GetBool("isSlow"))
+            {
+                anim.SetBool("isSlow", true);
+            }
+        }
+    }
+
+    void SlowRun()
+    {
+        if (isSlow)
+        {
+            if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
+            {
+                sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
+
+                float h = Input.GetAxisRaw("Horizontal");
+                float v = Input.GetAxisRaw("Vertical");
+                transform.Translate(Vector2.right * h * speed * Time.unscaledDeltaTime);
+                transform.position += Vector3.up * v * speed * Time.unscaledDeltaTime;
+
+                background.BackgroundScroll(h);
+
+                afterImage();
+            }
+        }
+    }
+
+    void afterImage()
+    {
+        trailTimer += Time.unscaledDeltaTime;
+
+        // 일정 간격으로 스프라이트 생성
+        if (trailTimer >= trailSpawnTime)
+        {
+            Trail trail = Instantiate<Trail>(trailPrefab, transform.position, Quaternion.identity);
+            trail.sprite.sprite = sprite.sprite;
+            trail.sprite.flipX = sprite.flipX;
+            trailTimer = 0f;
+        }
+    }
+
+
 
     #endregion
 
@@ -443,6 +542,65 @@ public class Character : Singleton<Character>
 
 
     #region 더미 메서드
+    // 슬로우시 모든 행동은 그대로 유지하는 것 일단 남겨는 둠(미완성)
+    // void SlowMove()
+    // {
+    //     if (isSlow)
+    //     {
+    //         if (Input.GetButton("Horizontal"))
+    //         {
+    //             sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
+    //             anim.SetBool("isRunning", true);
+
+    //             float h = Input.GetAxisRaw("Horizontal");
+    //             // rigid.AddForce(Vector2.right * h * speed, ForceMode2D.Impulse);
+    //             transform.Translate(Vector2.right * h * speed * Time.unscaledDeltaTime);
+
+    //             background.BackgroundScroll(h);
+
+    //             // 최대 가속 지정
+    //             // if (Mathf.Abs(rigid.velocity.x) > maxSpeed)
+    //             // {
+    //             //     rigid.velocity = new Vector2(maxSpeed * h, rigid.velocity.y);
+    //             // }
+    //         }
+    //     }
+    // }
+
+    // void SlowJump()
+    // {
+    //     if (isSlow)
+    //     {
+    //         if (Input.GetKeyDown(KeyCode.Space))
+    //         {
+    //             if (!anim.GetBool("isJumpping"))
+    //             {
+    //                 Debug.Log("~~~");
+    //                 isJumping = true;
+    //                 anim.SetBool("isJumpping", true);
+    //                 jumpCnt++;
+    //                 // rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+    //                 transform.position += Vector3.up * jumpPower * 10f * Time.unscaledDeltaTime;
+    //             }
+    //             else
+    //             {
+    //                 if (jumpCnt < 2)
+    //                 {
+    //                     jumpCnt++;
+    //                     rigid.velocity = new Vector2(rigid.velocity.x, 0f);
+    //                     // rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+    //                     transform.position += Vector3.up * jumpPower * 10f * Time.unscaledDeltaTime;
+    //                 }
+    //             }
+    //         }
+    //         if (Input.GetKeyUp(KeyCode.Space))
+    //         {
+    //             isJumping = false;
+    //             jumpTime = 0f;
+    //         }
+    //     }
+    // }
+
     // 사다리 너무 어려워서 일단 제외
     /*
     /* bool isLabber = false;
