@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletName: "\uC62C\uD328\uB9C1"
   damage: 0
-  moveSpeed: 13
+  moveSpeed: 10
   rotateSpeed: 0
   parryPercent: 1
   material: {fileID: 2100000, guid: ff3d780da2104304d99ab1208dc48ff4, type: 2}

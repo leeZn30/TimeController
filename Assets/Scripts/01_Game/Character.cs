@@ -89,8 +89,6 @@ public class Character : Singleton<Character>
         // 스킬
         teleport();
         OnSlow();
-        // SlowMove();
-        // SlowJump();
         SlowRun();
     }
 
@@ -342,7 +340,6 @@ public class Character : Singleton<Character>
                 }
             }
         }
-
     }
 
     IEnumerator CharacterZoom()
@@ -355,6 +352,7 @@ public class Character : Singleton<Character>
 
         while (CC.Instance.OrthographicSize > 1.5f)
         {
+            Debug.Log(CC.Instance.OrthographicSize);
             CC.Instance.OrthographicSize -= Time.unscaledDeltaTime * 20f;
             float newIntensity = Mathf.Clamp(vignette.intensity.value + 3 * Time.unscaledDeltaTime, 0f, 0.5f);
             vignette.intensity.value = newIntensity;
@@ -408,6 +406,14 @@ public class Character : Singleton<Character>
                 TeleportActive = true;
                 break;
 
+            case "Rewind":
+                RewindActive = true;
+                break;
+
+            case "Slow":
+                SlowActive = true;
+                break;
+
             default:
                 break;
         }
@@ -420,7 +426,7 @@ public class Character : Singleton<Character>
         if (TeleportActive)
         {
             // 텔레포트 시작
-            if (Input.GetKeyDown(KeyCode.Z) && !isTeleport)
+            if (Input.GetKeyDown(KeyCode.Q) && !isTeleport)
             {
                 isTeleport = true;
                 Time.timeScale = 0.05f;

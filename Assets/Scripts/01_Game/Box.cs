@@ -4,48 +4,46 @@ using UnityEngine;
 
 public class Box : MonoBehaviour
 {
-    Canvas canvas;
-    GameObject go;
-    public GameObject info;
-    public GameObject pfb;
+    [SerializeField] GameObject interactPfb;
+    [SerializeField] GameObject ItemInfoPfb;
+    Canvas Fixedcanvas;
+    Canvas Canvas;
+    GameObject interactUI;
 
+    bool isInteractable = true;
     bool isPlayerIn;
 
     private void Awake()
     {
-        canvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
+        Fixedcanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
+        Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && isPlayerIn)
+        if (Input.GetKeyDown(KeyCode.E) && isPlayerIn && isInteractable)
         {
-            FindObjectOfType<Character>().activeSkill("Teleport");
-            info.SetActive(true);
-            StartCoroutine(delay());
+            interact();
         }
     }
 
-    IEnumerator delay()
+    virtual protected void interact()
     {
-        yield return new WaitForSeconds(5f);
+        isInteractable = false;
+    }
 
-        info.SetActive(false);
-        Destroy(gameObject);
+    protected void ShowItem()
+    {
+        Destroy(interactUI);
+        GameManager.pushESC(Instantiate(ItemInfoPfb, Canvas.transform));
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag.Equals("Player"))
+        if (other.tag.Equals("Player") && isInteractable)
         {
-            go = Instantiate(pfb, transform.position + new Vector3(0, 2, 0), Quaternion.identity, canvas.transform);
+            interactUI = Instantiate(interactPfb, transform.position + new Vector3(0, 2, 0), Quaternion.identity, Fixedcanvas.transform);
             isPlayerIn = true;
         }
     }
@@ -56,9 +54,8 @@ public class Box : MonoBehaviour
         {
             isPlayerIn = false;
 
-            if (go != null)
-                Destroy(go);
+            if (interactUI != null)
+                Destroy(interactUI);
         }
-
     }
 }

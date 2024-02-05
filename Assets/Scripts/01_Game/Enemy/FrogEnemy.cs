@@ -7,7 +7,7 @@ public class FrogEnemy : Enemy
 {
     public bool isPlayerFound;
     [SerializeField] Bullet PbulletPfb;
-    float interval = 0.5f;
+    float interval = 3f;
     float duration = 0f;
 
     private void OnDrawGizmos()
