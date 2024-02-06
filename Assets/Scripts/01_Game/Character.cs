@@ -15,7 +15,7 @@ public class Character : Singleton<Character>
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;          // 점프 힘
     [SerializeField] float Atk = 10f;
-    float damageTime = 0.3f;
+    float invincibilityTime = 0.5f;
     float maxSightRange = 5f;
     float slowDelay = 1f;
     float trailSpawnTime = 0.05f; // 스프라이트 생성 간격
@@ -334,7 +334,6 @@ public class Character : Singleton<Character>
                     {
                         Time.timeScale = 0f;
                         this.bullet = bullet.GetComponent<Parriable>();
-                        this.bullet.stopBullet();
                         StartCoroutine(CharacterZoom());
                     }
                 }
@@ -344,21 +343,20 @@ public class Character : Singleton<Character>
 
     IEnumerator CharacterZoom()
     {
-        yield return null;
-
         Vignette vignette;
         FindObjectOfType<Volume>().profile.TryGet(out vignette);
         CC.Instance.ChangeSoftZone(new Vector2(0, 0));
 
         while (CC.Instance.OrthographicSize > 1.5f)
         {
-            Debug.Log(CC.Instance.OrthographicSize);
             CC.Instance.OrthographicSize -= Time.unscaledDeltaTime * 20f;
             float newIntensity = Mathf.Clamp(vignette.intensity.value + 3 * Time.unscaledDeltaTime, 0f, 0.5f);
             vignette.intensity.value = newIntensity;
 
             yield return null;
         }
+
+        yield return null;
 
         anim.updateMode = AnimatorUpdateMode.UnscaledTime;
         anim.SetTrigger("Parry");
@@ -393,7 +391,7 @@ public class Character : Singleton<Character>
         int dirc = transform.position.x - targetPos.x > 0 ? 1 : -1;
         rigid.AddForce(new Vector2(dirc, 1) * 7, ForceMode2D.Impulse);
 
-        Invoke("OffDamaged", damageTime);
+        Invoke("OffDamaged", invincibilityTime);
     }
 
     // 무적 해제
@@ -549,7 +547,7 @@ public class Character : Singleton<Character>
     {
         if (other.gameObject.tag == "Trap")
         {
-            OnDamaged(other.transform.position, 0);
+            Dead();
         }
     }
 

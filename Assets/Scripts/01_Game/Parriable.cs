@@ -36,13 +36,9 @@ public class Parriable : MonoBehaviour
         }
     }
 
-    public void stopBullet()
-    {
-        isParried = true;
-    }
-
     public void parried()
     {
+        isParried = true;
         poses.Add(transform.position);
         lineRenderer.positionCount = poses.Count;
         lineRenderer.SetPositions(poses.ToArray());

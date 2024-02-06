@@ -25,10 +25,6 @@ public class CinemachineCamera : Singleton<CinemachineCamera>
         composer = Camera.GetCinemachineComponent<CinemachineFramingTransposer>();
     }
 
-    private void Update()
-    {
-    }
-
     public void ResetCamera()
     {
         Transform character = FindObjectOfType<Character>().transform;

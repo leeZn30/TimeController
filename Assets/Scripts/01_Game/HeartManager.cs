@@ -2,28 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HeartManager : Singleton<HeartManager>
 {
     [Header("하트 상태")]
-    [SerializeField] List<Heart> hearts = new List<Heart>();
+    [SerializeField] List<GameObject> hearts = new List<GameObject>();
+    [SerializeField] List<int> heartHps = new List<int>();
+    [SerializeField] List<Sprite> heartSprites = new List<Sprite>();
 
-    [SerializeField] Heart heartPfb;
+    [SerializeField] GameObject heartPfb;
 
     private void Awake()
     {
         for (int i = 0; i < Character.Instance.Hp / 4; i++)
         {
             hearts.Add(Instantiate(heartPfb, transform));
+            heartHps.Add(4);
         }
     }
 
     public void calculateHeart(float damage)
     {
-        // int quotient = (int)damage / 4;
-        // int remainder = (int)damage % 4;
-
-        // hearts[hearts.Count - 1].ChangeHeart(remainder);
+        while (damage > 0)
+        {
+            heartHps[heartHps.Count - 1]--;
+            if (heartHps[heartHps.Count - 1] == 0)
+            {
+                heartHps.RemoveAt(heartHps.Count - 1);
+                Destroy(hearts[hearts.Count - 1].gameObject);
+                hearts.RemoveAt(hearts.Count - 1);
+            }
+            else
+            {
+                hearts[hearts.Count - 1].GetComponent<Image>().sprite = heartSprites[heartHps[heartHps.Count - 1] - 1];
+            }
+            damage--;
+        }
     }
 
 }
