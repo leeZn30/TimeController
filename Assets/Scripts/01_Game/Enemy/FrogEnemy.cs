@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class FrogEnemy : Enemy
 {
-    public bool isPlayerFound;
     [SerializeField] Bullet PbulletPfb;
-    float interval = 3f;
+    [SerializeField] float interval = 3f;
     float duration = 0f;
+    bool isPlayerFound;
 
     private void OnDrawGizmos()
     {
@@ -55,6 +55,7 @@ public class FrogEnemy : Enemy
 
             if (duration > interval)
             {
+                anim.SetTrigger("Attack");
                 Instantiate(PbulletPfb, transform.position, transform.rotation);
                 duration = 0f;
             }

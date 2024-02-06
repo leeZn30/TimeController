@@ -300,7 +300,7 @@ public class Character : Singleton<Character>
 
         float limit = info.length; //animation 길이로 측정
         float duration = 0f;
-        float comboStart = limit * 0.7f; // 비율
+        float comboStart = limit * 0.6f; // 비율
 
         while (duration <= limit)
         {

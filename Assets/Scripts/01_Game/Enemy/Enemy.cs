@@ -9,7 +9,7 @@ public abstract class Enemy : MonoBehaviour
     public float hp;
     public float atk;
 
-    Animator anim;
+    protected Animator anim;
     protected SpriteRenderer sprite;
 
     virtual protected void Awake()
