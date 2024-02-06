@@ -123,75 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &185923997
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 615767621653067279, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: interval
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 615767621653067279, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: PbulletPfb
-      value: 
-      objectReference: {fileID: 7232950028209192810, guid: 4ac8db999ca237b47a05e35bc6126ddb, type: 3}
-    - target: {fileID: 4295434505715506246, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_Name
-      value: Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 8.109466
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.0064040422
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8300792147203548277, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
 --- !u!1 &218644760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1736,6 +1667,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hearts: []
+  heartHps: 
+  heartSprites: []
   heartPfb: {fileID: 1184703439634868775, guid: 01e223e429c79c64b8b83c6442903a68, type: 3}
 --- !u!1 &1176018186
 GameObject:
@@ -2364,7 +2297,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
+  m_UpdateMethod: 1
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1

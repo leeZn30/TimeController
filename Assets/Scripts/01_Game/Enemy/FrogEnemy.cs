@@ -44,7 +44,6 @@ public class FrogEnemy : Enemy
         {
             isPlayerFound = false;
         }
-
     }
 
     protected override void attack()

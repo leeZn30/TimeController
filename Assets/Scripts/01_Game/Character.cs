@@ -356,8 +356,6 @@ public class Character : Singleton<Character>
             yield return null;
         }
 
-        yield return null;
-
         anim.updateMode = AnimatorUpdateMode.UnscaledTime;
         anim.SetTrigger("Parry");
     }
