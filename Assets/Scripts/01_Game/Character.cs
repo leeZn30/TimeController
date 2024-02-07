@@ -32,7 +32,7 @@ public class Character : Singleton<Character>
     [SerializeField] bool SlowActive = false;
 
     // **************** 변수 *************
-    // bool isSlowable = true;
+    public bool isMovable = true;
     bool isSlow = false;
     bool isTeleport = false;
     bool isLooking = false;
@@ -78,25 +78,31 @@ public class Character : Singleton<Character>
 
     private void Update()
     {
-        jump();
-        attack();
-        sightMove();
-        extraMove();
-        parry();
-        hitPosition = new Vector2(rigid.position.x + (sprite.flipX ? -1 : 1) * transform.localScale.x, rigid.position.y);
-        parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
+        if (isMovable)
+        {
+            jump();
+            attack();
+            sightMove();
+            extraMove();
+            parry();
+            hitPosition = new Vector2(rigid.position.x + (sprite.flipX ? -1 : 1) * transform.localScale.x, rigid.position.y);
+            parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
 
-        // 스킬
-        teleport();
-        OnSlow();
-        SlowRun();
+            // 스킬
+            teleport();
+            OnSlow();
+            SlowRun();
+        }
     }
 
     private void FixedUpdate()
     {
-        move();
-        jumping();
-        land();
+        if (isMovable)
+        {
+            move();
+            jumping();
+            land();
+        }
     }
 
     void OnDrawGizmos()
@@ -135,7 +141,7 @@ public class Character : Singleton<Character>
         // 바로 멈추기
         if (Input.GetButtonUp("Horizontal"))
         {
-            rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
+            rigid.velocity = new Vector2(0f, rigid.velocity.y);
             anim.SetBool("isRunning", false);
         }
     }
@@ -360,7 +366,7 @@ public class Character : Singleton<Character>
         anim.SetTrigger("Parry");
     }
 
-    public void ParryAnimationEvent()
+    void ParryAnimationEvent()
     {
         anim.updateMode = AnimatorUpdateMode.Normal;
         bullet.parried();
@@ -400,9 +406,15 @@ public class Character : Singleton<Character>
         sprite.color = Color.white;
     }
 
-    public void Dead()
+    void Dead()
     {
-        Debug.Log("You Dead");
+        anim.SetTrigger("Dead");
+    }
+
+    void DeadAnimationEvent()
+    {
+        GameManager.Instance.OpenMenu();
+        Destroy(gameObject);
     }
 
     public void activeSkill(string skill)

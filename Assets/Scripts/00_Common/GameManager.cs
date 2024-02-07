@@ -1,22 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-
-    [SerializeField] GameObject ESCMenuPfb;
-
-    GameObject ESCMenu;
-    Canvas canvas;
+    [SerializeField] GameObject ESCMenu;
 
     static Stack<GameObject> ESCStack = new Stack<GameObject>();
-
-    private void Awake()
-    {
-        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-    }
 
     private void Update()
     {
@@ -26,17 +18,22 @@ public class GameManager : Singleton<GameManager>
                 popESC();
             else
             {
-                // ESCMenu.SetActive(true);
-                ESCMenu = Instantiate(ESCMenuPfb, canvas.transform);
-                pushESC(ESCMenu);
+                OpenMenu();
             }
         }
     }
 
     void popESC()
     {
-        if (ESCStack.Count > 0)
-            Destroy(ESCStack.Pop());
+        if (Character.Instance != null)
+            Character.Instance.isMovable = true;
+
+        Time.timeScale = 1f;
+        GameObject go = ESCStack.Pop();
+        if (go != ESCMenu)
+            Destroy(go);
+        else
+            ESCMenu.SetActive(false);
     }
 
     static public void pushESC(GameObject go)
@@ -44,9 +41,20 @@ public class GameManager : Singleton<GameManager>
         ESCStack.Push(go);
     }
 
+    public void OpenMenu()
+    {
+        if (Character.Instance != null)
+            Character.Instance.isMovable = false;
+
+        Time.timeScale = 0f;
+        ESCMenu.SetActive(true);
+
+        pushESC(ESCMenu);
+    }
+
     public void Retry()
     {
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         popESC();
     }
 
