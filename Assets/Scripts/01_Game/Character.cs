@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 using CC = CinemachineCamera;
 
@@ -24,12 +25,14 @@ public class Character : Singleton<Character>
     // **************** 스킬 상태 ******************
     [Header("스킬")]
     [SerializeField] bool TeleportActive = false;
-    [SerializeField] float teleportGauge;
-    [SerializeField] float maxTeleportGauge;
+    [SerializeField] Slider TeleportGauge;
+    [SerializeField] float teleportChargeSpeed;
     [SerializeField] bool RewindActive = false;
     [SerializeField] float RewindGauge;
     [SerializeField] float maxRewindGauge;
     [SerializeField] bool SlowActive = false;
+    [SerializeField] Slider SlowGauge;
+    [SerializeField] float slowChargeSpeed;
 
     // **************** 변수 *************
     public bool isMovable = true;
@@ -89,6 +92,7 @@ public class Character : Singleton<Character>
             parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
 
             // 스킬
+            chargeSkill();
             teleport();
             OnSlow();
             SlowRun();
@@ -423,6 +427,7 @@ public class Character : Singleton<Character>
         {
             case "Teleport":
                 TeleportActive = true;
+                TeleportGauge.gameObject.SetActive(true);
                 break;
 
             case "Rewind":
@@ -431,6 +436,7 @@ public class Character : Singleton<Character>
 
             case "Slow":
                 SlowActive = true;
+                SlowGauge.gameObject.SetActive(true);
                 break;
 
             default:
@@ -440,9 +446,18 @@ public class Character : Singleton<Character>
 
 
     #region 캐릭터 스킬
+    void chargeSkill()
+    {
+        if (TeleportGauge.value < TeleportGauge.maxValue)
+            TeleportGauge.value += Time.unscaledDeltaTime * teleportChargeSpeed;
+
+        if (!isSlow && SlowGauge.value < SlowGauge.maxValue)
+            SlowGauge.value += Time.unscaledDeltaTime * slowChargeSpeed;
+    }
+
     void teleport()
     {
-        if (TeleportActive)
+        if (TeleportActive && TeleportGauge.value == TeleportGauge.maxValue)
         {
             // 텔레포트 시작
             if (Input.GetKeyDown(KeyCode.Q) && !isTeleport)
@@ -465,6 +480,7 @@ public class Character : Singleton<Character>
                 transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Destroy(teleportPointer);
                 Time.timeScale = 1f;
+                TeleportGauge.value = 0f;
             }
 
             if (isTeleport)
@@ -508,10 +524,12 @@ public class Character : Singleton<Character>
 
     void SlowRun()
     {
-        if (isSlow)
+        if (isSlow && SlowGauge.value > 0)
         {
+            SlowGauge.value -= Time.unscaledDeltaTime * slowChargeSpeed;
             if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
             {
+
                 sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
 
                 float h = Input.GetAxisRaw("Horizontal");
