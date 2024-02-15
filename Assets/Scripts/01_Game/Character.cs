@@ -18,7 +18,6 @@ public class Character : Singleton<Character>
     [SerializeField] float Atk = 10f;
     float invincibilityTime = 0.5f;
     float maxSightRange = 5f;
-    float slowDelay = 1f;
     float trailSpawnTime = 0.05f; // 스프라이트 생성 간격
     float trailTimer = 0f;
 
@@ -55,7 +54,7 @@ public class Character : Singleton<Character>
     // **************** 프리팹 ********************
     [Header("Prefabs")]
     [SerializeField] GameObject amingPfb;
-    [SerializeField] Trail trailPrefab; // 사용할 스프라이트 프리팹
+    [SerializeField] Trail trailPrefab;
 
     // ************* 컴포넌트&오브젝트 *************
     Animator anim;
