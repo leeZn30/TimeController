@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using System.Collections;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -44,6 +44,7 @@ public class Character : Singleton<Character>
     float maxJumpTime = 1f;         // 최대 점프 시간
     float jumpTimeMultiplier = 7f;  // 점프 시간에 대한 곱셈 계수
     Vector3 sightRange;
+    public Queue<Trail> TrailQueue;
 
     // *************** 상호작용 박스 *************
     Vector2 hitPosition;
@@ -76,6 +77,8 @@ public class Character : Singleton<Character>
 
         hitPosition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
         parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
+
+        TrailQueue = ObjectPool.CreateQueue<Trail>(5, trailPrefab);
     }
 
     private void Update()
@@ -550,7 +553,10 @@ public class Character : Singleton<Character>
         // 일정 간격으로 스프라이트 생성
         if (trailTimer >= trailSpawnTime)
         {
-            Trail trail = Instantiate<Trail>(trailPrefab, transform.position, Quaternion.identity);
+            // Trail trail = Instantiate<Trail>(trailPrefab, transform.position, Quaternion.identity);
+            Trail trail = TrailQueue.Dequeue();
+            trail.transform.position = transform.position;
+            trail.gameObject.SetActive(true);
             trail.sprite.sprite = sprite.sprite;
             trail.sprite.flipX = sprite.flipX;
             trailTimer = 0f;

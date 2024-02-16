@@ -19,6 +19,11 @@ public class Trail : MonoBehaviour
 
     private void Start()
     {
+        // StartCoroutine(Dissapear());
+    }
+
+    private void OnEnable()
+    {
         StartCoroutine(Dissapear());
     }
 
@@ -41,6 +46,9 @@ public class Trail : MonoBehaviour
             yield return null;
         }
 
-        Destroy(gameObject);
+        sprite.color = Color.white;
+        transform.localScale = initialScale;
+        gameObject.SetActive(false);
+        Character.Instance.TrailQueue.Enqueue(this);
     }
 }
