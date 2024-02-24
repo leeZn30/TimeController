@@ -12,6 +12,12 @@ public abstract class Enemy : MonoBehaviour
     protected Animator anim;
     protected SpriteRenderer sprite;
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireCube(transform.position, new Vector2(enemyData.SightRange, 1.5f));
+    }
+
     virtual protected void Awake()
     {
         hp = enemyData.Hp;

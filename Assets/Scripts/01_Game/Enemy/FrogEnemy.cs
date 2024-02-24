@@ -10,11 +10,11 @@ public class FrogEnemy : Enemy
     float duration = 0f;
     bool isPlayerFound;
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireCube(transform.position, new Vector2(enemyData.SightRange, 1.5f));
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.magenta;
+    //     Gizmos.DrawWireCube(transform.position, new Vector2(enemyData.SightRange, 1.5f));
+    // }
 
     protected override void Update()
     {
