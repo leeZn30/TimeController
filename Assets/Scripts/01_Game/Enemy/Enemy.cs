@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 enum SigthType
@@ -18,8 +19,8 @@ public abstract class Enemy : MonoBehaviour
 
     public float hp;
     public float atk;
-
     [SerializeField] SigthType sigthType;
+
 
     protected Animator anim;
     protected SpriteRenderer sprite;
@@ -72,6 +73,25 @@ public abstract class Enemy : MonoBehaviour
     virtual public void OnDamaged(float damage, DamageType damageType)
     {
         anim.SetTrigger("Hit");
+        damage *= Random.Range(0.9f, 1.1f);
+        bool isCritical = false;
+
+        if (damageType == DamageType.Player)
+        {
+            if (Random.value >= 0.8f)
+            {
+                isCritical = true;
+                damage *= Random.Range(1.5f, 2.0f);
+            }
+        }
+        else
+        {
+            isCritical = true;
+            damage *= Random.Range(2.0f, 3.0f);
+        }
+        damage = Mathf.Round(damage);
+
+        DamageUI.Instance.ShowDamage((int)damage, transform.position, isCritical);
 
         // 치명타 계산
         hp -= damage;
@@ -79,6 +99,7 @@ public abstract class Enemy : MonoBehaviour
         if (hp <= 0)
             dead();
     }
+
 
     public void DoDestroy()
     {

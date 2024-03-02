@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Flower Data
   m_EditorClassIdentifier: 
   EnemyName: 
-  hp: 10
+  hp: 5
   damage: 5
   sightRange: 7
   moveSpeed: 0
