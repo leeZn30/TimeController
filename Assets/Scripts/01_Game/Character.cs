@@ -50,7 +50,9 @@ public class Character : Singleton<Character>
     Vector2 hitPosition;
     Vector2 hitBox = new Vector2(1f, 2);
     Vector2 parryingPosition;
-    Vector2 parryingBox = new Vector2(0.3f, 1); // default = 0.3f
+    // Vector2 parryingBox = new Vector2(0.3f, 1); // default = 0.3f
+    Vector2 parryingBox = new Vector2(1.2f, 2.3f); // default = 0.3f
+    float parryingRadius = 1f;
 
     // **************** 프리팹 ********************
     [Header("Prefabs")]
@@ -76,7 +78,8 @@ public class Character : Singleton<Character>
         background = FindObjectOfType<Background>();
 
         hitPosition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
-        parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
+        // parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
+        parryingPosition = transform.position;
 
         TrailQueue = ObjectPool.CreateQueue<Trail>(5, trailPrefab);
     }
@@ -91,7 +94,8 @@ public class Character : Singleton<Character>
             extraMove();
             parry();
             hitPosition = new Vector2(rigid.position.x + (sprite.flipX ? -1 : 1) * transform.localScale.x, rigid.position.y);
-            parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
+            // parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
+            parryingPosition = transform.position;
 
             // 스킬
             chargeSkill();
@@ -117,6 +121,7 @@ public class Character : Singleton<Character>
         Gizmos.DrawWireCube(hitPosition, hitBox);
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(parryingPosition, parryingBox);
+        // Gizmos.DrawWireSphere(parryingPosition, parryingRadius);
     }
 
     void move()
@@ -279,7 +284,7 @@ public class Character : Singleton<Character>
                     {
                         if (enemy.tag == "Enemy")
                         {
-                            enemy.GetComponent<Enemy>().OnDamaged(Atk);
+                            enemy.GetComponent<Enemy>().OnDamaged(Atk, DamageType.Player);
                         }
                     }
                 }
@@ -296,7 +301,7 @@ public class Character : Singleton<Character>
         {
             if (enemy.tag == "Enemy")
             {
-                enemy.GetComponent<Enemy>().OnDamaged(Atk);
+                enemy.GetComponent<Enemy>().OnDamaged(Atk, DamageType.Player);
             }
         }
     }
@@ -340,6 +345,7 @@ public class Character : Singleton<Character>
             if (Input.GetMouseButtonDown(1))
             {
                 Collider2D bullet = Physics2D.OverlapBox(parryingPosition, parryingBox, 0, LayerMask.GetMask("Bullet"));
+                // Collider2D bullet = Physics2D.OverlapCircle(parryingPosition, parryingRadius, LayerMask.GetMask("Bullet"));
                 if (bullet != null)
                 {
                     if (bullet.tag == "Bullet")

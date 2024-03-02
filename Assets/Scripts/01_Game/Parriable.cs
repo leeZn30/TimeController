@@ -8,8 +8,6 @@ using UnityEngine.Rendering;
 
 public class Parriable : MonoBehaviour
 {
-    [SerializeField] Material material;
-
     public bool isParried = false;
     LineRenderer lineRenderer;
     float interval = 0.1f; // 3초
@@ -91,7 +89,7 @@ public class Parriable : MonoBehaviour
     {
         if (isParried && other.tag.Equals("Enemy"))
         {
-            other.GetComponent<Enemy>().OnDamaged(10);
+            other.GetComponent<Enemy>().OnDamaged(10, DamageType.ParriedBullet);
             Destroy(gameObject);
         }
     }

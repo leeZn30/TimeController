@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
 
     SpriteRenderer sprite;
 
-    private void Awake()
+    virtual protected void Awake()
     {
         sprite = GetComponent<SpriteRenderer>();
 
@@ -27,7 +27,7 @@ public class Bullet : MonoBehaviour
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
-    private void Update()
+    virtual protected void Update()
     {
         move();
     }

@@ -2,12 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+enum SigthType
+{
+    Rectangle, Circle
+}
+
+public enum DamageType
+{
+    Player, ParriedBullet
+}
+
 public abstract class Enemy : MonoBehaviour
 {
     [SerializeField] protected EnemyData enemyData;
 
     public float hp;
     public float atk;
+
+    [SerializeField] SigthType sigthType;
 
     protected Animator anim;
     protected SpriteRenderer sprite;
@@ -16,7 +28,20 @@ public abstract class Enemy : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;
-        Gizmos.DrawWireCube(transform.position, new Vector2(enemyData.SightRange, 1.5f));
+
+        switch (sigthType)
+        {
+            case SigthType.Rectangle:
+                Gizmos.DrawWireCube(transform.position, new Vector2(enemyData.SightRange, 1.5f));
+                break;
+
+            case SigthType.Circle:
+                Gizmos.DrawWireSphere(transform.position, enemyData.SightRange);
+                break;
+
+            default:
+                break;
+        }
     }
 
     virtual protected void Awake()
@@ -40,12 +65,11 @@ public abstract class Enemy : MonoBehaviour
     {
         rigid.velocity = Vector2.zero;
         anim.SetTrigger("Dead");
-        // Destroy(gameObject);
     }
 
     abstract protected void detectPlayer();
 
-    public void OnDamaged(float damage)
+    virtual public void OnDamaged(float damage, DamageType damageType)
     {
         anim.SetTrigger("Hit");
 
