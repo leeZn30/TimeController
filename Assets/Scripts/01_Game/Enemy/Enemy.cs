@@ -11,6 +11,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected Animator anim;
     protected SpriteRenderer sprite;
+    protected Rigidbody2D rigid;
 
     private void OnDrawGizmos()
     {
@@ -24,6 +25,7 @@ public abstract class Enemy : MonoBehaviour
         atk = enemyData.Damage;
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        rigid = GetComponent<Rigidbody2D>();
     }
 
     virtual protected void Update()
@@ -36,8 +38,9 @@ public abstract class Enemy : MonoBehaviour
 
     protected void dead()
     {
-        // anim.SetTrigger("Dead");
-        Destroy(gameObject);
+        rigid.velocity = Vector2.zero;
+        anim.SetTrigger("Dead");
+        // Destroy(gameObject);
     }
 
     abstract protected void detectPlayer();

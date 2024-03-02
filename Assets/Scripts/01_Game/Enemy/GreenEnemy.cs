@@ -8,14 +8,11 @@ using UnityEngine;
 public class GreenEnemy : Enemy
 {
     bool isPlayerFound;
-    Rigidbody2D rigid;
     bool isMovable = true;
 
     protected override void Awake()
     {
         base.Awake();
-
-        rigid = GetComponent<Rigidbody2D>();
     }
 
     protected override void Update()
@@ -69,6 +66,7 @@ public class GreenEnemy : Enemy
     void OnMovable()
     {
         isMovable = true;
+        anim.SetBool("isStun", false);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -76,11 +74,13 @@ public class GreenEnemy : Enemy
         if (other.collider.tag.Equals("Player"))
         {
             isMovable = false;
+
             // 플레이어랑 닿았음
+            anim.SetBool("isStun", true);
             int dirc = transform.position.x - Character.Instance.gameObject.transform.position.x > 0 ? 1 : -1;
             rigid.AddForce(new Vector2(dirc, 0) * 5, ForceMode2D.Impulse);
 
-            Invoke("OnMovable", 3f);
+            Invoke("OnMovable", 2f);
         }
     }
 
