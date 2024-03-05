@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6249743164179221046}
   - component: {fileID: 186643553130402092}
   - component: {fileID: 7232950028209192810}
+  - component: {fileID: 780630920056821902}
   m_Layer: 10
   m_Name: TutoBullet
   m_TagString: Bullet
@@ -108,7 +109,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,9 +127,9 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1320475405
-  m_SortingLayer: 3
-  m_SortingOrder: -1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
   m_Positions: []
   m_Parameters:
     serializedVersion: 3
@@ -137,29 +138,29 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.51116943
-        value: 0.1509552
+        time: 0.09605108
+        value: 0.09398027
         inSlope: 0
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 1, b: 0.95434356, a: 0.8980392}
-      key1: {r: 0, g: 0.39058065, b: 1, a: 0.7411765}
-      key2: {r: 0, g: 0, b: 0, a: 0.5176471}
+      key0: {r: 0.579394, g: 1, b: 0, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 65342
+      ctime1: 65535
       ctime2: 0
       ctime3: 0
       ctime4: 0
@@ -167,8 +168,8 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65342
-      atime2: 65535
+      atime1: 65535
+      atime2: 0
       atime3: 0
       atime4: 0
       atime5: 0
@@ -251,3 +252,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletData: {fileID: 11400000, guid: f2754eed8697ca54685dcbe9342f7e61, type: 2}
+--- !u!114 &780630920056821902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3006567573567783928}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 680598d4b4f88944fba9245cdb68e20e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isParried: 0
+  poses: []

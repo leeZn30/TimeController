@@ -179,6 +179,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
+      propertyPath: BulletInfos.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
+      propertyPath: BulletInfos.Array.data[0].Name
+      value: "\uC62C\uD328\uB9C1"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
+      propertyPath: BulletInfos.Array.data[1].Name
+      value: FrogBullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
+      propertyPath: BulletInfos.Array.data[2].Name
+      value: FrogBullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
+      propertyPath: BulletInfos.Array.data[0].Count
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
+      propertyPath: BulletInfos.Array.data[1].Count
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
+      propertyPath: BulletInfos.Array.data[2].Count
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
+      propertyPath: BulletInfos.Array.data[0].Prefab
+      value: 
+      objectReference: {fileID: 7232950028209192810, guid: 533ed8675fcebcb4d9053d8268c01ce7, type: 3}
+    - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
+      propertyPath: BulletInfos.Array.data[1].Prefab
+      value: 
+      objectReference: {fileID: 7232950028209192810, guid: 4ac8db999ca237b47a05e35bc6126ddb, type: 3}
+    - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
+      propertyPath: BulletInfos.Array.data[2].Prefab
+      value: 
+      objectReference: {fileID: 7232950028209192810, guid: 4ac8db999ca237b47a05e35bc6126ddb, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3240,7 +3280,7 @@ PrefabInstance:
     - target: {fileID: 615767621653067279, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
       propertyPath: PbulletPfb
       value: 
-      objectReference: {fileID: 7232950028209192810, guid: 5b672dfa48c9bc1459f04b2b0f37cef5, type: 3}
+      objectReference: {fileID: 7232950028209192810, guid: 533ed8675fcebcb4d9053d8268c01ce7, type: 3}
     - target: {fileID: 3129874420124747780, guid: 2b15ceb2a4bd7634f95ebcd612a23604, type: 3}
       propertyPath: m_FlipX
       value: 0

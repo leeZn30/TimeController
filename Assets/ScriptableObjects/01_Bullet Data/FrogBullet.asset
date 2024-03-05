@@ -15,6 +15,7 @@ MonoBehaviour:
   BulletName: "\uAC1C\uAD74\uB2CC\uC790\uD45C\uCC3D"
   damage: 1
   moveSpeed: 15
+  maxDistance: 10
   rotateSpeed: 0
   parryPercent: 0.3
   material: {fileID: 2100000, guid: ff3d780da2104304d99ab1208dc48ff4, type: 2}

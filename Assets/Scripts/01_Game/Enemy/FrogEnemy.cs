@@ -49,7 +49,7 @@ public class FrogEnemy : Enemy
             if (duration > interval)
             {
                 anim.SetTrigger("Attack");
-                Instantiate(PbulletPfb, transform.position, transform.rotation);
+                BulletManager.TakeOutBullet(PbulletPfb.BulletName, transform.position);
                 duration = 0f;
             }
         }

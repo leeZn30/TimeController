@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6249743164179221046}
   - component: {fileID: 186643553130402092}
   - component: {fileID: 7232950028209192810}
+  - component: {fileID: 780630920056821902}
   m_Layer: 10
   m_Name: FrogBullet
   m_TagString: Bullet
@@ -251,3 +252,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletData: {fileID: 11400000, guid: df7ca7b6169aa3e49b59d890b91d381e, type: 2}
+--- !u!114 &780630920056821902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3006567573567783928}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 680598d4b4f88944fba9245cdb68e20e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isParried: 0
+  poses: []

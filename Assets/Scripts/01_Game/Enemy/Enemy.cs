@@ -78,7 +78,7 @@ public abstract class Enemy : MonoBehaviour
 
         if (damageType == DamageType.Player)
         {
-            if (Random.value >= 0.8f)
+            if (Random.value >= 0.95f)
             {
                 isCritical = true;
                 damage *= Random.Range(1.5f, 2.0f);
@@ -93,7 +93,6 @@ public abstract class Enemy : MonoBehaviour
 
         DamageUI.Instance.ShowDamage((int)damage, transform.position, isCritical);
 
-        // 치명타 계산
         hp -= damage;
 
         if (hp <= 0)

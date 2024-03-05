@@ -9,6 +9,6 @@ public class FrogBullet : Bullet
         base.move();
 
         if (transform.position == targetPose)
-            Destroy(gameObject);
+            BulletManager.InsertBullet(bulletData.Name, this);
     }
 }

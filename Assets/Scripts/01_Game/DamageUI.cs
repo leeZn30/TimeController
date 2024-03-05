@@ -48,7 +48,7 @@ public class DamageUI : Singleton<DamageUI>
             yield return null;
         }
 
-        text.color = new Color(219, 100, 54);
+        text.color = new Color(text.color.r, text.color.g, text.color.b, 1);
         Damages.Enqueue(text);
         text.gameObject.SetActive(false);
     }
