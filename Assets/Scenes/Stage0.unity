@@ -197,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
       propertyPath: BulletInfos.Array.data[0].Count
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
       propertyPath: BulletInfos.Array.data[1].Count
@@ -3163,7 +3163,7 @@ MonoBehaviour:
   Atk: 10
   TeleportActive: 0
   TeleportGauge: {fileID: 1924361079}
-  teleportChargeSpeed: 5
+  teleportChargeSpeed: 10
   RewindActive: 0
   RewindGauge: 0
   maxRewindGauge: 0
@@ -5063,6 +5063,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1521569939}
   - component: {fileID: 1521569938}
+  - component: {fileID: 1521569940}
+  - component: {fileID: 1521569941}
   m_Layer: 0
   m_Name: TreasureBox
   m_TagString: Untagged
@@ -5137,6 +5139,65 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1521569940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521569937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b21fbb0da3227948860a97f7bd33c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactPfb: {fileID: 6440122066688137083, guid: d16fe705140f39c429a94c8ed9af8061, type: 3}
+  ItemInfoPfb: {fileID: 5040350031196834446, guid: b524ed68d1abe9d4eb9eee0abfc626b7, type: 3}
+--- !u!61 &1521569941
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521569937}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1001 &1531616419
 PrefabInstance:
   m_ObjectHideFlags: 0

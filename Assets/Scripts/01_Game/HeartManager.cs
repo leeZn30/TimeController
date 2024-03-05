@@ -22,6 +22,12 @@ public class HeartManager : Singleton<HeartManager>
         }
     }
 
+    public void AddHeart()
+    {
+        hearts.Add(Instantiate(heartPfb, transform));
+        heartHps.Add(4);
+    }
+
     public void calculateHeart(float damage)
     {
         while (damage > 0)

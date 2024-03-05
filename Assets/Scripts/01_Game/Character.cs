@@ -82,6 +82,8 @@ public class Character : Singleton<Character>
         parryingPosition = transform.position;
 
         TrailQueue = ObjectPool.CreateQueue<Trail>(5, trailPrefab);
+
+        Init();
     }
 
     private void Update()
@@ -122,6 +124,11 @@ public class Character : Singleton<Character>
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(parryingPosition, parryingBox);
         // Gizmos.DrawWireSphere(parryingPosition, parryingRadius);
+    }
+
+    void Init()
+    {
+        Hp = GameData.Hp;
     }
 
     void move()
