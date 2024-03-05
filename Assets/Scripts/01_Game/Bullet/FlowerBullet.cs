@@ -16,10 +16,13 @@ public class FlowerBullet : Bullet
 
     protected override void Update()
     {
+        CheckDistance();
     }
 
-    private void Start()
+    public override void Init()
     {
+        base.Init();
+
         move();
     }
 

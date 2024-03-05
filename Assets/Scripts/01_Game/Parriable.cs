@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Cinemachine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
 
@@ -18,8 +17,6 @@ public class Parriable : MonoBehaviour
     private void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
-
-        poses.Add(transform.position);
     }
 
     // Update is called once per frame
@@ -32,6 +29,13 @@ public class Parriable : MonoBehaviour
             if (poses.Count != 0 && poses.Last() != transform.position)
                 poses.Add(transform.position);
         }
+    }
+
+    public void Init()
+    {
+        isParried = false;
+        poses.Clear();
+        poses.Add(transform.position);
     }
 
     public void parried()
@@ -89,8 +93,10 @@ public class Parriable : MonoBehaviour
     {
         if (isParried && other.tag.Equals("Enemy"))
         {
-            other.GetComponent<Enemy>().OnDamaged(10, DamageType.ParriedBullet);
-            Destroy(gameObject);
+            other.GetComponent<Enemy>().OnDamaged(Character.Instance.Atk, DamageType.ParriedBullet);
+
+            Bullet bullet = GetComponent<Bullet>();
+            BulletManager.InsertBullet(bullet.BulletName, bullet);
         }
     }
 }

@@ -15,7 +15,7 @@ public class Character : Singleton<Character>
     [SerializeField] float speed;
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;          // 점프 힘
-    [SerializeField] float Atk = 10f;
+    public float Atk = 10f;
     float invincibilityTime = 0.5f;
     float maxSightRange = 5f;
     float trailSpawnTime = 0.05f; // 스프라이트 생성 간격
@@ -348,10 +348,11 @@ public class Character : Singleton<Character>
                 // Collider2D bullet = Physics2D.OverlapCircle(parryingPosition, parryingRadius, LayerMask.GetMask("Bullet"));
                 if (bullet != null)
                 {
-                    if (bullet.tag == "Bullet")
+                    Parriable p = bullet.GetComponent<Parriable>();
+                    if (bullet.tag == "Bullet" && p.enabled)
                     {
                         Time.timeScale = 0f;
-                        this.bullet = bullet.GetComponent<Parriable>();
+                        this.bullet = p;
                         StartCoroutine(CharacterZoom());
                     }
                 }
@@ -589,11 +590,6 @@ public class Character : Singleton<Character>
             Dead();
         }
     }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-    }
-
 
     #region 더미 메서드
     // 슬로우시 모든 행동은 그대로 유지하는 것 일단 남겨는 둠(미완성)

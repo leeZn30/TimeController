@@ -99,7 +99,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 680598d4b4f88944fba9245cdb68e20e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 0}
   isParried: 0
   poses: []
 --- !u!120 &6249743164179221046

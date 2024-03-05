@@ -18,7 +18,8 @@ public class FlowerEnemy : Enemy
 
             if (duration > interval)
             {
-                Instantiate(BulletPfb, transform.position, transform.rotation);
+                // Instantiate(BulletPfb, transform.position, transform.rotation);
+                FlowerBullet fb = BulletManager.TakeOutBullet(BulletPfb.BulletName, transform.position) as FlowerBullet;
                 duration = 0f;
             }
         }

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c73ae0cd5c93f4c87d7c7cb50d7625, type: 3}
   m_Name: FlowerBullet
   m_EditorClassIdentifier: 
-  BulletName: 
+  BulletName: FlowerBullet
   damage: 1
   moveSpeed: 0
+  maxDistance: 10
   rotateSpeed: 0
-  parryPercent: 0.4
+  parryPercent: 0.6
   material: {fileID: 2100000, guid: ff3d780da2104304d99ab1208dc48ff4, type: 2}

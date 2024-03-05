@@ -18,6 +18,10 @@ public class BulletData : ScriptableObject
     public float MoveSpeed { get { return moveSpeed; } }
 
     [SerializeField]
+    private float maxDistance;
+    public float MaxDistance { get { return maxDistance; } }
+
+    [SerializeField]
     private float rotateSpeed;
     public float RotateSpeed { get { return rotateSpeed; } }
 
