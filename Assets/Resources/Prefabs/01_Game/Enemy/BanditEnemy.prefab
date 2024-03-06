@@ -198,4 +198,4 @@ MonoBehaviour:
   atk: 0
   sigthType: 0
   maxSpeed: 9
-  WeaponAtk: 0
+  WeaponAtk: 4

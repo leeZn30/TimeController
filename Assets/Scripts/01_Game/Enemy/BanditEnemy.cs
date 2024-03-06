@@ -128,6 +128,7 @@ public class BanditEnemy : Enemy
     void OnMovable()
     {
         isMovable = true;
+        anim.SetBool("isAttacking", false);
     }
 
     void OffMovable()
