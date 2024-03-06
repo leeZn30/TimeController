@@ -74,7 +74,10 @@ public abstract class Enemy : MonoBehaviour
 
     virtual public void OnDamaged(float damage, DamageType damageType)
     {
+        rigid.velocity = Vector2.zero;
+
         anim.SetTrigger("Hit");
+
         damage *= Random.Range(0.9f, 1.1f);
         bool isCritical = false;
 

@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class CheckPoint : MonoBehaviour
 {
+    [SerializeField] int CheckIdx;
+
     Animator anim;
 
     private void Awake()
@@ -13,16 +15,11 @@ public class Item : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag.Equals("Player"))
+        if (other.tag.Equals("Player") && !anim.GetBool("isChecked"))
         {
-            anim.SetTrigger("Collected");
+            anim.SetBool("isChecked", true);
 
-            HeartManager.Instance.RecoverHeart();
+
         }
-    }
-
-    void DoDestroy()
-    {
-        Destroy(gameObject);
     }
 }

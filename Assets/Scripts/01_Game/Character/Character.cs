@@ -471,6 +471,19 @@ public class Character : Singleton<Character>
             SlowGauge.value += Time.unscaledDeltaTime * slowChargeSpeed;
     }
 
+    public void FullChargeGauge(string skill)
+    {
+        switch (skill)
+        {
+            case "Teleport":
+                TeleportGauge.value = TeleportGauge.maxValue;
+                break;
+
+            default:
+                break;
+        }
+    }
+
     void teleport()
     {
         if (TeleportActive && TeleportGauge.value == TeleportGauge.maxValue)

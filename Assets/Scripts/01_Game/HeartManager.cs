@@ -13,9 +13,11 @@ public class HeartManager : Singleton<HeartManager>
 
     [SerializeField] GameObject heartPfb;
     [SerializeField] int HeartCount => hearts.Count;
+    [SerializeField] float MaxHeart;
 
     private void Awake()
     {
+        MaxHeart = Character.Instance.Hp / 4;
         for (int i = 0; i < Character.Instance.Hp / 4; i++)
         {
             hearts.Add(Instantiate(heartPfb, transform));
@@ -51,8 +53,19 @@ public class HeartManager : Singleton<HeartManager>
 
     public void RecoverHeart()
     {
-        heartHps[HeartCount - 1] = 4;
-        hearts[HeartCount - 1].GetComponent<Image>().sprite = heartSprites[3];
+        if (heartHps[HeartCount - 1] < 4)
+        {
+            heartHps[HeartCount - 1] = 4;
+            hearts[HeartCount - 1].GetComponent<Image>().sprite = heartSprites[3];
+        }
+        else
+        {
+            if (HeartCount < MaxHeart)
+            {
+                heartHps.Add(4);
+                hearts.Add(Instantiate(heartPfb, transform));
+            }
+        }
     }
 
 }
