@@ -36,7 +36,7 @@ public class Item : MonoBehaviour
     {
 
         float duration = 0f;
-        while (duration < 0.5f)
+        while (duration < 0.8f)
         {
             duration += Time.deltaTime;
 
