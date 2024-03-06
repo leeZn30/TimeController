@@ -52,7 +52,7 @@ public class Character : Singleton<Character>
     Vector2 parryingPosition;
     // Vector2 parryingBox = new Vector2(0.3f, 1); // default = 0.3f
     Vector2 parryingBox = new Vector2(1.2f, 2.3f); // default = 0.3f
-    float parryingRadius = 1f;
+    // float parryingRadius = 1f;
 
     // **************** 프리팹 ********************
     [Header("Prefabs")]

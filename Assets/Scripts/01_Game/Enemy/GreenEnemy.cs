@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class GreenEnemy : Enemy
 {
-    bool isPlayerFound;
+    [SerializeField] float maxSpeed;
     bool isMovable = true;
 
     protected override void Awake()
@@ -29,19 +29,26 @@ public class GreenEnemy : Enemy
     {
         if (isPlayerFound && isMovable)
         {
-            Vector2 direction;
+            if (!anim.GetBool("isRun"))
+                anim.SetBool("isRun", true);
+
+            float direction;
             if (Character.Instance.gameObject.transform.position.x - transform.position.x >= 0)
             {
-                direction = Vector2.right;
+                direction = 1;
                 sprite.flipX = true;
             }
             else
             {
-                direction = Vector2.left;
+                direction = -1;
                 sprite.flipX = false;
             }
 
-            rigid.AddForce(direction * enemyData.MoveSpeed * Time.deltaTime, ForceMode2D.Impulse);
+            rigid.AddForce(direction * enemyData.MoveSpeed * Vector2.right, ForceMode2D.Impulse);
+            if (Mathf.Abs(rigid.velocity.x) > maxSpeed)
+            {
+                rigid.velocity = new Vector2(maxSpeed * direction, rigid.velocity.y);
+            }
         }
 
     }
@@ -52,8 +59,6 @@ public class GreenEnemy : Enemy
         if (player != null)
         {
             isPlayerFound = true;
-            if (!anim.GetBool("isRun"))
-                anim.SetBool("isRun", true);
         }
         else
         {

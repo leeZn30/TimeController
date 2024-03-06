@@ -8,8 +8,6 @@ public class FlowerEnemy : Enemy
     [SerializeField] float interval = 1f;
     float duration = 0f;
 
-    public bool isPlayerFound;
-
     protected override void attack()
     {
         if (isPlayerFound)

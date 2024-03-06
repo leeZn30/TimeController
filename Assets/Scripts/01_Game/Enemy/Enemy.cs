@@ -17,6 +17,7 @@ public abstract class Enemy : MonoBehaviour
 {
     [SerializeField] protected EnemyData enemyData;
 
+    protected bool isPlayerFound = false;
     public float hp;
     public float atk;
     [SerializeField] SigthType sigthType;
@@ -26,7 +27,7 @@ public abstract class Enemy : MonoBehaviour
     protected SpriteRenderer sprite;
     protected Rigidbody2D rigid;
 
-    private void OnDrawGizmos()
+    virtual protected void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;
 
@@ -66,6 +67,7 @@ public abstract class Enemy : MonoBehaviour
     {
         rigid.velocity = Vector2.zero;
         anim.SetTrigger("Dead");
+        gameObject.layer = 11;
     }
 
     abstract protected void detectPlayer();

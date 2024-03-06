@@ -8,7 +8,6 @@ public class FrogEnemy : Enemy
     [SerializeField] Bullet PbulletPfb;
     [SerializeField] float interval = 3f;
     float duration = 0f;
-    bool isPlayerFound;
 
     protected override void Update()
     {

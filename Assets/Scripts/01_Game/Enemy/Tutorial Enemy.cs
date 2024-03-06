@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TutorialEnemy : Enemy
 {
-    bool isPlayerFound;
     [SerializeField] Bullet PbulletPfb;
     float interval = 2f;
     float duration = 0f;

@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6155576246941212815
 SpriteRenderer:
@@ -176,7 +176,7 @@ MonoBehaviour:
   hp: 0
   atk: 0
   sigthType: 0
-  DamagePfb: {fileID: 1895257252770482001, guid: b58c0f4a3b1c3fd40a2e718b03bd0809, type: 3}
+  maxSpeed: 5
 --- !u!95 &5501092405797714895
 Animator:
   serializedVersion: 5
