@@ -12,6 +12,7 @@ public class HeartManager : Singleton<HeartManager>
     [SerializeField] List<Sprite> heartSprites = new List<Sprite>();
 
     [SerializeField] GameObject heartPfb;
+    [SerializeField] int HeartCount => hearts.Count;
 
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class HeartManager : Singleton<HeartManager>
 
     public void AddHeart()
     {
+        RecoverHeart();
         hearts.Add(Instantiate(heartPfb, transform));
         heartHps.Add(4);
     }
@@ -45,6 +47,12 @@ public class HeartManager : Singleton<HeartManager>
             }
             damage--;
         }
+    }
+
+    public void RecoverHeart()
+    {
+        heartHps[HeartCount - 1] = 4;
+        hearts[HeartCount - 1].GetComponent<Image>().sprite = heartSprites[3];
     }
 
 }
