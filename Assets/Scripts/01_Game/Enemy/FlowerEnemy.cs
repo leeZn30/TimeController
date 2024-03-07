@@ -6,6 +6,7 @@ public class FlowerEnemy : Enemy
 {
     [SerializeField] Bullet BulletPfb;
     [SerializeField] float interval = 1f;
+    [SerializeField] FlowerWall PairWall;
     float duration = 0f;
 
     protected override void attack()
@@ -40,6 +41,12 @@ public class FlowerEnemy : Enemy
     {
         if (damageType == DamageType.ParriedBullet)
             base.OnDamaged(damage, damageType);
+    }
+
+    private void OnDestroy()
+    {
+        if (PairWall != null)
+            PairWall.OpenWall();
     }
 
 }
