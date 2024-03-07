@@ -77,7 +77,7 @@ public class BanditEnemy : Enemy
     {
         if (isPlayerFound && isMovable)
         {
-            if (Vector2.Distance(Character.Instance.transform.position, transform.position) > 1f)
+            if (Vector2.Distance(Character.Instance.transform.position, transform.position) > 2f)
             {
                 if (anim.GetInteger("AnimState") != 2)
                     anim.SetInteger("AnimState", 2);

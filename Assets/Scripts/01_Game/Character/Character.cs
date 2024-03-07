@@ -274,7 +274,7 @@ public class Character : Singleton<Character>
 
     void attack()
     {
-        if (!isSlow)
+        if (!isSlow && gameObject.layer != 9)
         {
             if (Input.GetMouseButtonDown(0))
             {
