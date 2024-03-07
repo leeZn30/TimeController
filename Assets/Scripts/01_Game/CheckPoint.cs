@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class CheckPoint : MonoBehaviour
 {
-    [SerializeField] int CheckIdx;
+    public int CheckIdx;
 
     Animator anim;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+
+        if (GameData.CheckPoint >= CheckIdx)
+            anim.SetBool("Flutter", true);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -19,7 +22,8 @@ public class CheckPoint : MonoBehaviour
         {
             anim.SetBool("isChecked", true);
 
-
+            if (CheckIdx >= GameData.CheckPoint)
+                GameData.CheckPoint = CheckIdx;
         }
     }
 }

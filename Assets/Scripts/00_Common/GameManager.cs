@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+
     [SerializeField] GameObject ESCMenu;
 
     static Stack<GameObject> ESCStack = new Stack<GameObject>();
@@ -59,7 +60,6 @@ public class GameManager : Singleton<GameManager>
 
     public void Exit()
     {
-
         popESC();
     }
 }

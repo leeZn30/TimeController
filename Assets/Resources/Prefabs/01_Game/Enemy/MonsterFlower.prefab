@@ -113,7 +113,5 @@ MonoBehaviour:
   hp: 0
   atk: 0
   sigthType: 1
-  DamagePfb: {fileID: 1895257252770482001, guid: b58c0f4a3b1c3fd40a2e718b03bd0809, type: 3}
   BulletPfb: {fileID: -6811007450095164529, guid: 4871320c30e28384b87660943ad19fdb, type: 3}
-  interval: 0.5
-  isPlayerFound: 0
+  interval: 0.2
