@@ -17,3 +17,4 @@ MonoBehaviour:
   damage: 2
   sightRange: 15
   moveSpeed: 15
+  ghost: 2

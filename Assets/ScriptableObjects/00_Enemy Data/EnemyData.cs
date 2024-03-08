@@ -24,4 +24,8 @@ public class EnemyData : ScriptableObject
     [SerializeField]
     private float moveSpeed;
     public float MoveSpeed { get { return moveSpeed; } }
+
+    [SerializeField]
+    private int ghost;
+    public int Ghost { get { return ghost; } }
 }
