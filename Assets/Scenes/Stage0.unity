@@ -3167,12 +3167,13 @@ MonoBehaviour:
   RewindActive: 0
   RewindGauge: 0
   maxRewindGauge: 0
-  SlowActive: 0
+  SlowActive: 1
   SlowGauge: {fileID: 774405856}
   slowChargeSpeed: 20
   isMovable: 1
   amingPfb: {fileID: 3266036853785965160, guid: 6742604e6f34c5b4286f8b475c52f211, type: 3}
   trailPrefab: {fileID: 5112178794755931766, guid: 750b41925fec25744b7ebc243ba15aaa, type: 3}
+  maxFallingSpeed: 0
 --- !u!95 &1031556404
 Animator:
   serializedVersion: 5
@@ -11854,6 +11855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 0}
+  Brain: {fileID: 0}
   composer: {fileID: 0}
   DefaultOrthographicSize: 7
   DeadZone: {x: 0.1, y: 0.2}

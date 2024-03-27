@@ -131,6 +131,8 @@ public class Character : Singleton<Character>
         Hp = GameData.Hp;
     }
 
+
+    [SerializeField] float maxFallingSpeed;
     void move()
     {
         if (!isSlow)
@@ -152,6 +154,14 @@ public class Character : Singleton<Character>
                 }
             }
         }
+
+        // if (rigid.velocity.normalized.y < 0)
+        // {
+        //     if (rigid.velocity.y < -maxFallingSpeed)
+        //     {
+        //         rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
+        //     }
+        // }
     }
 
     void extraMove()
@@ -234,12 +244,8 @@ public class Character : Singleton<Character>
         {
             if (Input.GetButtonDown("Vertical"))
             {
-                if (Input.GetAxisRaw("Vertical") == 1)
-                    sightRange = new Vector3(CC.Instance.transform.position.x, transform.position.y + maxSightRange, CC.Instance.transform.position.z);
-                else
-                    sightRange = new Vector3(CC.Instance.transform.position.x, transform.position.y - maxSightRange, CC.Instance.transform.position.z);
-                isLooking = true;
                 CC.Instance.Follow = null;
+                isLooking = true;
             }
 
             if (Input.GetButtonUp("Vertical"))
@@ -254,6 +260,7 @@ public class Character : Singleton<Character>
                 float v = Input.GetAxisRaw("Vertical");
                 if (v == 1)
                 {
+                    sightRange = new Vector3(CC.Instance.transform.position.x, transform.position.y + maxSightRange, CC.Instance.transform.position.z);
                     CC.Instance.transform.Translate(Vector3.up * 15 * Time.unscaledDeltaTime);
                     if (CC.Instance.transform.position.y >= sightRange.y)
                     {
@@ -262,6 +269,7 @@ public class Character : Singleton<Character>
                 }
                 else if (v == -1)
                 {
+                    sightRange = new Vector3(CC.Instance.transform.position.x, transform.position.y - maxSightRange, CC.Instance.transform.position.z);
                     CC.Instance.transform.Translate(Vector3.down * 15 * Time.unscaledDeltaTime);
                     if (CC.Instance.transform.position.y <= sightRange.y)
                     {
@@ -509,7 +517,10 @@ public class Character : Singleton<Character>
                 transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Destroy(teleportPointer);
                 Time.timeScale = 1f;
-                TeleportGauge.value = 0f;
+                // TeleportGauge.value = 0f;
+
+                // 가속도 쌓이는 거 방지
+                rigid.velocity = new Vector2(0, 0);
             }
 
             if (isTeleport)
