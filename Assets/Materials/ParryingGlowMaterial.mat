@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GlowMaterial
+  m_Name: ParryingGlowMaterial
   m_Shader: {fileID: -6465566751694194690, guid: 46cded7ef2874ff4b95c3c6e7a8897a5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0

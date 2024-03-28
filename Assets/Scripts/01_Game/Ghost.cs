@@ -16,7 +16,7 @@ public class Ghost : MonoBehaviour
     private void Update()
     {
         if (transform.position != target.position)
-            transform.position = Vector3.MoveTowards(transform.position, target.position, Time.deltaTime * 100f);
+            transform.position = Vector3.MoveTowards(transform.position, target.position, Time.unscaledDeltaTime * 100f);
         else
         {
             GhostManager.Instance.AddGhost(Score);
