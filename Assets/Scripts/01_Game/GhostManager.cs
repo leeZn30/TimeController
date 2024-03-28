@@ -31,7 +31,10 @@ public class GhostManager : Singleton<GhostManager>
     public void UseGhost(int need)
     {
         if (ghostCount >= need)
+        {
             ghostCount -= need;
+            text.SetText(ghostCount.ToString());
+        }
     }
 
 

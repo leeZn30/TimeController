@@ -32,6 +32,8 @@ public class CheckPoint : MonoBehaviour
     {
         if (other.tag.Equals("Player") && !anim.GetBool("isChecked") && GhostManager.Instance.ghostCount >= needGhost)
         {
+            GhostManager.Instance.UseGhost(needGhost);
+
             anim.SetBool("isChecked", true);
 
             if (CheckIdx >= GameData.CheckPoint)

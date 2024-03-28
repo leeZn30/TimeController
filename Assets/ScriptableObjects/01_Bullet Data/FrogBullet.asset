@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c73ae0cd5c93f4c87d7c7cb50d7625, type: 3}
   m_Name: FrogBullet
   m_EditorClassIdentifier: 
-  BulletName: "\uAC1C\uAD74\uB2CC\uC790\uD45C\uCC3D"
+  BulletName: FrogBullet
   damage: 1
   moveSpeed: 15
   maxDistance: 10
