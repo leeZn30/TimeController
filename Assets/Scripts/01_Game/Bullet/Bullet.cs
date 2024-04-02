@@ -7,7 +7,9 @@ public class Bullet : MonoBehaviour
     [SerializeField] protected BulletData bulletData;
     public string BulletName => bulletData.Name;
 
+    protected Vector3 createdPose;
     protected Vector3 targetPose;
+    Vector3 targetDirection;
 
     SpriteRenderer sprite;
     Material DefaultMaterial;
@@ -34,9 +36,11 @@ public class Bullet : MonoBehaviour
             sprite.material = DefaultMaterial;
         }
 
+        createdPose = transform.position;
+        print(createdPose);
         targetPose = Character.Instance.transform.position;
 
-        Vector3 targetDirection = (targetPose - transform.position).normalized;
+        targetDirection = (targetPose - transform.position).normalized;
         float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg + 180f;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
@@ -44,13 +48,13 @@ public class Bullet : MonoBehaviour
     virtual protected void Update()
     {
         move();
-        CheckDistance();
+        EraseBullet();
     }
 
     // 일직선탄
     virtual protected void move()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPose, bulletData.MoveSpeed * Time.deltaTime);
+        transform.position += targetDirection * bulletData.MoveSpeed * Time.deltaTime;
         if (bulletData.RotateSpeed > 0)
             transform.Rotate(0, 0, 360 * bulletData.RotateSpeed * Time.deltaTime);
     }
@@ -65,9 +69,23 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    protected void CheckDistance()
+    protected virtual void EraseBullet()
     {
-        if (Vector3.Distance(transform.position, Character.Instance.transform.position) > bulletData.MaxDistance)
+        /*
+            기본: 처음 총알 위치에서 특정 거리 이상 떨어졌으며, 화면에서 보이지 않으면
+            유도탄: 일정 시간 후
+        */
+        Vector3 nowPose = transform.position;
+        Vector3 screenPose = Camera.main.WorldToScreenPoint(nowPose);
+
+        if (Vector3.Distance(transform.position, createdPose) > 20f && isOutOfScreen(screenPose))
+        {
             BulletManager.InsertBullet(BulletName, this);
+        }
+    }
+
+    bool isOutOfScreen(Vector3 position)
+    {
+        return position.x > Screen.width || position.x < 0 || position.y > Screen.height || position.y < 0;
     }
 }

@@ -7,8 +7,5 @@ public class FrogBullet : Bullet
     protected override void move()
     {
         base.move();
-
-        if (transform.position == targetPose)
-            BulletManager.InsertBullet(bulletData.Name, this);
     }
 }

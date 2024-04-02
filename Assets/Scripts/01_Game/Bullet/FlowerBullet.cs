@@ -16,7 +16,7 @@ public class FlowerBullet : Bullet
 
     protected override void Update()
     {
-        CheckDistance();
+        EraseBullet();
     }
 
     public override void Init()
