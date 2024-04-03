@@ -63,7 +63,7 @@ public abstract class Enemy : MonoBehaviour
 
     abstract protected void attack();
 
-    protected void dead()
+    protected void Dead()
     {
         rigid.velocity = Vector2.zero;
         anim.SetTrigger("Dead");
@@ -103,12 +103,20 @@ public abstract class Enemy : MonoBehaviour
         hp -= damage;
 
         if (hp <= 0)
-            dead();
+            Dead();
     }
-
 
     public void DoDestroy()
     {
         Destroy(gameObject);
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Trap" && gameObject.layer != 11)
+        {
+            Dead();
+        }
+    }
+
 }
