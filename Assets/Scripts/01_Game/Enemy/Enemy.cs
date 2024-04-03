@@ -69,7 +69,7 @@ public abstract class Enemy : MonoBehaviour
         anim.SetTrigger("Dead");
         gameObject.layer = 11;
 
-        GhostManager.Instance.CreateGhost(enemyData.Ghost, transform.position);
+        GhostManager.Instance.CreateGhost(enemyData.Ghost, transform.localPosition);
     }
 
     abstract protected void detectPlayer();
@@ -98,7 +98,7 @@ public abstract class Enemy : MonoBehaviour
         }
         damage = Mathf.Round(damage);
 
-        DamageUI.Instance.ShowDamage((int)damage, transform.localPosition, isCritical);
+        FixedUIManager.Instance.ShowDamage((int)damage, new Vector2(transform.localPosition.x, transform.localPosition.y + transform.localScale.y * 0.8f), isCritical);
 
         hp -= damage;
 
