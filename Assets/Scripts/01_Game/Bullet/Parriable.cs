@@ -96,7 +96,7 @@ public class Parriable : MonoBehaviour
             other.GetComponent<Enemy>().OnDamaged(Character.Instance.Atk, DamageType.ParriedBullet);
 
             Bullet bullet = GetComponent<Bullet>();
-            BulletManager.InsertBullet(bullet.BulletName, bullet);
+            BulletManager.InsertBullet(bullet);
         }
     }
 }

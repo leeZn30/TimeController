@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 299976818830091438, guid: 35ca9db4e8caf4543ad08cacb79affdb, type: 3}
       propertyPath: m_Constraints
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2942331907140282547, guid: 35ca9db4e8caf4543ad08cacb79affdb, type: 3}
       propertyPath: m_Size.x
@@ -38,7 +38,7 @@ PrefabInstance:
       objectReference: {fileID: 1697751801, guid: fd37eb1e6dffd614db685e726178d3f8, type: 3}
     - target: {fileID: 7041320522905888021, guid: 35ca9db4e8caf4543ad08cacb79affdb, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 7041320522905888021, guid: 35ca9db4e8caf4543ad08cacb79affdb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -114,4 +114,5 @@ MonoBehaviour:
   atk: 0
   sigthType: 1
   BulletPfb: {fileID: -6811007450095164529, guid: 4871320c30e28384b87660943ad19fdb, type: 3}
-  interval: 0.2
+  interval: 0.5
+  PairWall: {fileID: 0}

@@ -21,7 +21,7 @@ public class TeleportPointer : MonoBehaviour
         otherCollider = GameObject.Find("Ground").GetComponent<Collider2D>();
 
         area = collider.radius * collider.radius * Mathf.PI;
-        Debug.Log("Teleport Area: " + area);
+        // Debug.Log("Teleport Area: " + area);
     }
 
     private void Update()
@@ -63,7 +63,7 @@ public class TeleportPointer : MonoBehaviour
         Bounds boundsA = collider.bounds;
         Bounds boundsB = otherCollider.bounds;
 
-        Debug.LogFormat("x: min {0} max {1}\n y: min {2} max {3}", boundsB.min.x, boundsB.max.x, boundsB.min.y, boundsB.max.y);
+        // Debug.LogFormat("x: min {0} max {1}\n y: min {2} max {3}", boundsB.min.x, boundsB.max.x, boundsB.min.y, boundsB.max.y);
 
         float minX = Mathf.Max(boundsA.min.x, boundsB.min.x);
         float minY = Mathf.Max(boundsA.min.y, boundsB.min.y);

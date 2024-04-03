@@ -37,7 +37,6 @@ public class Bullet : MonoBehaviour
         }
 
         createdPose = transform.position;
-        print(createdPose);
         targetPose = Character.Instance.transform.position;
 
         targetDirection = (targetPose - transform.position).normalized;
@@ -65,7 +64,7 @@ public class Bullet : MonoBehaviour
         if (other.tag.Equals("Player"))
         {
             Character.Instance.OnDamaged(transform.position, bulletData.Damage);
-            BulletManager.InsertBullet(BulletName, this);
+            BulletManager.InsertBullet(this);
         }
     }
 
@@ -80,7 +79,7 @@ public class Bullet : MonoBehaviour
 
         if (Vector3.Distance(transform.position, createdPose) > 20f && isOutOfScreen(screenPose))
         {
-            BulletManager.InsertBullet(BulletName, this);
+            BulletManager.InsertBullet(this);
         }
     }
 

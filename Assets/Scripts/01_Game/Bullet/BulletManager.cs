@@ -17,10 +17,13 @@ public class BulletManager : Singleton<BulletManager>
     [Header("Bullet 정보")]
     [SerializeField] List<BulletInfo> BulletInfos = new List<BulletInfo>();
 
-    static Dictionary<string, Queue<Bullet>> Bullets = new Dictionary<string, Queue<Bullet>>();
+    static Dictionary<string, Queue<Bullet>> Bullets;
 
     private void Awake()
     {
+        // Reload를 대비해서 awake할때 선언하기
+        Bullets = new Dictionary<string, Queue<Bullet>>();
+
         foreach (BulletInfo bi in BulletInfos)
         {
             Bullets.TryAdd(bi.Name, ObjectPool.CreateQueue<Bullet>(bi.Count, bi.Prefab, transform));
@@ -37,7 +40,7 @@ public class BulletManager : Singleton<BulletManager>
         return bullet;
     }
 
-    public static void InsertBullet(string name, Bullet bullet)
+    public static void InsertBullet(Bullet bullet)
     {
         bullet.GetComponent<Parriable>().enabled = false;
 
@@ -45,6 +48,6 @@ public class BulletManager : Singleton<BulletManager>
         bullet.transform.rotation = Quaternion.identity;
         bullet.gameObject.SetActive(false);
 
-        Bullets[name].Enqueue(bullet);
+        Bullets[bullet.BulletName].Enqueue(bullet);
     }
 }
