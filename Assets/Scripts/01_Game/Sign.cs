@@ -7,7 +7,6 @@ public class Sign : MonoBehaviour
 {
     [SerializeField] GameObject bubblePfb;
     [SerializeField] Canvas canvas;
-    Vector3 pose;
 
     GameObject bubble;
 
@@ -20,7 +19,7 @@ public class Sign : MonoBehaviour
     {
         if (other.tag.Equals("Player"))
         {
-            bubble = Instantiate(bubblePfb, transform.position + new Vector3(0, 3, 0), Quaternion.identity, canvas.transform);
+            bubble = Instantiate(bubblePfb, transform.position + new Vector3(0, transform.localScale.y * 3f, 0), Quaternion.identity, canvas.transform);
         }
     }
 
