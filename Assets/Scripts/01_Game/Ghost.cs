@@ -4,23 +4,36 @@ using UnityEngine;
 
 public class Ghost : MonoBehaviour
 {
+    Animator anim;
     Transform target;
 
     public int Score;
 
     private void Awake()
     {
+        anim = GetComponent<Animator>();
         target = FindObjectOfType<GhostManager>().transform;
     }
 
     private void Update()
     {
         if (transform.position != target.position)
+        {
             transform.position = Vector3.MoveTowards(transform.position, target.position, Time.unscaledDeltaTime * 100f);
+        }
         else
         {
-            GhostManager.Instance.AddGhost(Score);
-            Destroy(gameObject);
+            anim.SetBool("Collected", true);
         }
+    }
+
+    void DoAddGhost()
+    {
+        GhostManager.Instance.AddGhost(Score);
+    }
+
+    void DoDestroy()
+    {
+        Destroy(gameObject);
     }
 }

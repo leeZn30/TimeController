@@ -7,7 +7,7 @@ public class FrogEnemy : Enemy
 {
     [SerializeField] Bullet PbulletPfb;
     [SerializeField] float interval = 3f;
-    float duration = 0f;
+    float duration = 3f;
 
     protected override void Update()
     {

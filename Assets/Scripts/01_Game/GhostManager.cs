@@ -18,7 +18,7 @@ public class GhostManager : Singleton<GhostManager>
 
     public void CreateGhost(int score, Vector3 createdPoint)
     {
-        Ghost ghost = Instantiate(GhostPfb, createdPoint, Quaternion.identity, GameObject.Find("Canvas").transform);
+        Ghost ghost = Instantiate(GhostPfb, createdPoint, Quaternion.identity, transform);
         ghost.Score = score;
     }
 

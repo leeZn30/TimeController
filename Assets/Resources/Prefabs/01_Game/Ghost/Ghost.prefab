@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6111830333552153987}
   - component: {fileID: 2535070046215784320}
   - component: {fileID: 7664948655505676072}
+  - component: {fileID: 6988312421132307289}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -89,3 +90,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a62380f8e0b0dc644ad4d623f5b703df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Score: 0
+--- !u!95 &6988312421132307289
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110659119110976702}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9a79651fb5f051547909130c98c885fe, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
