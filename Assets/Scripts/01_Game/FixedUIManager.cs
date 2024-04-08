@@ -31,8 +31,8 @@ public class FixedUIManager : Singleton<FixedUIManager>
         {
             duration += Time.deltaTime;
 
-            text.color = Color.Lerp(text.color, new Color(text.color.r, text.color.g, text.color.b, 0), Time.deltaTime);
-            text.gameObject.transform.position += Vector3.up * Time.deltaTime;
+            text.color = Color.Lerp(text.color, new Color(text.color.r, text.color.g, text.color.b, 0), Time.unscaledDeltaTime);
+            text.gameObject.transform.position += Vector3.up * Time.unscaledDeltaTime;
 
             yield return null;
         }
@@ -69,8 +69,8 @@ public class FixedUIManager : Singleton<FixedUIManager>
         {
             duration += Time.deltaTime;
 
-            text.color = Color.Lerp(text.color, new Color(text.color.r, text.color.g, text.color.b, 0), Time.deltaTime);
-            text.gameObject.transform.position += Vector3.up * Time.deltaTime;
+            text.color = Color.Lerp(text.color, new Color(text.color.r, text.color.g, text.color.b, 0), Time.unscaledDeltaTime);
+            text.gameObject.transform.position += Vector3.up * Time.unscaledDeltaTime;
 
             yield return null;
         }

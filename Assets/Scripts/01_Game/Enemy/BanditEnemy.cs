@@ -31,7 +31,7 @@ public class BanditEnemy : Enemy
     protected override void Update()
     {
         detectPlayer();
-        hitPosition = new Vector2(rigid.position.x + (sprite.flipX ? 1 : -1) * transform.localScale.x, rigid.position.y + 1.5f);
+        hitPosition = new Vector2(rigid.position.x + (sprite.flipX ? 1 : -1) * transform.localScale.x, rigid.position.y);
     }
 
     private void FixedUpdate()

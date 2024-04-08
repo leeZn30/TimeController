@@ -6,7 +6,6 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 using CC = CinemachineCamera;
-using Unity.VisualScripting;
 
 public class Character : Singleton<Character>
 {
@@ -37,7 +36,7 @@ public class Character : Singleton<Character>
     // **************** 변수 *************
     public bool isMovable = true;
     bool isSlow = false;
-    bool isTeleport = false;
+    public bool isTeleport = false;
     bool isLooking = false;
     bool isJumping = false;
     float jumpTime = 0f;
@@ -491,32 +490,16 @@ public class Character : Singleton<Character>
                 Time.timeScale = 0.05f;
                 teleportPointer = Instantiate(amingPfb);
             }
-            // 텔레포트 중단
-            else if (Input.GetMouseButtonDown(1) && isTeleport)
-            {
-                isTeleport = false;
-                Time.timeScale = 1f;
-                Destroy(teleportPointer);
-            }
-            // 텔레포트 완료
-            else if (Input.GetMouseButtonDown(0) && isTeleport)
-            {
-                isTeleport = false;
-                transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Destroy(teleportPointer);
-                Time.timeScale = 1f;
-                // TeleportGauge.value = 0f;
-
-                // 가속도 쌓이는 거 방지
-                rigid.velocity = new Vector2(0, 0);
-            }
-
-            if (isTeleport)
-            {
-                teleportPointer.transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            }
-
         }
+    }
+
+    public void DoTeleport()
+    {
+        transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // 가속도 쌓이는 거 방지
+        rigid.velocity = new Vector2(0, 0);
+
+        // TeleportGauge.value = 0f;
     }
 
     void OnSlow()

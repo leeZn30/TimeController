@@ -1,90 +1,58 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class TeleportPointer : MonoBehaviour
 {
-    SpriteRenderer spriteRenderer;
-    CircleCollider2D collider;
-    Collider2D otherCollider;
-
-    private float overlapArea = 0f;
-    private float percentageOfA = 0f;
-
-    float area;
+    [SerializeField] Tilemap ground;
+    Collider2D collider;
 
     private void Awake()
     {
         collider = GetComponent<CircleCollider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        otherCollider = GameObject.Find("Ground").GetComponent<Collider2D>();
-
-        area = collider.radius * collider.radius * Mathf.PI;
-        // Debug.Log("Teleport Area: " + area);
+        ground = GameObject.Find("Ground").GetComponent<Tilemap>();
     }
 
     private void Update()
     {
-        ComputeOverlap();
+        // 텔레포트 중단
+        if (Input.GetMouseButtonDown(1) && Character.Instance.isTeleport)
+        {
+            Character.Instance.isTeleport = false;
+            Time.timeScale = 1f;
+            Destroy(gameObject);
+        }
+        // 텔레포트 완료
+        else if (Input.GetMouseButtonDown(0) && Character.Instance.isTeleport)
+        {
+            if (isTeleportable())
+            {
+                Character.Instance.DoTeleport();
+
+                Character.Instance.isTeleport = false;
+                Time.timeScale = 1f;
+                Destroy(gameObject);
+            }
+        }
+
+        transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
-    void ComputeOverlap()
+    bool isTeleportable()
     {
-        // 겹치는 부분 계산
-        if (collider.IsTouching(otherCollider))
-        {
-            overlapArea = OverlapArea();
+        Vector3Int cellPosition = ground.WorldToCell(transform.position);
 
-            // 겹치는 부분이 objectA의 전체 면적의 몇 %를 차지하는지 계산
-            percentageOfA = (overlapArea / area) * 100f;
+        if (ground.HasTile(cellPosition))
+        {
+            return false;
         }
         else
         {
-            overlapArea = 0f;
-            percentageOfA = 0f;
-        }
-
-        // Debug.Log("Overlap Area: " + overlapArea);
-        // Debug.Log("Percentage of A: " + percentageOfA + "%");
-
-        if (percentageOfA < 30)
-        {
-            spriteRenderer.color = Color.white;
-        }
-        else
-        {
-            spriteRenderer.color = Color.magenta;
-        }
-    }
-
-    float OverlapArea()
-    {
-        Bounds boundsA = collider.bounds;
-        Bounds boundsB = otherCollider.bounds;
-
-        // Debug.LogFormat("x: min {0} max {1}\n y: min {2} max {3}", boundsB.min.x, boundsB.max.x, boundsB.min.y, boundsB.max.y);
-
-        float minX = Mathf.Max(boundsA.min.x, boundsB.min.x);
-        float minY = Mathf.Max(boundsA.min.y, boundsB.min.y);
-        float maxX = Mathf.Min(boundsA.max.x, boundsB.max.x);
-        float maxY = Mathf.Min(boundsA.max.y, boundsB.max.y);
-
-        // 겹치는 영역 계산
-        float width = Mathf.Max(0, maxX - minX);
-        float height = Mathf.Max(0, maxY - minY);
-
-        return width * height;
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.tag.Equals("Ground"))
-        {
-            ComputeOverlap();
+            return true;
         }
     }
 
 }
-
 

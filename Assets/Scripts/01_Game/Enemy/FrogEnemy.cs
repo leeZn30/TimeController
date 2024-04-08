@@ -6,8 +6,8 @@ using UnityEngine;
 public class FrogEnemy : Enemy
 {
     [SerializeField] Bullet PbulletPfb;
-    [SerializeField] float interval = 3f;
-    float duration = 3f;
+    [SerializeField] float interval = 2f;
+    float duration = 2f;
 
     protected override void Update()
     {

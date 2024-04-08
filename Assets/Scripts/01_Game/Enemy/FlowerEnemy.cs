@@ -7,7 +7,7 @@ public class FlowerEnemy : Enemy
     [SerializeField] Bullet BulletPfb;
     [SerializeField] float interval = 1f;
     [SerializeField] FlowerWall PairWall;
-    float duration = 0f;
+    float duration = 1f;
 
     protected override void attack()
     {
