@@ -43,7 +43,6 @@ public class Character : Singleton<Character>
     int jumpCnt = 0;
     float maxJumpTime = 1f;         // 최대 점프 시간
     float jumpTimeMultiplier = 7f;  // 점프 시간에 대한 곱셈 계수
-    Vector3 sightRange;
     public Queue<Trail> TrailQueue;
 
     // *************** 상호작용 박스 *************
@@ -131,8 +130,6 @@ public class Character : Singleton<Character>
         Hp = GameData.Hp;
     }
 
-
-    [SerializeField] float maxFallingSpeed;
     void move()
     {
         if (!isSlow)
@@ -154,14 +151,6 @@ public class Character : Singleton<Character>
                 }
             }
         }
-
-        // if (rigid.velocity.normalized.y < 0)
-        // {
-        //     if (rigid.velocity.y < -maxFallingSpeed)
-        //     {
-        //         rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
-        //     }
-        // }
     }
 
     void extraMove()
@@ -250,7 +239,6 @@ public class Character : Singleton<Character>
 
             if (Input.GetButtonUp("Vertical"))
             {
-                sightRange = Vector3.zero;
                 isLooking = false;
                 CC.Instance.Follow = transform;
             }
@@ -260,20 +248,20 @@ public class Character : Singleton<Character>
                 float v = Input.GetAxisRaw("Vertical");
                 if (v == 1)
                 {
-                    sightRange = new Vector3(CC.Instance.transform.position.x, transform.position.y + maxSightRange, CC.Instance.transform.position.z);
-                    CC.Instance.transform.Translate(Vector3.up * 15 * Time.unscaledDeltaTime);
-                    if (CC.Instance.transform.position.y >= sightRange.y)
+                    CC.Instance.transform.Translate(Vector3.up * 15f * Time.unscaledDeltaTime);
+
+                    if (CC.Instance.transform.position.y > transform.position.y + maxSightRange)
                     {
-                        CC.Instance.transform.position = sightRange;
+                        CC.Instance.transform.position = new Vector3(CC.Instance.transform.position.x, transform.position.y + maxSightRange, CC.Instance.transform.position.z);
                     }
                 }
                 else if (v == -1)
                 {
-                    sightRange = new Vector3(CC.Instance.transform.position.x, transform.position.y - maxSightRange, CC.Instance.transform.position.z);
                     CC.Instance.transform.Translate(Vector3.down * 15 * Time.unscaledDeltaTime);
-                    if (CC.Instance.transform.position.y <= sightRange.y)
+
+                    if (CC.Instance.transform.position.y < transform.position.y - maxSightRange)
                     {
-                        CC.Instance.transform.position = sightRange;
+                        CC.Instance.transform.position = new Vector3(CC.Instance.transform.position.x, transform.position.y - maxSightRange, CC.Instance.transform.position.z);
                     }
                 }
             }
@@ -360,7 +348,6 @@ public class Character : Singleton<Character>
             if (Input.GetMouseButtonDown(1))
             {
                 Collider2D bullet = Physics2D.OverlapBox(parryingPosition, parryingBox, 0, LayerMask.GetMask("Bullet"));
-                // Collider2D bullet = Physics2D.OverlapCircle(parryingPosition, parryingRadius, LayerMask.GetMask("Bullet"));
                 if (bullet != null)
                 {
                     Parriable p = bullet.GetComponent<Parriable>();

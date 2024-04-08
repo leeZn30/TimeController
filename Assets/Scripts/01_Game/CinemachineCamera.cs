@@ -8,8 +8,8 @@ public class CinemachineCamera : Singleton<CinemachineCamera>
     public CinemachineVirtualCamera Camera;
     public CinemachineFramingTransposer composer;
 
-    public Transform Follow { get { return Camera.Follow; } set { Camera.Follow = value; } }
-    public Transform LookAt { get { return Camera.LookAt; } set { Camera.LookAt = value; } }
+    public Transform Follow { get { return Camera.m_Follow; } set { Camera.m_Follow = value; } }
+    public Transform LookAt { get { return Camera.m_LookAt; } set { Camera.m_LookAt = value; } }
     public float OrthographicSize { get { return Camera.m_Lens.OrthographicSize; } set { Camera.m_Lens.OrthographicSize = value; } }
 
     [Header("기본 세팅")]
