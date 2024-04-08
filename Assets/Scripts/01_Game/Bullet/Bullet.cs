@@ -58,7 +58,6 @@ public class Bullet : MonoBehaviour
             transform.Rotate(0, 0, 360 * bulletData.RotateSpeed * Time.deltaTime);
     }
 
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag.Equals("Player"))

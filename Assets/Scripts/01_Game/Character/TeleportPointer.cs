@@ -7,11 +7,9 @@ using UnityEngine.Tilemaps;
 public class TeleportPointer : MonoBehaviour
 {
     [SerializeField] Tilemap ground;
-    Collider2D collider;
 
     private void Awake()
     {
-        collider = GetComponent<CircleCollider2D>();
         ground = GameObject.Find("Ground").GetComponent<Tilemap>();
     }
 

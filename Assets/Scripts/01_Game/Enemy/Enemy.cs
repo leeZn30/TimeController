@@ -69,7 +69,8 @@ public abstract class Enemy : MonoBehaviour
         anim.SetTrigger("Dead");
         gameObject.layer = 11;
 
-        GhostManager.Instance.CreateGhost(enemyData.Ghost, transform.localPosition);
+        if (GhostManager.Instance != null)
+            GhostManager.Instance.CreateGhost(enemyData.Ghost, transform.localPosition);
     }
 
     abstract protected void detectPlayer();

@@ -47,6 +47,7 @@ public class Parriable : MonoBehaviour
 
         CinemachineCamera.Instance.LookAt = transform;
         CinemachineCamera.Instance.Follow = transform;
+
         StartCoroutine(rotateBullet());
     }
 
