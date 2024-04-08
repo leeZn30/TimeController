@@ -6,6 +6,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 using CC = CinemachineCamera;
+using Unity.VisualScripting;
 
 public class Character : Singleton<Character>
 {
@@ -603,7 +604,7 @@ public class Character : Singleton<Character>
     // 충돌 감지 + 물리적 영향X
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Trap")
+        if (other.gameObject.tag.Equals("Trap"))
         {
             Dead();
         }
