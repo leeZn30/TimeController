@@ -49,9 +49,7 @@ public class Character : Singleton<Character>
     Vector2 hitPosition;
     Vector2 hitBox = new Vector2(1f, 2);
     Vector2 parryingPosition;
-    // Vector2 parryingBox = new Vector2(0.3f, 1); // default = 0.3f
-    Vector2 parryingBox = new Vector2(1.3f, 2.3f); // 1.2f, 2.3f
-    // float parryingRadius = 1f;
+    Vector2 parryingBox = new Vector2(1.5f, 2.2f);
 
     // **************** 프리팹 ********************
     [Header("Prefabs")]
@@ -215,7 +213,8 @@ public class Character : Singleton<Character>
         if (rigid.velocity.normalized.y <= 0 && anim.GetBool("isJumpping")) // 내려가고 있음
         {
             Debug.DrawRay(rigid.position, Vector2.down, Color.red);
-            RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, 1f, LayerMask.GetMask("Map"));
+            int layerMask = (1 << LayerMask.NameToLayer("ThroughMap")) | (1 << LayerMask.NameToLayer("Map"));
+            RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, 1f, layerMask);
 
             if (hit.collider != null && hit.collider.tag.Equals("Ground"))
             {

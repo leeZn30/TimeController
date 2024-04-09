@@ -1,0 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Key : MonoBehaviour
+{
+    [SerializeField] Tower PairTower;
+    Animator anim;
+
+    protected void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag.Equals("Player"))
+        {
+            anim.SetTrigger("Collected");
+            PairTower.Open();
+            Destroy(gameObject);
+        }
+    }
+
+    void DoDestroy()
+    {
+        Destroy(gameObject);
+    }
+
+}
