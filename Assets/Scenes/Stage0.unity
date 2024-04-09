@@ -2867,10 +2867,10 @@ MonoBehaviour:
   RewindActive: 0
   RewindGauge: 0
   maxRewindGauge: 0
-  SlowActive: 1
+  SlowActive: 0
   SlowGauge: {fileID: 774405856}
   slowChargeSpeed: 20
-  isMovable: 1
+  isMovable: 0
   isTeleport: 0
   amingPfb: {fileID: 3266036853785965160, guid: 6742604e6f34c5b4286f8b475c52f211, type: 3}
   trailPrefab: {fileID: 5112178794755931766, guid: 750b41925fec25744b7ebc243ba15aaa, type: 3}
@@ -2955,7 +2955,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1031556400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.81, y: 3.56, z: -1}
+  m_LocalPosition: {x: 54.83, y: 4.09, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11518,7 +11518,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753688381}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.8099995, y: 3.5600002, z: -11}
+  m_LocalPosition: {x: 54.83, y: 4.09, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11647,7 +11647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791943028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6340866, y: 3.5600004, z: -11}
+  m_LocalPosition: {x: 54.83, y: 4.09, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

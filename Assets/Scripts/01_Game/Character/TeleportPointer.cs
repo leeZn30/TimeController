@@ -41,8 +41,9 @@ public class TeleportPointer : MonoBehaviour
     bool isTeleportable()
     {
         Vector3Int cellPosition = ground.WorldToCell(transform.position);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.back, 1f, LayerMask.GetMask("Map"));
 
-        if (ground.HasTile(cellPosition))
+        if (ground.HasTile(cellPosition) || hit.collider != null)
         {
             return false;
         }

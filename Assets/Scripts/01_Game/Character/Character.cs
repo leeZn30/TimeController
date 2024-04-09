@@ -50,7 +50,7 @@ public class Character : Singleton<Character>
     Vector2 hitBox = new Vector2(1f, 2);
     Vector2 parryingPosition;
     // Vector2 parryingBox = new Vector2(0.3f, 1); // default = 0.3f
-    Vector2 parryingBox = new Vector2(1.2f, 2.3f); // 1.2f, 2.3f
+    Vector2 parryingBox = new Vector2(1.3f, 2.3f); // 1.2f, 2.3f
     // float parryingRadius = 1f;
 
     // **************** 프리팹 ********************
@@ -357,6 +357,7 @@ public class Character : Singleton<Character>
                         this.bullet = p;
                         StartCoroutine(CharacterZoom());
                     }
+
                 }
             }
         }
@@ -517,7 +518,7 @@ public class Character : Singleton<Character>
                 rigid.velocity = Vector2.zero;
                 isJumping = false;
             }
-            else
+            else if (Input.GetKeyUp(KeyCode.LeftShift) && anim.GetBool("isSlow"))
             {
                 isSlow = false;
                 anim.SetBool("isSlow", false);
