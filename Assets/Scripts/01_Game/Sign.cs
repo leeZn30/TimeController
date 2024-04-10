@@ -5,21 +5,27 @@ using UnityEngine;
 
 public class Sign : MonoBehaviour
 {
+
     [SerializeField] GameObject bubblePfb;
     [SerializeField] Canvas canvas;
 
+    Vector3 bubblePosition;
+    Collider2D collider;
     GameObject bubble;
 
     private void Awake()
     {
+        collider = GetComponent<Collider2D>();
+
         canvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
+        bubblePosition = collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2 + bubblePfb.transform.localScale.y / 2, 0);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag.Equals("Player"))
         {
-            bubble = Instantiate(bubblePfb, transform.position + new Vector3(0, transform.localScale.y * 2.5f, 0), Quaternion.identity, canvas.transform);
+            bubble = Instantiate(bubblePfb, bubblePosition, Quaternion.identity, canvas.transform);
         }
     }
 

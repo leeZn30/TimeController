@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Key : MonoBehaviour
 {
-    [SerializeField] Tower PairTower;
+    [SerializeField] Door PairDoor;
     Animator anim;
 
     protected void Awake()
@@ -17,8 +17,7 @@ public class Key : MonoBehaviour
         if (other.tag.Equals("Player"))
         {
             anim.SetTrigger("Collected");
-            PairTower.Open();
-            Destroy(gameObject);
+            PairDoor.Open();
         }
     }
 
