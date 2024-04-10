@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
+    [SerializeField] bool isOpen = false;
+    [SerializeField] string NextScene;
+
     bool isGainItem = false;
     bool isInteractable = false;
     bool isPlayerIn = false;
@@ -52,7 +55,7 @@ public class Door : MonoBehaviour
         if (isInteractable)
         {
             isInteractable = false;
-            SceneManager.LoadScene("Tower0");
+            SceneManager.LoadScene(NextScene);
             Background.Instance.resetMaterial();
         }
         else

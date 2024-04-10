@@ -288,6 +288,10 @@ public class Character : Singleton<Character>
                         {
                             enemy.GetComponent<Enemy>().OnDamaged(Atk, DamageType.Player);
                         }
+                        else
+                        {
+                            Destroy(enemy.gameObject);
+                        }
                     }
                 }
             }

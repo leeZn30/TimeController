@@ -3658,6 +3658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bdeab83463dc0948bcd35a6db68e22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BubbleOffset: 0
   bubblePfb: {fileID: 2687632915542101047, guid: 4b88007ba2f785048b4950499494d3ef, type: 3}
   canvas: {fileID: 0}
 --- !u!212 &674421222
@@ -39274,6 +39275,10 @@ PrefabInstance:
     - target: {fileID: 4556573247717929748, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_Name
       value: Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 6348746982244196779, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
+      propertyPath: NextScene
+      value: Tower0
       objectReference: {fileID: 0}
     - target: {fileID: 6748512786115392562, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_RootOrder
