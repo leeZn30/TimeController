@@ -57,7 +57,7 @@ public class Parriable : MonoBehaviour
         Quaternion currentRotation = transform.rotation;
         // 목표 회전 각도 (현재 각도에서 180도 추가)
         Vector3 targetRotation = new Vector3(currentRotation.x, currentRotation.y, currentRotation.z + 180f);
-        float rotationSpeed = 150f;
+        float rotationSpeed = 200f;
         while (transform.rotation != Quaternion.Euler(targetRotation))
         {
             // 부드럽게 회전시키기

@@ -20,7 +20,6 @@ public class Sign : MonoBehaviour
 
         canvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
         bubblePosition = collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2 + bubblePfb.GetComponent<RectTransform>().rect.size.y / 2 + BubbleOffset, 0);
-        Debug.Log(bubblePosition);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

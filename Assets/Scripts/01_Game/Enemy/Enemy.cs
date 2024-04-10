@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 enum SigthType
@@ -26,6 +27,7 @@ public abstract class Enemy : MonoBehaviour
     protected Animator anim;
     protected SpriteRenderer sprite;
     protected Rigidbody2D rigid;
+    protected Collider2D collider;
 
     virtual protected void OnDrawGizmos()
     {
@@ -53,6 +55,7 @@ public abstract class Enemy : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
+        collider = GetComponent<Collider2D>();
     }
 
     virtual protected void Update()
@@ -99,7 +102,8 @@ public abstract class Enemy : MonoBehaviour
         }
         damage = Mathf.Round(damage);
 
-        FixedUIManager.Instance.ShowDamage((int)damage, new Vector2(transform.localPosition.x, transform.localPosition.y + transform.localScale.y * 0.8f), isCritical);
+        // FixedUIManager.Instance.ShowDamage((int)damage, new Vector2(transform.localPosition.x, transform.localPosition.y + transform.localScale.y * 0.8f), isCritical);
+        FixedUIManager.Instance.ShowDamage((int)damage, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2), isCritical);
 
         hp -= damage;
 

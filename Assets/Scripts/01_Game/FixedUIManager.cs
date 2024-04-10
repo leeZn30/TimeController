@@ -44,7 +44,7 @@ public class FixedUIManager : Singleton<FixedUIManager>
     public void ShowDamage(int damage, Vector2 position, bool isCritical = false)
     {
         TextMeshProUGUI go = Damages.Dequeue();
-        go.transform.position = position;
+        go.transform.position = position + new Vector2(0, DamagePfb.transform.localScale.y / 2);
         go.SetText(damage.ToString());
         go.gameObject.SetActive(true);
 
