@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Sign : MonoBehaviour
 {
+    [SerializeField] float BubbleOffset;
 
     [SerializeField] GameObject bubblePfb;
     [SerializeField] Canvas canvas;
@@ -18,7 +19,8 @@ public class Sign : MonoBehaviour
         collider = GetComponent<Collider2D>();
 
         canvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
-        bubblePosition = collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2 + bubblePfb.transform.localScale.y / 2, 0);
+        bubblePosition = collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2 + bubblePfb.GetComponent<RectTransform>().rect.size.y / 2 + BubbleOffset, 0);
+        Debug.Log(bubblePosition);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

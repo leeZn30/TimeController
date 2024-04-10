@@ -52,7 +52,8 @@ public class Door : MonoBehaviour
         if (isInteractable)
         {
             isInteractable = false;
-            SceneManager.LoadScene("Tower1");
+            SceneManager.LoadScene("Tower0");
+            Background.Instance.resetMaterial();
         }
         else
         {
@@ -63,7 +64,7 @@ public class Door : MonoBehaviour
     IEnumerator Vibrate()
     {
         Vector3 startPosition = transform.position;
-        float vibrationStrength = 0.1f;
+        float vibrationStrength = 0.05f;
         float vibrationSpeed = 20f;
 
         float duration = 0f;
