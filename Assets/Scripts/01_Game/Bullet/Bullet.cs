@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
 
     protected Vector3 createdPose;
     protected Vector3 targetPose;
-    Vector3 targetDirection;
+    protected Vector3 targetDirection;
 
     SpriteRenderer sprite;
     Material DefaultMaterial;
@@ -67,6 +67,7 @@ public class Bullet : MonoBehaviour
             BulletManager.InsertBullet(this);
         }
     }
+
 
     protected virtual void EraseBullet()
     {

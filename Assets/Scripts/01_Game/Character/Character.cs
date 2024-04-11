@@ -400,19 +400,18 @@ public class Character : Singleton<Character>
         // anim.updateMode = AnimatorUpdateMode.Normal; // 슬로우한 상태로 패링하면 풀릴 수 있음
         // rigid.gravityScale = 7f;
 
+        HeartManager.Instance.calculateHeart(Damage);
         Hp -= Damage;
         if (Hp <= 0)
             Dead();
 
-        HeartManager.Instance.calculateHeart(Damage);
+        // 넉백
+        int dirc = transform.position.x - targetPos.x > 0 ? 1 : -1;
+        rigid.AddForce(new Vector2(dirc, 1) * 7, ForceMode2D.Impulse);
 
         // 무적
         gameObject.layer = 9;
         sprite.color = new Color(1, 1, 1, 0.5f);
-
-        // 넉백
-        int dirc = transform.position.x - targetPos.x > 0 ? 1 : -1;
-        rigid.AddForce(new Vector2(dirc, 1) * 7, ForceMode2D.Impulse);
 
         Invoke("OffDamaged", invincibilityTime);
     }
@@ -503,7 +502,7 @@ public class Character : Singleton<Character>
         // 가속도 쌓이는 거 방지
         rigid.velocity = new Vector2(0, 0);
 
-        // TeleportGauge.value = 0f;
+        TeleportGauge.value = 0f;
     }
 
     void OnSlow()
@@ -584,7 +583,9 @@ public class Character : Singleton<Character>
     {
         if (other.gameObject.tag.Equals("Enemy"))
         {
-            OnDamaged(other.transform.position, other.gameObject.GetComponent<Enemy>().atk);
+            Enemy e = other.gameObject.GetComponent<Enemy>();
+            if (e.atk > 0)
+                OnDamaged(other.transform.position, e.atk);
         }
     }
 

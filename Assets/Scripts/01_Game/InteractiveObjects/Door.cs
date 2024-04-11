@@ -6,11 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
-    [SerializeField] bool isOpen = false;
     [SerializeField] string NextScene;
-
-    bool isGainItem = false;
-    bool isInteractable = false;
+    [SerializeField] bool isGainItem = false;
+    [SerializeField] bool isInteractable = false;
     bool isPlayerIn = false;
 
     [SerializeField] GameObject NoItemPfb;

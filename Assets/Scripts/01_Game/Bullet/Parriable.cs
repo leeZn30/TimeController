@@ -9,14 +9,15 @@ public class Parriable : MonoBehaviour
 {
     public bool isParried = false;
     LineRenderer lineRenderer;
+    Collider2D collider;
     float interval = 0.1f; // 3초
     float nextTime = 0f;
     [SerializeField] List<Vector3> poses = new List<Vector3>();
 
-
     private void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
+        collider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
