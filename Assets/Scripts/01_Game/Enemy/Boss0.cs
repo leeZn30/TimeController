@@ -9,7 +9,16 @@ public class Boss0 : Enemy
     [SerializeField] float ShortDistance;
     [SerializeField] float LongDistance;
     [SerializeField] float DashPower;
+    [SerializeField] float WeaponAtk;
 
+    [Header("Bullets")]
+    [SerializeField] Bullet bulletPfb;
+    [SerializeField] Bullet sunPfb;
+
+    float originGravityScale;
+    bool isOKToHit => !anim.GetBool("isUltimated");
+    bool isOKToTurn => !anim.GetBool("isCharging") && !anim.GetBool("isCollapsed") && !anim.GetBool("isUltimate");
+    bool isOKToAttack => currentDistance < ShortDistance && !anim.GetBool("isAttacking") && !anim.GetBool("isCharging") && !anim.GetBool("isCollapsed") && !anim.GetBool("isUltimate");
     bool isDash = false;
     int hitCount = 0;
     int playerXpose => collider.bounds.center.x - Character.Instance.transform.position.x >= 0 ? -1 : 1;
@@ -30,6 +39,8 @@ public class Boss0 : Enemy
 
         shield = transform.GetChild(0).gameObject;
         shield.SetActive(false);
+
+        originGravityScale = rigid.gravityScale;
     }
 
     protected override void OnDrawGizmos()
@@ -42,13 +53,15 @@ public class Boss0 : Enemy
     {
         attackPosition = new Vector2(collider.bounds.center.x + (collider.bounds.size.x / 2) * (sprite.flipX ? 1 : -1), collider.bounds.center.y);
 
-        if (!anim.GetBool("isCharging") && !anim.GetBool("isCollapsed"))
+        if (isOKToTurn)
             sprite.flipX = playerXpose < 0 ? false : true;
 
         attack();
 
         if (Input.GetKeyDown(KeyCode.T))
             StartCoroutine(Shield());
+
+        Shoot();
     }
 
     private void FixedUpdate()
@@ -77,6 +90,66 @@ public class Boss0 : Enemy
             shield.SetActive(false);
             anim.SetBool("isCharging", false);
         }
+    }
+
+    void OnUlimateStart()
+    {
+        rigid.gravityScale = 0f;
+        rigid.position += Vector2.up;
+
+        anim.SetBool("isUltimate", true);
+    }
+
+    void OnUltimate()
+    {
+        StartCoroutine(Ultimate());
+    }
+
+    IEnumerator Ultimate()
+    {
+        yield return Delay(5f);
+
+        anim.SetBool("isUltimate", false);
+        OnUltimateEnd();
+    }
+
+    int bulletCount = 10;
+    float circleRadius = 1f; // 원의 반지름
+    float fireRate = 0.5f; // 탄막 발사 속도
+    float nextFireTime = 1f;
+
+    void Shoot()
+    {
+        if (anim.GetBool("isUltimate"))
+        {
+            if (Time.time > nextFireTime)
+            {
+                nextFireTime = Time.time + fireRate;
+
+                float radiusOffset = Random.Range(0, 360);
+                // 원형으로 탄막 생성
+                for (int i = 0; i < bulletCount; i++)
+                {
+                    float angle = i * (360f / bulletCount) + radiusOffset; // 원형을 구성하는 각도 계산
+                    Vector2 bulletDirection = Quaternion.Euler(0, 0, angle) * Vector3.right; // 각도에 따른 방향 계산
+                    Vector2 bulletPosition = rigid.position + bulletDirection * circleRadius; // 원 주위의 위치 계산
+
+                    // 탄막 생성
+                    Bullet b = BulletManager.TakeOutBullet(bulletPfb.name, bulletPosition);
+                    b.targetDirection = bulletDirection;
+                }
+            }
+        }
+    }
+
+    void OnUltimateEnd()
+    {
+        rigid.gravityScale = originGravityScale;
+    }
+
+    void Run()
+    {
+
     }
 
     void Dash()
@@ -116,25 +189,36 @@ public class Boss0 : Enemy
 
     public override void OnDamaged(float damage, DamageType damageType)
     {
-        hitCount++;
-
-        if (anim.GetBool("isCharging"))
+        if (isOKToHit)
         {
-            shield.SetActive(false);
-            anim.SetTrigger("Collapse");
-            anim.SetBool("isCollapsed", true);
+            hitCount++;
+
+            if (anim.GetBool("isCharging"))
+            {
+                shield.SetActive(false);
+                anim.SetTrigger("Collapse");
+                anim.SetBool("isCollapsed", true);
+            }
         }
     }
 
     protected override void attack()
     {
-        if (currentDistance < ShortDistance && !anim.GetBool("isAttacking"))
+        if (isOKToAttack)
         {
             anim.SetBool("isAttacking", true);
             anim.SetTrigger("Attack");
         }
     }
 
+    void OnAttack()
+    {
+        Collider2D player = Physics2D.OverlapBox(attackPosition, attackRange, 0, LayerMask.GetMask("Player"));
+        if (player != null)
+        {
+            Character.Instance.OnDamaged(transform.position, WeaponAtk);
+        }
+    }
 
     void OnAttackEnd()
     {

@@ -9,8 +9,8 @@ public class Bullet : MonoBehaviour
     public string BulletName => bulletData.Name;
 
     protected Vector3 createdPose;
-    protected Vector3 targetPose;
-    protected Vector3 targetDirection;
+    public Vector3 targetPose;
+    public Vector3 targetDirection;
 
     SpriteRenderer sprite;
     Material DefaultMaterial;
