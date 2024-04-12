@@ -75,7 +75,6 @@ public class Character : Singleton<Character>
         background = FindObjectOfType<Background>();
 
         hitPosition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
-        // parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
         parryingPosition = transform.position;
 
         TrailQueue = ObjectPool.CreateQueue<Trail>(5, trailPrefab);
@@ -93,7 +92,6 @@ public class Character : Singleton<Character>
             extraMove();
             parry();
             hitPosition = new Vector2(rigid.position.x + (sprite.flipX ? -1 : 1) * transform.localScale.x, rigid.position.y);
-            // parryingPosition = new Vector2(rigid.position.x + transform.localScale.x * 0.65f, rigid.position.y);
             parryingPosition = transform.position;
 
             // 스킬
@@ -584,7 +582,7 @@ public class Character : Singleton<Character>
         if (other.gameObject.tag.Equals("Enemy"))
         {
             Enemy e = other.gameObject.GetComponent<Enemy>();
-            if (e.atk > 0)
+            if (e != null && e.atk > 0)
                 OnDamaged(other.transform.position, e.atk);
         }
     }
