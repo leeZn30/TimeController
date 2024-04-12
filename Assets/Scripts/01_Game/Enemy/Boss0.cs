@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class Boss0 : Enemy
 {
@@ -15,10 +17,20 @@ public class Boss0 : Enemy
     [SerializeField] Bullet bulletPfb;
     [SerializeField] Bullet sunPfb;
 
+
+    int bulletCount = 10;
+    float circleRadius = 1f; // 원의 반지름
+    float fireRate = 0.5f; // 탄막 발사 속도
+    float nextFireTime = 1f;
     float originGravityScale;
-    bool isOKToHit => !anim.GetBool("isUltimated");
+    bool isOKToHit => !anim.GetBool("isUltimated") && !anim.GetBool("isThrowingSun");
     bool isOKToTurn => !anim.GetBool("isCharging") && !anim.GetBool("isCollapsed") && !anim.GetBool("isUltimate");
-    bool isOKToAttack => currentDistance < ShortDistance && !anim.GetBool("isAttacking") && !anim.GetBool("isCharging") && !anim.GetBool("isCollapsed") && !anim.GetBool("isUltimate");
+    bool isOKToAttack =>
+    currentDistance < ShortDistance &&
+     !anim.GetBool("isAttacking") &&
+       !anim.GetBool("isCharging") &&
+        !anim.GetBool("isCollapsed") &&
+         !anim.GetBool("isUltimate");
     bool isDash = false;
     int hitCount = 0;
     int playerXpose => collider.bounds.center.x - Character.Instance.transform.position.x >= 0 ? -1 : 1;
@@ -26,7 +38,9 @@ public class Boss0 : Enemy
     float currentDistance => Vector3.Distance(collider.bounds.center, Character.Instance.transform.position);
     Vector2 attackRange = new Vector2(2, 3);
     Vector2 attackPosition;
+    ChromaticAberration chromatic;
 
+    GameObject sun;
     GameObject shield;
     LineRenderer line;
 
@@ -40,7 +54,12 @@ public class Boss0 : Enemy
         shield = transform.GetChild(0).gameObject;
         shield.SetActive(false);
 
+        sun = transform.GetChild(1).gameObject;
+        sun.SetActive(false);
+
         originGravityScale = rigid.gravityScale;
+
+        FindObjectOfType<Volume>().profile.TryGet(out chromatic);
     }
 
     protected override void OnDrawGizmos()
@@ -61,6 +80,10 @@ public class Boss0 : Enemy
         if (Input.GetKeyDown(KeyCode.T))
             StartCoroutine(Shield());
 
+
+        if (Input.GetKeyDown(KeyCode.R))
+            StartCoroutine(throwSun());
+
         Shoot();
     }
 
@@ -74,6 +97,24 @@ public class Boss0 : Enemy
         yield return new WaitForSeconds(seconds);
     }
 
+    IEnumerator throwSun()
+    {
+        anim.SetBool("isThrowingSun", true);
+        rigid.position += Vector2.up;
+        rigid.gravityScale = 0f;
+
+        anim.SetTrigger("ThrowReady");
+        sun.SetActive(true);
+
+        yield return StartCoroutine(Delay(1f));
+
+        sun.SetActive(false);
+        anim.SetTrigger("ThrowSun");
+        BulletManager.TakeOutBullet(sunPfb.name, sun.transform.position);
+        rigid.gravityScale = originGravityScale;
+        anim.SetBool("isThrowingSun", false);
+    }
+
     IEnumerator Shield()
     {
         // 맵 가운데로 돌진
@@ -85,24 +126,22 @@ public class Boss0 : Enemy
             shield.transform.position = rigid.position + Vector2.right * 1.5f * playerXpose;
             shield.SetActive(true);
 
-            yield return StartCoroutine(Delay(3f));
+            // yield return StartCoroutine(Delay(3f));
+
+            float duration = 0f;
+
+            while (duration < 3f)
+            {
+                duration += Time.deltaTime;
+                float newIntensity = Mathf.Clamp(chromatic.intensity.value + 0.3f * Time.deltaTime, 0f, 1f);
+                Debug.Log(newIntensity);
+                chromatic.intensity.value = newIntensity;
+                yield return null;
+            }
 
             shield.SetActive(false);
             anim.SetBool("isCharging", false);
         }
-    }
-
-    void OnUlimateStart()
-    {
-        rigid.gravityScale = 0f;
-        rigid.position += Vector2.up;
-
-        anim.SetBool("isUltimate", true);
-    }
-
-    void OnUltimate()
-    {
-        StartCoroutine(Ultimate());
     }
 
     IEnumerator Ultimate()
@@ -112,11 +151,6 @@ public class Boss0 : Enemy
         anim.SetBool("isUltimate", false);
         OnUltimateEnd();
     }
-
-    int bulletCount = 10;
-    float circleRadius = 1f; // 원의 반지름
-    float fireRate = 0.5f; // 탄막 발사 속도
-    float nextFireTime = 1f;
 
     void Shoot()
     {
@@ -137,14 +171,11 @@ public class Boss0 : Enemy
                     // 탄막 생성
                     Bullet b = BulletManager.TakeOutBullet(bulletPfb.name, bulletPosition);
                     b.targetDirection = bulletDirection;
+                    float Bangle = Mathf.Atan2(b.targetDirection.y, b.targetDirection.x) * Mathf.Rad2Deg + 180f;
+                    b.transform.rotation = Quaternion.AngleAxis(Bangle, Vector3.forward);
                 }
             }
         }
-    }
-
-    void OnUltimateEnd()
-    {
-        rigid.gravityScale = originGravityScale;
     }
 
     void Run()
@@ -195,6 +226,9 @@ public class Boss0 : Enemy
 
             if (anim.GetBool("isCharging"))
             {
+                if (chromatic.intensity.value != 0f)
+                    chromatic.intensity.value = 0f;
+
                 shield.SetActive(false);
                 anim.SetTrigger("Collapse");
                 anim.SetBool("isCollapsed", true);
@@ -231,6 +265,23 @@ public class Boss0 : Enemy
     }
 
 
+    void OnUlimateStart()
+    {
+        rigid.gravityScale = 0f;
+        rigid.position += Vector2.up;
+
+        anim.SetBool("isUltimate", true);
+    }
+
+    void OnUltimate()
+    {
+        StartCoroutine(Ultimate());
+    }
+
+    void OnUltimateEnd()
+    {
+        rigid.gravityScale = originGravityScale;
+    }
 
     #region NoNeed
     // 필요없음

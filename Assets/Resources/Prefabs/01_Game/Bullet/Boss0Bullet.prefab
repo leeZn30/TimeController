@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 388918772835616236}
   - component: {fileID: 3112332913130984087}
   - component: {fileID: 6249743164179221046}
-  - component: {fileID: 4897123041804888519}
   - component: {fileID: -3367939311858498138}
   - component: {fileID: 4374290987329433639}
+  - component: {fileID: 9159710614035069921}
   m_Layer: 10
   m_Name: Boss0Bullet
   m_TagString: Bullet
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: -1320475405
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0daef5327df9dd34890279f7c28115dc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 452d4c843d46dde4284bc5b1452c2abd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -190,8 +190,37 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!58 &4897123041804888519
-CircleCollider2D:
+--- !u!114 &-3367939311858498138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3006567573567783928}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 680598d4b4f88944fba9245cdb68e20e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isParried: 0
+  poses: []
+--- !u!114 &4374290987329433639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3006567573567783928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20bc86cc7be4c7c468ac1022865897fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletData: {fileID: 11400000, guid: 50b55b1cb19b81c49b6dc60f1ce595e6, type: 2}
+  targetPose: {x: 0, y: 0, z: 0}
+  targetDirection: {x: 0, y: 0, z: 0}
+--- !u!60 &9159710614035069921
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -223,34 +252,22 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.29
---- !u!114 &-3367939311858498138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3006567573567783928}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 680598d4b4f88944fba9245cdb68e20e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isParried: 0
-  poses: []
---- !u!114 &4374290987329433639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3006567573567783928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20bc86cc7be4c7c468ac1022865897fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletData: {fileID: 11400000, guid: 50b55b1cb19b81c49b6dc60f1ce595e6, type: 2}
-  targetPose: {x: 0, y: 0, z: 0}
-  targetDirection: {x: 0, y: 0, z: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.5, y: 0.14943361}
+      - {x: -0.5, y: 0.041934013}
+      - {x: -0.3279717, y: -0.13009357}
+      - {x: 0.4220283, y: -0.14169788}
+      - {x: 0.50773597, y: -0.07919741}
+      - {x: 0.50386786, y: 0.07919741}
+      - {x: 0.44910383, y: 0.14556551}
+  m_UseDelaunayMesh: 0
