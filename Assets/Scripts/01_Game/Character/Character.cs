@@ -64,6 +64,7 @@ public class Character : Singleton<Character>
     GameObject rewindPointer;
     Background background;
     Parriable bullet;
+    Collider2D collider;
 
     // ************* 그 외 *************
 
@@ -71,6 +72,7 @@ public class Character : Singleton<Character>
     {
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
+        collider = GetComponent<Collider2D>();
         sprite = GetComponent<SpriteRenderer>();
         background = FindObjectOfType<Background>();
 

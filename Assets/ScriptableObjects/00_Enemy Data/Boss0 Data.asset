@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Boss0 Data
   m_EditorClassIdentifier: 
   EnemyName: 
-  hp: 100
-  damage: 1
+  hp: 500
+  damage: 2
   sightRange: 0
   moveSpeed: 5
   ghost: 30

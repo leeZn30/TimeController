@@ -6,7 +6,8 @@ using UnityEngine.Tilemaps;
 
 public class TeleportPointer : MonoBehaviour
 {
-    [SerializeField] Tilemap ground;
+    Tilemap ground;
+    [SerializeField] List<Tilemap> grounds = new List<Tilemap>();
 
     private void Awake()
     {
@@ -47,10 +48,7 @@ public class TeleportPointer : MonoBehaviour
         {
             return false;
         }
-        else
-        {
-            return true;
-        }
+        return true;
     }
 
 }
