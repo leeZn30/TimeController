@@ -224,6 +224,20 @@ public class Character : Singleton<Character>
                 anim.SetBool("isJumpping", false);
             }
         }
+
+        // 점프 변경 예정
+        // Debug.DrawRay(rigid.position, Vector2.down * collider.bounds.extents.y, Color.red);
+        // int layerMask = (1 << LayerMask.NameToLayer("ThroughMap")) | (1 << LayerMask.NameToLayer("Map"));
+        // RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, collider.bounds.extents.y, layerMask);
+
+        // if (hit.collider != null && hit.collider.tag.Equals("Ground"))
+        // {
+        //     anim.SetBool("Grounded", true);
+        // }
+        // else
+        // {
+        //     anim.SetBool("Grounded", false);
+        // }
     }
 
     void sightMove()

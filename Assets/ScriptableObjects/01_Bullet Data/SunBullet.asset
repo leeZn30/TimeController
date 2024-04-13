@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletName: SunBullet
   damage: 0
-  moveSpeed: 20
+  moveSpeed: 30
   maxDistance: 0
   rotateSpeed: 0
   parryPercent: 1

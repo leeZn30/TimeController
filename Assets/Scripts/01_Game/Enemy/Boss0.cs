@@ -4,13 +4,13 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UIElements;
 
 public class Boss0 : Enemy
 {
     [Header("Boss Data")]
     [SerializeField] float ShortDistance;
     [SerializeField] float LongDistance;
-    [SerializeField] float DashPower;
     [SerializeField] float WeaponAtk;
     [SerializeField] float accumulatedDmg;
 
@@ -21,7 +21,6 @@ public class Boss0 : Enemy
     [Header("Map Info")]
     [SerializeField] float MapRightLimit;
     [SerializeField] float MapLeftLimit;
-    [SerializeField] List<Collider2D> platforms = new List<Collider2D>();
 
     int bulletCount = 10;
     float circleRadius = 1f; // 원의 반지름
@@ -29,20 +28,19 @@ public class Boss0 : Enemy
     float nextFireTime = 1f;
     float originGravityScale;
 
-    bool isOKToDash =>
-    currentDistance > LongDistance &&
-     !isDash && !anim.GetBool("isCharging") &&
-      anim.GetBool("Grounded") &&
-       !anim.GetBool("isThrowingSun");
-    bool isOKToHit => !anim.GetBool("isUltimated") && !anim.GetBool("isThrowingSun");
+    bool isOKToEvasion =>
+    !isEvasioning &&
+    hitCount >= 5;
+
+    bool isOKToHit = true;
+
     bool isOKToTurn => !anim.GetBool("isCharging") && !anim.GetBool("isCollapsed") && !anim.GetBool("isUltimate");
+
     bool isOKToAttack =>
     currentDistance < ShortDistance &&
-     !anim.GetBool("isAttacking") &&
-       !anim.GetBool("isCharging") &&
-        !anim.GetBool("isCollapsed") &&
-         !anim.GetBool("isUltimate");
-    bool isDash = false;
+    !anim.GetBool("isAttacking");
+
+    [SerializeField] bool isEvasioning = false;
     int hitCount = 0;
     int playerXpose => collider.bounds.center.x - Character.Instance.transform.position.x >= 0 ? -1 : 1;
     // 단순 거리 재기이므로 rigid 사용할 필요 없음
@@ -82,36 +80,29 @@ public class Boss0 : Enemy
 
     protected override void Update()
     {
-        attackPosition = new Vector2(collider.bounds.center.x + (collider.bounds.size.x / 2) * (sprite.flipX ? 1 : -1), collider.bounds.center.y);
+        attackPosition = new Vector2(collider.bounds.center.x + collider.bounds.extents.x * (sprite.flipX ? 1 : -1), collider.bounds.center.y);
 
         if (isOKToTurn)
-            sprite.flipX = playerXpose < 0 ? false : true;
-
-        attack();
-
-        if (accumulatedDmg > 100f)
-            StartCoroutine(Shield());
-
-        Shoot();
-
-        if (isEvasion && anim.GetBool("Grounded"))
-        {
-            StartCoroutine(throwSun());
-            isEvasion = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.G))
-            jump();
+            sprite.flipX = playerXpose <= 0 ? false : true;
 
         land();
+
+        attack();
+        // Shoot();
+        // if (accumulatedDmg > 100f)
+        //     StartCoroutine(Shield());
+        // if (isEvasion && anim.GetBool("Grounded"))
+        // {
+        //     StartCoroutine(throwSun());
+        //     isEvasion = false;
+        // }
 
     }
 
     private void FixedUpdate()
     {
-        // Dash();
+        Chase();
         Evasion();
-        // land();
     }
 
     IEnumerator Delay(float seconds)
@@ -119,25 +110,161 @@ public class Boss0 : Enemy
         yield return new WaitForSeconds(seconds);
     }
 
-    IEnumerator throwSun()
+    void Chase()
+    {
+        /*
+        조건: 
+        1. 플레이어와의 격차가 많이 남 > 플랫폼 위인지 확인 후 플랫폼 떨어트리기 or 해던지기 or 대쉬 or 파트공격
+        2. 플레이어와의 격차가 얼마 나지 않고, shrot보다 멀면 > 달려가기
+        */
+        if (currentDistance > LongDistance && !isEvasioning)
+        {
+            Dash();
+        }
+        else
+        {
+            if (currentDistance > ShortDistance && !anim.GetBool("isAttacking") && !isEvasioning && !anim.GetBool("isThrowingSun"))
+            {
+                anim.SetInteger("AnimState", 2);
+                rigid.AddForce(Vector2.right * playerXpose * 7f, ForceMode2D.Impulse);
+
+                if (Mathf.Abs(rigid.velocity.x) > 7f)
+                {
+                    rigid.velocity = new Vector2(7f * playerXpose, rigid.velocity.y);
+                }
+            }
+            else
+            {
+                if (!isEvasioning)
+                {
+                    anim.SetInteger("AnimState", 1);
+                    rigid.velocity = new Vector2(0, rigid.velocity.y);
+                }
+            }
+        }
+    }
+
+    protected override void attack()
+    {
+        if (isOKToAttack)
+        {
+            anim.SetTrigger("Attack");
+        }
+    }
+
+    void OnAttackStart()
+    {
+        anim.SetBool("isAttacking", true);
+    }
+
+    void OnAttack()
+    {
+        Collider2D player = Physics2D.OverlapBox(attackPosition, attackRange, 0, LayerMask.GetMask("Player"));
+        if (player != null)
+        {
+            Character.Instance.OnDamaged(transform.position, WeaponAtk);
+        }
+    }
+
+    void OnAttackEnd()
+    {
+        anim.SetBool("isAttacking", false);
+    }
+
+    void Dash()
+    {
+    }
+
+    void Evasion()
+    {
+        if (isOKToEvasion)
+        {
+            anim.SetBool("isAttacking", false);
+
+            hitCount = 0;
+
+            float dst = Random.Range(1, 3);
+            Vector2 targetPosition = new Vector2(rigid.position.x + -playerXpose * dst, rigid.position.y);
+            if (targetPosition.x < MapLeftLimit || targetPosition.x > MapRightLimit)
+            {
+                targetPosition = new Vector2(rigid.position.x + playerXpose * dst, rigid.position.y);
+            }
+            Jump(targetPosition);
+
+            isEvasioning = true;
+        }
+    }
+
+    void Jump(Vector2 targetPosition)
+    {
+        anim.SetTrigger("Jump");
+
+        // 시작 위치와 목표 위치 사이의 방향 벡터 계산
+        Vector2 direction = targetPosition - rigid.position;
+
+        // 점프에 필요한 초기 속도 계산 (수직 속도 계산)
+        float verticalVelocity = Mathf.Sqrt(2 * Mathf.Abs(Physics2D.gravity.y) * direction.magnitude);
+
+        // 수직 속도와 방향에 맞는 힘 계산
+        Vector2 jumpVelocity = new Vector2(direction.x, verticalVelocity).normalized * 30f;
+
+        // Rigidbody2D에 힘을 가해서 점프
+        rigid.velocity = jumpVelocity;
+    }
+
+    void throwSun()
+    {
+        anim.SetTrigger("ThrowReady");
+    }
+
+    void OnThrowReady()
     {
         anim.SetBool("isThrowingSun", true);
-        rigid.position += Vector2.up;
-        rigid.gravityScale = 0f;
+        StartCoroutine(throwSunReady());
+    }
 
-        anim.SetTrigger("ThrowReady");
+    IEnumerator throwSunReady()
+    {
+        rigid.gravityScale = 0f;
         sun.SetActive(true);
 
-        yield return StartCoroutine(Delay(1f));
+        float duration = 0;
+        float speed = Random.Range(3, 11);
+        while (duration < 1f)
+        {
+            duration += Time.deltaTime;
 
-        sun.SetActive(false);
+            transform.position += Vector3.up * speed * Time.deltaTime;
+            yield return null;
+        }
+
         anim.SetTrigger("ThrowSun");
+    }
+
+    void OnThrowSunStart()
+    {
+        sun.SetActive(false);
         BulletManager.TakeOutBullet(sunPfb.name, sun.transform.position);
+    }
+
+    void OnThrowSunEnd()
+    {
+        StartCoroutine(throwEnd());
+    }
+
+    IEnumerator throwEnd()
+    {
+        while (!anim.GetBool("Grounded"))
+        {
+            rigid.position += Vector2.down * 50f * Time.deltaTime;
+            yield return null;
+        }
+
         rigid.gravityScale = originGravityScale;
         anim.SetBool("isThrowingSun", false);
-
         Dash();
     }
+
 
     IEnumerator Shield()
     {
@@ -203,78 +330,6 @@ public class Boss0 : Enemy
         }
     }
 
-    void Dash()
-    {
-        if (isOKToDash)
-        {
-            isDash = true;
-            StartCoroutine(Dashing());
-        }
-    }
-
-    IEnumerator Dashing()
-    {
-        Vector3 targetPosition = Character.Instance.transform.position;
-        float dashSpeed = 15f;
-
-        // line.SetPositions(new Vector3[] { rigid.position, targetPosition });
-        // line.enabled = true;
-
-        yield return new WaitForSeconds(1f);
-
-        anim.SetFloat("AnimState", 2);
-        while (rigid.position != (Vector2)targetPosition)
-        {
-            rigid.position = Vector2.MoveTowards(rigid.position, targetPosition, dashSpeed * Time.fixedDeltaTime);
-            yield return null;
-        }
-
-        anim.SetFloat("AnimState", 1);
-
-        // line.enabled = false;
-        isDash = false;
-    }
-
-    bool isEvasion = false;
-    void Evasion()
-    {
-        if (currentDistance < ShortDistance && hitCount > 3 && anim.GetBool("Grounded") && !isEvasion)
-        {
-            isEvasion = true;
-
-            anim.SetTrigger("Jump");
-            anim.SetBool("Grounded", false);
-
-            Vector2 targetPosition = new Vector2(rigid.position.x + -playerXpose * 3f, rigid.position.y);
-            if (targetPosition.x < MapLeftLimit || targetPosition.x > MapRightLimit)
-            {
-                targetPosition = new Vector2(rigid.position.x + playerXpose * 3f, rigid.position.y);
-            }
-
-            // 시작 위치와 목표 위치 사이의 방향 벡터 계산
-            Vector2 direction = (targetPosition - rigid.position);
-
-            // 점프에 필요한 초기 속도 계산 (수직 속도 계산)
-            float verticalVelocity = Mathf.Sqrt(2 * Mathf.Abs(Physics2D.gravity.y) * direction.magnitude);
-
-            // 수직 속도와 방향에 맞는 힘 계산
-            Vector2 jumpVelocity = new Vector2(direction.x, verticalVelocity).normalized * 30f;
-
-            // Rigidbody2D에 힘을 가해서 점프
-            rigid.velocity = jumpVelocity;
-
-            hitCount = 0;
-        }
-    }
-
-    void jump()
-    {
-        anim.SetTrigger("Jump");
-        // anim.SetBool("Grounded", false);
-
-        rigid.AddForce(Vector2.up * 20f, ForceMode2D.Impulse);
-    }
-
     void land()
     {
         Debug.DrawRay(rigid.position + new Vector2(0, collider.bounds.extents.y), Vector2.down * collider.bounds.extents.y, Color.red);
@@ -284,6 +339,12 @@ public class Boss0 : Enemy
         if (hit.collider != null && hit.collider.tag.Equals("Ground"))
         {
             anim.SetBool("Grounded", true);
+
+            if (isEvasioning)
+            {
+                throwSun();
+                isEvasioning = false;
+            }
         }
         else
         {
@@ -295,6 +356,8 @@ public class Boss0 : Enemy
     {
         if (isOKToHit)
         {
+            anim.SetBool("Hit", true);
+
             accumulatedDmg += damage;
 
             hp -= damage;
@@ -315,28 +378,11 @@ public class Boss0 : Enemy
         }
     }
 
-    protected override void attack()
-    {
-        if (isOKToAttack)
-        {
-            anim.SetBool("isAttacking", true);
-            anim.SetTrigger("Attack");
-        }
-    }
-
-    void OnAttack()
-    {
-        Collider2D player = Physics2D.OverlapBox(attackPosition, attackRange, 0, LayerMask.GetMask("Player"));
-        if (player != null)
-        {
-            Character.Instance.OnDamaged(transform.position, WeaponAtk);
-        }
-    }
-
-    void OnAttackEnd()
+    void OnHit()
     {
         anim.SetBool("isAttacking", false);
     }
+
 
     void OnCollapseEnd()
     {
