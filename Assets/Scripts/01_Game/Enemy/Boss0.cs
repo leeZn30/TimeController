@@ -82,9 +82,8 @@ public class Boss0 : Enemy
     {
         attackPosition = new Vector2(collider.bounds.center.x + collider.bounds.extents.x * (sprite.flipX ? 1 : -1), collider.bounds.center.y);
 
-        if (isOKToTurn)
-            sprite.flipX = playerXpose <= 0 ? false : true;
-
+        // if (isOKToTurn)
+        //     sprite.flipX = playerXpose <= 0 ? false : true;
         land();
 
         attack();
@@ -110,6 +109,21 @@ public class Boss0 : Enemy
         yield return new WaitForSeconds(seconds);
     }
 
+    void turn()
+    {
+        if (isOKToTurn)
+        {
+            sprite.flipX = playerXpose <= 0 ? false : true;
+        }
+    }
+
+    IEnumerator turnDelay(bool newFlip)
+    {
+        yield return Delay(0.2f);
+        sprite.flipX = newFlip;
+        rigid.AddForce(Vector2.right * playerXpose * 7f, ForceMode2D.Impulse);
+    }
+
     void Chase()
     {
         /*
@@ -125,8 +139,18 @@ public class Boss0 : Enemy
         {
             if (currentDistance > ShortDistance && !anim.GetBool("isAttacking") && !isEvasioning && !anim.GetBool("isThrowingSun"))
             {
-                anim.SetInteger("AnimState", 2);
-                rigid.AddForce(Vector2.right * playerXpose * 7f, ForceMode2D.Impulse);
+                bool nowFlip = sprite.flipX;
+                bool newFlip = playerXpose <= 0 ? false : true;
+
+                if (nowFlip != newFlip)
+                {
+                    StartCoroutine(turnDelay(newFlip));
+                }
+                else
+                {
+                    anim.SetInteger("AnimState", 2);
+                    rigid.AddForce(Vector2.right * playerXpose * 7f, ForceMode2D.Impulse);
+                }
 
                 if (Mathf.Abs(rigid.velocity.x) > 7f)
                 {
@@ -220,6 +244,7 @@ public class Boss0 : Enemy
     void OnThrowReady()
     {
         anim.SetBool("isThrowingSun", true);
+        anim.SetBool("isAttacking", false);
         StartCoroutine(throwSunReady());
     }
 
@@ -356,10 +381,25 @@ public class Boss0 : Enemy
     {
         if (isOKToHit)
         {
-            anim.SetBool("Hit", true);
+            bool isCritical = false;
+            if (damageType == DamageType.Player)
+            {
+                if (Random.value >= 0.95f)
+                {
+                    isCritical = true;
+                    damage *= Random.Range(1.5f, 2.0f);
+                }
+            }
+            else
+            {
+                isCritical = true;
+                damage *= Random.Range(2.0f, 3.0f);
+            }
+            damage = Mathf.Round(damage);
+
+            FixedUIManager.Instance.ShowDamage((int)damage, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2), isCritical);
 
             accumulatedDmg += damage;
-
             hp -= damage;
             if (hp <= 0)
                 Dead();
@@ -378,11 +418,29 @@ public class Boss0 : Enemy
         }
     }
 
-    void OnHit()
+    IEnumerator Hit()
     {
-        anim.SetBool("isAttacking", false);
-    }
+        Texture2D originTexture = sprite.sprite.texture;
 
+        Texture2D texture = new Texture2D(sprite.sprite.texture.width, sprite.sprite.texture.height);
+
+        // Set all pixels to white
+        for (int y = 0; y < texture.height; y++)
+        {
+            for (int x = 0; x < texture.width; x++)
+            {
+                texture.SetPixel(x, y, Color.white);
+            }
+        }
+        texture.Apply();
+
+        // Apply the modified texture to the sprite
+        sprite.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
+
+        yield return Delay(0.5f);
+
+        // sprite.sprite.texture = originTexture
+    }
 
     void OnCollapseEnd()
     {
