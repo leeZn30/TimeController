@@ -14,7 +14,7 @@ public class Boss0 : Enemy
     [SerializeField] float WeaponAtk;
     [SerializeField] float accumulatedDmg;
 
-    [Header("Bullets")]
+    [Header("Prefabs")]
     [SerializeField] Bullet bulletPfb;
     [SerializeField] Bullet sunPfb;
 
@@ -34,13 +34,14 @@ public class Boss0 : Enemy
 
     bool isOKToHit = true;
 
-    bool isOKToTurn => !anim.GetBool("isCharging") && !anim.GetBool("isCollapsed") && !anim.GetBool("isUltimate");
+    bool isOKToTurn => !anim.GetBool("isAttacking") && !isDash;
 
     bool isOKToAttack =>
     currentDistance < ShortDistance &&
     !anim.GetBool("isAttacking");
 
-    [SerializeField] bool isEvasioning = false;
+    bool isDash = false;
+    bool isEvasioning = false;
     int hitCount = 0;
     int playerXpose => collider.bounds.center.x - Character.Instance.transform.position.x >= 0 ? -1 : 1;
     // 단순 거리 재기이므로 rigid 사용할 필요 없음
@@ -51,6 +52,7 @@ public class Boss0 : Enemy
 
     GameObject sun;
     GameObject shield;
+    TrailRenderer trail;
     LineRenderer line;
 
     protected override void OnDrawGizmos()
@@ -72,10 +74,12 @@ public class Boss0 : Enemy
         sun = transform.GetChild(1).gameObject;
         sun.SetActive(false);
 
+        trail = transform.GetChild(2).gameObject.GetComponent<TrailRenderer>();
+        trail.enabled = false;
+
         originGravityScale = rigid.gravityScale;
 
         FindObjectOfType<Volume>().profile.TryGet(out chromatic);
-
     }
 
     protected override void Update()
@@ -131,13 +135,14 @@ public class Boss0 : Enemy
         1. 플레이어와의 격차가 많이 남 > 플랫폼 위인지 확인 후 플랫폼 떨어트리기 or 해던지기 or 대쉬 or 파트공격
         2. 플레이어와의 격차가 얼마 나지 않고, shrot보다 멀면 > 달려가기
         */
-        if (currentDistance > LongDistance && !isEvasioning)
+        if (currentDistance > LongDistance && !anim.GetBool("isAttacking") && !isEvasioning)
         {
+            turn();
             Dash();
         }
         else
         {
-            if (currentDistance > ShortDistance && !anim.GetBool("isAttacking") && !isEvasioning && !anim.GetBool("isThrowingSun"))
+            if (currentDistance > ShortDistance && !anim.GetBool("isAttacking") && !isEvasioning && !anim.GetBool("isThrowingSun") && !isDash)
             {
                 bool nowFlip = sprite.flipX;
                 bool newFlip = playerXpose <= 0 ? false : true;
@@ -159,7 +164,7 @@ public class Boss0 : Enemy
             }
             else
             {
-                if (!isEvasioning)
+                if (!isEvasioning && !isDash)
                 {
                     anim.SetInteger("AnimState", 1);
                     rigid.velocity = new Vector2(0, rigid.velocity.y);
@@ -195,8 +200,32 @@ public class Boss0 : Enemy
         anim.SetBool("isAttacking", false);
     }
 
-    void Dash()
+    void Dash(float speed = 15f)
     {
+        if (!isDash && !anim.GetBool("isThrowingSun"))
+        {
+            // sprite 바꿔야 함
+
+            trail.enabled = true;
+            isDash = true;
+
+            Vector2 target = (Vector2)Character.Instance.transform.position;
+            Vector2 direction = (target - rigid.position).normalized;
+
+            rigid.AddForce(direction * speed, ForceMode2D.Impulse);
+
+            StartCoroutine(DashDelay());
+        }
+    }
+
+    IEnumerator DashDelay()
+    {
+        yield return Delay(0.5f);
+
+        trail.enabled = false;
+        if (rigid.gravityScale == 0f)
+            rigid.gravityScale = originGravityScale;
+        isDash = false;
     }
 
     void Evasion()
@@ -253,13 +282,10 @@ public class Boss0 : Enemy
         rigid.gravityScale = 0f;
         sun.SetActive(true);
 
-        float duration = 0;
-        float speed = Random.Range(3, 11);
-        while (duration < 1f)
+        float yPosition = Random.Range(-1, 3);
+        while (rigid.position.y < yPosition)
         {
-            duration += Time.deltaTime;
-
-            transform.position += Vector3.up * speed * Time.deltaTime;
+            rigid.position += Vector2.up * 15f * Time.deltaTime;
             yield return null;
         }
 
@@ -274,22 +300,9 @@ public class Boss0 : Enemy
 
     void OnThrowSunEnd()
     {
-        StartCoroutine(throwEnd());
-    }
-
-    IEnumerator throwEnd()
-    {
-        while (!anim.GetBool("Grounded"))
-        {
-            rigid.position += Vector2.down * 50f * Time.deltaTime;
-            yield return null;
-        }
-
-        rigid.gravityScale = originGravityScale;
         anim.SetBool("isThrowingSun", false);
-        Dash();
+        Dash(30f);
     }
-
 
     IEnumerator Shield()
     {
