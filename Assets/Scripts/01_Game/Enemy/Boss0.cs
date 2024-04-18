@@ -14,6 +14,7 @@ public class Boss0 : Enemy
     [SerializeField] float WeaponAtk;
     float accumulatedDmg = 0f;
     float sheildDmg = 100f;
+    float shootTime = 0f;
 
     [Header("Prefabs")]
     [SerializeField] Bullet bulletPfb;
@@ -32,7 +33,6 @@ public class Boss0 : Enemy
     bool manualEvasion = true;
     bool isOKToEvasion =>
     manualEvasion &&
-    !isDash &&
     !isEvasioning &&
     hitCount >= 5 &&
     !anim.GetBool("isCharging") &&
@@ -42,6 +42,7 @@ public class Boss0 : Enemy
     bool manualLongChase = true;
     bool isOKToLongChase =>
     manualLongChase &&
+    !isDash &&
     currentDistance > LongDistance &&
     !anim.GetBool("isAttacking") &&
     !isEvasioning &&
@@ -52,6 +53,7 @@ public class Boss0 : Enemy
     bool manualShortChase = true;
     bool isOkToShortChase =>
     manualShortChase &&
+    currentDistance < LongDistance &&
     currentDistance > ShortDistance &&
     !anim.GetBool("isAttacking") &&
     !isEvasioning &&
@@ -183,6 +185,7 @@ public class Boss0 : Enemy
                     rigid.AddForce(Vector2.right * playerXpose * 7f, ForceMode2D.Impulse);
                 }
 
+
                 if (Mathf.Abs(rigid.velocity.x) > 7f)
                 {
                     rigid.velocity = new Vector2(7f * playerXpose, rigid.velocity.y);
@@ -197,7 +200,9 @@ public class Boss0 : Enemy
                 }
             }
         }
+
     }
+
 
     protected override void attack()
     {
@@ -214,11 +219,11 @@ public class Boss0 : Enemy
 
     void OnAttack()
     {
-        Collider2D player = Physics2D.OverlapBox(attackPosition, attackRange, 0, LayerMask.GetMask("Player"));
-        if (player != null)
-        {
-            Character.Instance.OnDamaged(transform.position, WeaponAtk);
-        }
+        // Collider2D player = Physics2D.OverlapBox(attackPosition, attackRange, 0, LayerMask.GetMask("Player"));
+        // if (player != null)
+        // {
+        //     Character.Instance.OnDamaged(transform.position, WeaponAtk);
+        // }
     }
 
     void OnAttackEnd()
@@ -231,7 +236,6 @@ public class Boss0 : Enemy
         if (!isDash && !anim.GetBool("isThrowingSun"))
         {
             // sprite 바꿔야 함
-
             trail.enabled = true;
             isDash = true;
 
@@ -251,6 +255,10 @@ public class Boss0 : Enemy
         trail.enabled = false;
         if (rigid.gravityScale == 0f)
             rigid.gravityScale = originGravityScale;
+
+        if (!manualEvasion)
+            manualEvasion = true;
+
         isDash = false;
     }
 
@@ -259,7 +267,6 @@ public class Boss0 : Enemy
         if (isOKToEvasion)
         {
             isEvasioning = true;
-            Debug.Log("Evasion!");
             if (anim.GetBool("isCharging"))
                 return;
 
@@ -351,7 +358,6 @@ public class Boss0 : Enemy
 
         yield return Delay(3f);
 
-        shield.SetActive(false);
         anim.SetBool("isCharging", false);
 
         rigid.gravityScale = 0f;
@@ -361,11 +367,11 @@ public class Boss0 : Enemy
             yield return null;
         }
 
+        shield.SetActive(false);
         anim.SetTrigger("Ultimate");
         anim.SetBool("isUltimate", true);
     }
 
-    float shootTime = 0f;
     void Shoot()
     {
         if (anim.GetBool("isUltimate") && shootTime < 5f)
@@ -393,13 +399,15 @@ public class Boss0 : Enemy
         }
         else if (shootTime > 5f)
         {
+            shootTime = 0f;
+            hitCount = 0;
             anim.SetBool("isUltimate", false);
-            Dash(30f);
 
             manualLongChase = true;
             manualShortChase = true;
-            manualEvasion = true;
             manualAttack = true;
+
+            Dash(30f);
         }
     }
 
@@ -457,15 +465,6 @@ public class Boss0 : Enemy
 
             hitCount++;
 
-            if (anim.GetBool("isCharging"))
-            {
-                if (chromatic.intensity.value != 0f)
-                    chromatic.intensity.value = 0f;
-
-                shield.SetActive(false);
-                anim.SetTrigger("Collapse");
-                anim.SetBool("isCollapsed", true);
-            }
         }
     }
 
