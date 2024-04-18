@@ -430,6 +430,12 @@ public class Character : Singleton<Character>
         Invoke("OffDamaged", invincibilityTime);
     }
 
+    public void KnockBack(Vector2 targetPos)
+    {
+        int dirc = transform.position.x - targetPos.x > 0 ? 1 : -1;
+        rigid.AddForce(new Vector2(dirc, 1) * 7, ForceMode2D.Impulse);
+    }
+
     // 무적 해제
     void OffDamaged()
     {

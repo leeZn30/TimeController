@@ -49,7 +49,6 @@ public class Boss0 : Enemy
     !anim.GetBool("isCharging") &&
     !anim.GetBool("isUltimate");
 
-
     bool manualShortChase = true;
     bool isOkToShortChase =>
     manualShortChase &&
@@ -81,6 +80,7 @@ public class Boss0 : Enemy
     float currentDistance => Vector3.Distance(collider.bounds.center, Character.Instance.transform.position);
     Vector2 attackRange = new Vector2(2, 3);
     Vector2 attackPosition;
+    Coroutine shieldC;
 
     GameObject sun;
     GameObject shield;
@@ -339,9 +339,10 @@ public class Boss0 : Enemy
         Dash(30f);
     }
 
-    Coroutine shieldC;
     IEnumerator Shield()
     {
+        Character.Instance.KnockBack(rigid.position);
+
         manualLongChase = false;
         manualShortChase = false;
         manualEvasion = false;
