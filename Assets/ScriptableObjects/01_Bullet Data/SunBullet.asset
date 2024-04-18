@@ -18,4 +18,4 @@ MonoBehaviour:
   maxDistance: 0
   rotateSpeed: 0
   parryPercent: 1
-  material: {fileID: 2100000, guid: ff3d780da2104304d99ab1208dc48ff4, type: 2}
+  material: {fileID: 2100000, guid: 1f5dfae646f8de94b9081b0d33a7537c, type: 2}

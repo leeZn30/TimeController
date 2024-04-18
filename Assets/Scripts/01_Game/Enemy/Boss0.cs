@@ -12,7 +12,8 @@ public class Boss0 : Enemy
     [SerializeField] float ShortDistance;
     [SerializeField] float LongDistance;
     [SerializeField] float WeaponAtk;
-    [SerializeField] float accumulatedDmg;
+    float accumulatedDmg = 0f;
+    float sheildDmg = 100f;
 
     [Header("Prefabs")]
     [SerializeField] Bullet bulletPfb;
@@ -28,15 +29,44 @@ public class Boss0 : Enemy
     float nextFireTime = 1f;
     float originGravityScale;
 
+    bool manualEvasion = true;
     bool isOKToEvasion =>
+    manualEvasion &&
+    !isDash &&
     !isEvasioning &&
-    hitCount >= 5;
+    hitCount >= 5 &&
+    !anim.GetBool("isCharging") &&
+    accumulatedDmg < sheildDmg &&
+    !anim.GetBool("isUltimate");
+
+    bool manualLongChase = true;
+    bool isOKToLongChase =>
+    manualLongChase &&
+    currentDistance > LongDistance &&
+    !anim.GetBool("isAttacking") &&
+    !isEvasioning &&
+    !anim.GetBool("isCharging") &&
+    !anim.GetBool("isUltimate");
+
+
+    bool manualShortChase = true;
+    bool isOkToShortChase =>
+    manualShortChase &&
+    currentDistance > ShortDistance &&
+    !anim.GetBool("isAttacking") &&
+    !isEvasioning &&
+    !anim.GetBool("isThrowingSun") &&
+    !isDash &&
+    !anim.GetBool("isCharging") &&
+    !anim.GetBool("isUltimate");
 
     bool isOKToHit = true;
 
     bool isOKToTurn => !anim.GetBool("isAttacking") && !isDash;
 
+    bool manualAttack = true;
     bool isOKToAttack =>
+    manualAttack &&
     currentDistance < ShortDistance &&
     !anim.GetBool("isAttacking");
 
@@ -91,15 +121,11 @@ public class Boss0 : Enemy
         land();
 
         attack();
-        // Shoot();
-        // if (accumulatedDmg > 100f)
-        //     StartCoroutine(Shield());
-        // if (isEvasion && anim.GetBool("Grounded"))
-        // {
-        //     StartCoroutine(throwSun());
-        //     isEvasion = false;
-        // }
+        Shoot();
 
+        // Evasion과 겹칠때 우선순위 둬야 함
+        if (accumulatedDmg > sheildDmg && !anim.GetBool("isCharging") && !isEvasioning)
+            StartCoroutine(Shield());
     }
 
     private void FixedUpdate()
@@ -135,14 +161,14 @@ public class Boss0 : Enemy
         1. 플레이어와의 격차가 많이 남 > 플랫폼 위인지 확인 후 플랫폼 떨어트리기 or 해던지기 or 대쉬 or 파트공격
         2. 플레이어와의 격차가 얼마 나지 않고, shrot보다 멀면 > 달려가기
         */
-        if (currentDistance > LongDistance && !anim.GetBool("isAttacking") && !isEvasioning)
+        if (isOKToLongChase)
         {
             turn();
             Dash();
         }
         else
         {
-            if (currentDistance > ShortDistance && !anim.GetBool("isAttacking") && !isEvasioning && !anim.GetBool("isThrowingSun") && !isDash)
+            if (isOkToShortChase)
             {
                 bool nowFlip = sprite.flipX;
                 bool newFlip = playerXpose <= 0 ? false : true;
@@ -232,6 +258,11 @@ public class Boss0 : Enemy
     {
         if (isOKToEvasion)
         {
+            isEvasioning = true;
+            Debug.Log("Evasion!");
+            if (anim.GetBool("isCharging"))
+                return;
+
             anim.SetBool("isAttacking", false);
 
             hitCount = 0;
@@ -244,7 +275,6 @@ public class Boss0 : Enemy
             }
             Jump(targetPosition);
 
-            isEvasioning = true;
         }
     }
 
@@ -306,46 +336,41 @@ public class Boss0 : Enemy
 
     IEnumerator Shield()
     {
-        // 맵 가운데로 돌진
-        if (!anim.GetBool("isCharging"))
+        manualLongChase = false;
+        manualShortChase = false;
+        manualEvasion = false;
+        manualAttack = false;
+
+        anim.SetTrigger("Charge");
+        anim.SetBool("isCharging", true);
+        anim.SetBool("isAttacking", false);
+        accumulatedDmg = 0f;
+
+        shield.transform.position = rigid.position + Vector2.right * 1.5f * playerXpose;
+        shield.SetActive(true);
+
+        yield return Delay(3f);
+
+        shield.SetActive(false);
+        anim.SetBool("isCharging", false);
+
+        rigid.gravityScale = 0f;
+        while (rigid.position.y < 1)
         {
-            accumulatedDmg = 0f;
-
-            anim.SetTrigger("Charge");
-            anim.SetBool("isCharging", true);
-
-            shield.transform.position = rigid.position + Vector2.right * 1.5f * playerXpose;
-            shield.SetActive(true);
-
-            // yield return StartCoroutine(Delay(3f));
-
-            float duration = 0f;
-
-            while (duration < 3f)
-            {
-                duration += Time.deltaTime;
-                // float newIntensity = Mathf.Clamp(chromatic.intensity.value + 0.3f * Time.deltaTime, 0f, 1f);
-                // chromatic.intensity.value = newIntensity;
-                yield return null;
-            }
-
-            shield.SetActive(false);
-            anim.SetBool("isCharging", false);
+            rigid.position += Vector2.up * 15f * Time.deltaTime;
+            yield return null;
         }
+
+        anim.SetTrigger("Ultimate");
+        anim.SetBool("isUltimate", true);
     }
 
-    IEnumerator Ultimate()
-    {
-        yield return Delay(5f);
-
-        anim.SetBool("isUltimate", false);
-        OnUltimateEnd();
-    }
-
+    float shootTime = 0f;
     void Shoot()
     {
-        if (anim.GetBool("isUltimate"))
+        if (anim.GetBool("isUltimate") && shootTime < 5f)
         {
+            shootTime += Time.deltaTime;
             if (Time.time > nextFireTime)
             {
                 nextFireTime = Time.time + fireRate;
@@ -365,6 +390,16 @@ public class Boss0 : Enemy
                     b.transform.rotation = Quaternion.AngleAxis(Bangle, Vector3.forward);
                 }
             }
+        }
+        else if (shootTime > 5f)
+        {
+            anim.SetBool("isUltimate", false);
+            Dash(30f);
+
+            manualLongChase = true;
+            manualShortChase = true;
+            manualEvasion = true;
+            manualAttack = true;
         }
     }
 
@@ -387,6 +422,8 @@ public class Boss0 : Enemy
         else
         {
             anim.SetBool("Grounded", false);
+
+            // rigid.gravityScale = originGravityScale;
         }
     }
 
@@ -413,6 +450,7 @@ public class Boss0 : Enemy
             FixedUIManager.Instance.ShowDamage((int)damage, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2), isCritical);
 
             accumulatedDmg += damage;
+
             hp -= damage;
             if (hp <= 0)
                 Dead();
@@ -458,25 +496,6 @@ public class Boss0 : Enemy
     void OnCollapseEnd()
     {
         anim.SetBool("isCollapsed", false);
-    }
-
-
-    void OnUlimateStart()
-    {
-        rigid.gravityScale = 0f;
-        rigid.position += Vector2.up;
-
-        anim.SetBool("isUltimate", true);
-    }
-
-    void OnUltimate()
-    {
-        StartCoroutine(Ultimate());
-    }
-
-    void OnUltimateEnd()
-    {
-        rigid.gravityScale = originGravityScale;
     }
 
     #region NoNeed
