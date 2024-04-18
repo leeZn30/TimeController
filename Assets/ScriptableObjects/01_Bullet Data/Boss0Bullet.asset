@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boss0Bullet
   m_EditorClassIdentifier: 
   BulletName: Boss0Bullet
-  damage: 0
+  damage: 4
   moveSpeed: 10
   maxDistance: 0
   rotateSpeed: 0

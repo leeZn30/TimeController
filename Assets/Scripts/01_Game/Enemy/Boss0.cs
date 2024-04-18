@@ -62,9 +62,10 @@ public class Boss0 : Enemy
     !anim.GetBool("isCharging") &&
     !anim.GetBool("isUltimate");
 
-    bool isOKToHit = true;
+    bool isOKToHit =>
+    !anim.GetBool("isUltimate");
 
-    bool isOKToTurn => !anim.GetBool("isAttacking") && !isDash;
+    bool isOKToTurn => !anim.GetBool("isAttacking") && !isDash && !anim.GetBool("isCollapsed");
 
     bool manualAttack = true;
     bool isOKToAttack =>
@@ -80,7 +81,6 @@ public class Boss0 : Enemy
     float currentDistance => Vector3.Distance(collider.bounds.center, Character.Instance.transform.position);
     Vector2 attackRange = new Vector2(2, 3);
     Vector2 attackPosition;
-    ChromaticAberration chromatic;
 
     GameObject sun;
     GameObject shield;
@@ -111,7 +111,6 @@ public class Boss0 : Enemy
 
         originGravityScale = rigid.gravityScale;
 
-        FindObjectOfType<Volume>().profile.TryGet(out chromatic);
     }
 
     protected override void Update()
@@ -127,7 +126,7 @@ public class Boss0 : Enemy
 
         // Evasion과 겹칠때 우선순위 둬야 함
         if (accumulatedDmg > sheildDmg && !anim.GetBool("isCharging") && !isEvasioning)
-            StartCoroutine(Shield());
+            shieldC = StartCoroutine(Shield());
     }
 
     private void FixedUpdate()
@@ -203,7 +202,6 @@ public class Boss0 : Enemy
 
     }
 
-
     protected override void attack()
     {
         if (isOKToAttack)
@@ -219,11 +217,11 @@ public class Boss0 : Enemy
 
     void OnAttack()
     {
-        // Collider2D player = Physics2D.OverlapBox(attackPosition, attackRange, 0, LayerMask.GetMask("Player"));
-        // if (player != null)
-        // {
-        //     Character.Instance.OnDamaged(transform.position, WeaponAtk);
-        // }
+        Collider2D player = Physics2D.OverlapBox(attackPosition, attackRange, 0, LayerMask.GetMask("Player"));
+        if (player != null)
+        {
+            Character.Instance.OnDamaged(transform.position, WeaponAtk);
+        }
     }
 
     void OnAttackEnd()
@@ -341,12 +339,15 @@ public class Boss0 : Enemy
         Dash(30f);
     }
 
+    Coroutine shieldC;
     IEnumerator Shield()
     {
         manualLongChase = false;
         manualShortChase = false;
         manualEvasion = false;
         manualAttack = false;
+
+        Character.Instance.transform.position += Vector3.right * playerXpose * 5f;
 
         anim.SetTrigger("Charge");
         anim.SetBool("isCharging", true);
@@ -457,6 +458,19 @@ public class Boss0 : Enemy
 
             FixedUIManager.Instance.ShowDamage((int)damage, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2), isCritical);
 
+            if (anim.GetBool("isCharging"))
+            {
+                if (shieldC != null)
+                    StopCoroutine(shieldC);
+                anim.SetBool("isCharging", false);
+
+                accumulatedDmg = 0f;
+                shield.SetActive(false);
+                anim.SetTrigger("Collapse");
+                anim.SetBool("isCollapsed", true);
+                StartCoroutine(CollapseWaiting());
+            }
+
             accumulatedDmg += damage;
 
             hp -= damage;
@@ -468,34 +482,14 @@ public class Boss0 : Enemy
         }
     }
 
-    IEnumerator Hit()
+    IEnumerator CollapseWaiting()
     {
-        Texture2D originTexture = sprite.sprite.texture;
+        yield return Delay(10f);
 
-        Texture2D texture = new Texture2D(sprite.sprite.texture.width, sprite.sprite.texture.height);
-
-        // Set all pixels to white
-        for (int y = 0; y < texture.height; y++)
-        {
-            for (int x = 0; x < texture.width; x++)
-            {
-                texture.SetPixel(x, y, Color.white);
-            }
-        }
-        texture.Apply();
-
-        // Apply the modified texture to the sprite
-        sprite.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
-
-        yield return Delay(0.5f);
-
-        // sprite.sprite.texture = originTexture
-    }
-
-    void OnCollapseEnd()
-    {
         anim.SetBool("isCollapsed", false);
+
     }
+
 
     #region NoNeed
     // 필요없음

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SunBullet
   m_EditorClassIdentifier: 
   BulletName: SunBullet
-  damage: 0
+  damage: 4
   moveSpeed: 30
   maxDistance: 0
   rotateSpeed: 0

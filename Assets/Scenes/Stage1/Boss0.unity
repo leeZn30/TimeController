@@ -5210,7 +5210,7 @@ GameObject:
   - component: {fileID: 1261546558}
   - component: {fileID: 1261546559}
   - component: {fileID: 1261546560}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
