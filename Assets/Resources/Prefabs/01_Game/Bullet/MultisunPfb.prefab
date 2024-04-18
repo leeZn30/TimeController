@@ -10,13 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4674367460443688312}
   - component: {fileID: 3380327185699571672}
-  - component: {fileID: -7516169345985215381}
-  - component: {fileID: -7864716359614127587}
   - component: {fileID: 5778353581488799050}
   - component: {fileID: 513223023643487319}
   - component: {fileID: -7388424444247877117}
   m_Layer: 10
-  m_Name: SunBullet
+  m_Name: MultisunPfb
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89,35 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-7516169345985215381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1504127969933438044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20bc86cc7be4c7c468ac1022865897fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletData: {fileID: 11400000, guid: e182b21fa54bad64ba608cc211a3fc0f, type: 2}
-  targetPose: {x: 0, y: 0, z: 0}
-  targetDirection: {x: 0, y: 0, z: 0}
---- !u!114 &-7864716359614127587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1504127969933438044}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 680598d4b4f88944fba9245cdb68e20e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isParried: 0
-  poses: []
 --- !u!120 &5778353581488799050
 LineRenderer:
   serializedVersion: 2
@@ -171,7 +140,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.14406776
+        value: 0.84070015
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -265,14 +234,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1504127969933438044}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 10
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

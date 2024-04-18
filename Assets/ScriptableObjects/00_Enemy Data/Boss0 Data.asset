@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyName: 
   hp: 300
-  damage: 2
-  sightRange: 0
+  damage: 1
+  sightRange: 10
   moveSpeed: 5
   ghost: 30

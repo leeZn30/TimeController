@@ -4091,7 +4091,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 829967953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8099995, y: -5.01, z: -10}
+  m_LocalPosition: {x: -26.62, y: -4.17, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4375,7 +4375,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033991715}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.81, y: -5.01, z: 0}
+  m_LocalPosition: {x: -26.62, y: -4.17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5963,7 +5963,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1656664655}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8099995, y: -0.91590166, z: -10}
+  m_LocalPosition: {x: -16.456259, y: -0.91590166, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6508,7 +6508,7 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: 04d27704e9c6bec44869c03e9f0c803f, type: 2}
   hp: 0
   atk: 0
-  sigthType: 0
+  sigthType: 1
   ShortDistance: 2
   LongDistance: 10
   WeaponAtk: 2
@@ -6516,6 +6516,7 @@ MonoBehaviour:
   sunPfb: {fileID: -7516169345985215381, guid: 9064624c979fa5c43811a53472707f94, type: 3}
   MapRightLimit: 30
   MapLeftLimit: -26
+  multiSunPfb: {fileID: 1504127969933438044, guid: a8fe876494972974986618a4a4929b19, type: 3}
 --- !u!61 &1829948765
 BoxCollider2D:
   m_ObjectHideFlags: 0

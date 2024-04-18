@@ -115,7 +115,7 @@ public abstract class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    virtual protected void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Trap" && gameObject.layer != 11)
         {

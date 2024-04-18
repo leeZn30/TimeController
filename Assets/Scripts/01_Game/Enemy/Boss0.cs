@@ -30,6 +30,7 @@ public class Boss0 : Enemy
     float nextFireTime = 1f;
     float originGravityScale;
 
+    bool BossActive = false;
     bool manualEvasion = true;
     bool isOKToEvasion =>
     manualEvasion &&
@@ -89,8 +90,11 @@ public class Boss0 : Enemy
 
     protected override void OnDrawGizmos()
     {
-        Gizmos.color = Color.magenta;
+        base.OnDrawGizmos();
+
+        Gizmos.color = Color.green;
         Gizmos.DrawWireCube(attackPosition, attackRange);
+
     }
 
     protected override void Awake()
@@ -115,24 +119,32 @@ public class Boss0 : Enemy
 
     protected override void Update()
     {
-        attackPosition = new Vector2(collider.bounds.center.x + collider.bounds.extents.x * (sprite.flipX ? 1 : -1), collider.bounds.center.y);
+        detectPlayer();
 
-        // if (isOKToTurn)
-        //     sprite.flipX = playerXpose <= 0 ? false : true;
-        land();
+        if (BossActive)
+        {
+            attackPosition = new Vector2(collider.bounds.center.x + collider.bounds.extents.x * (sprite.flipX ? 1 : -1), collider.bounds.center.y);
 
-        attack();
-        Shoot();
+            // if (isOKToTurn)
+            //     sprite.flipX = playerXpose <= 0 ? false : true;
+            land();
 
-        // Evasion과 겹칠때 우선순위 둬야 함
-        if (accumulatedDmg > sheildDmg && !anim.GetBool("isCharging") && !isEvasioning)
-            shieldC = StartCoroutine(Shield());
+            attack();
+            Shoot();
+
+            // Evasion과 겹칠때 우선순위 둬야 함
+            if (accumulatedDmg > sheildDmg && !anim.GetBool("isCharging") && !isEvasioning)
+                shieldC = StartCoroutine(Shield());
+        }
     }
 
     private void FixedUpdate()
     {
-        Chase();
-        Evasion();
+        if (BossActive)
+        {
+            Chase();
+            Evasion();
+        }
     }
 
     IEnumerator Delay(float seconds)
@@ -279,7 +291,6 @@ public class Boss0 : Enemy
                 targetPosition = new Vector2(rigid.position.x + playerXpose * dst, rigid.position.y);
             }
             Jump(targetPosition);
-
         }
     }
 
@@ -337,6 +348,38 @@ public class Boss0 : Enemy
     {
         anim.SetBool("isThrowingSun", false);
         Dash(30f);
+    }
+
+    [SerializeField] GameObject multiSunPfb;
+    IEnumerator spawnSuns()
+    {
+        float duration = 0f;
+        float spawnTimer = 0f;
+        float spawnRate = 0.5f;
+
+        while (duration < 3f)
+        {
+            duration += Time.deltaTime;
+            // 생성 타이머가 0 이하일 때
+            if (spawnTimer <= 0)
+            {
+                spawnTimer -= Time.deltaTime;
+
+                float screenHalfWidthInWorldUnits = Camera.main.aspect * Camera.main.orthographicSize;
+                float screenHalfWidth = screenHalfWidthInWorldUnits - sun.transform.localScale.x / 2;
+
+                // 기둥의 X 위치를 랜덤하게 설정
+                float randomX = Random.Range(-screenHalfWidth, screenHalfWidth);
+                // 기둥의 위치 설정
+                Vector3 spawnPosition = new Vector3(randomX, 5f, 0);
+                // 기둥 생성
+                GameObject newSun = Instantiate(multiSunPfb, spawnPosition, Quaternion.identity);
+
+                spawnTimer = spawnRate; // 생성 타이머 재설정
+            }
+
+            yield return null;
+        }
     }
 
     IEnumerator Shield()
@@ -426,6 +469,7 @@ public class Boss0 : Enemy
             if (isEvasioning)
             {
                 throwSun();
+                // StartCoroutine(spawnSuns());
                 isEvasioning = false;
             }
         }
@@ -471,31 +515,37 @@ public class Boss0 : Enemy
                 anim.SetBool("isCollapsed", true);
                 StartCoroutine(CollapseWaiting());
             }
-
-            accumulatedDmg += damage;
+            else if (!anim.GetBool("isCollapsed"))
+            {
+                accumulatedDmg += damage;
+                hitCount++;
+            }
 
             hp -= damage;
             if (hp <= 0)
                 Dead();
 
-            hitCount++;
 
         }
     }
 
     IEnumerator CollapseWaiting()
     {
-        yield return Delay(10f);
+        yield return Delay(3f);
 
         anim.SetBool("isCollapsed", false);
-
     }
 
-
-    #region NoNeed
-    // 필요없음
     protected override void detectPlayer()
     {
+        if (!BossActive)
+        {
+            Collider2D player = Physics2D.OverlapCircle(transform.position, enemyData.SightRange, LayerMask.GetMask("Player"));
+            if (player != null)
+            {
+                BossActive = true;
+            }
+        }
     }
-    #endregion
+
 }
