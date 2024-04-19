@@ -40,6 +40,10 @@ public class FlowerEnemy : Enemy
     {
         if (damageType == DamageType.ParriedBullet)
             base.OnDamaged(damage, damageType);
+        else
+        {
+            base.OnDamaged(0, damageType);
+        }
     }
 
     private void OnDestroy()

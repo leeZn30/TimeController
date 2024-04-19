@@ -52,8 +52,7 @@ public class Boss0 : Enemy
     !anim.GetBool("isUltimate") &&
     !isWindAttacking;
 
-    bool manualHit = true;
-    bool isOKToHit => manualHit;
+    bool isOKToHit = true;
 
     bool isOKToTurn => !anim.GetBool("isAttacking") && !isDash && !anim.GetBool("isCollapsed");
 
@@ -529,7 +528,10 @@ public class Boss0 : Enemy
             hp -= damage;
             if (hp <= 0)
                 Dead();
-
+        }
+        else
+        {
+            FixedUIManager.Instance.ShowDamage(0, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2), false);
         }
     }
 
@@ -543,12 +545,12 @@ public class Boss0 : Enemy
 
     void OnRecoverStart()
     {
-        manualHit = false;
+        isOKToHit = false;
     }
 
     void OnRecoverEnd()
     {
-        manualHit = true;
+        isOKToHit = true;
 
         manualChase = true;
         manualEvasion = true;
