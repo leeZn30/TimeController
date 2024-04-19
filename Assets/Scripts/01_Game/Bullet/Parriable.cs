@@ -8,6 +8,7 @@ using UnityEngine.Rendering;
 public class Parriable : MonoBehaviour
 {
     public bool isParried = false;
+    public bool isRotable = true;
     LineRenderer lineRenderer;
     Collider2D collider;
     float interval = 0.1f; // 3초
@@ -54,20 +55,22 @@ public class Parriable : MonoBehaviour
 
     IEnumerator rotateBullet()
     {
-        // 현재 회전 상태
-        Quaternion currentRotation = transform.rotation;
-        // 목표 회전 각도 (현재 각도에서 180도 추가)
-        Vector3 targetRotation = new Vector3(currentRotation.x, currentRotation.y, currentRotation.z + 180f);
-        float rotationSpeed = 200f;
-        while (transform.rotation != Quaternion.Euler(targetRotation))
+        if (isRotable)
         {
-            // 부드럽게 회전시키기
-            float step = rotationSpeed * Time.unscaledDeltaTime;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(targetRotation), step);
+            // 현재 회전 상태
+            Quaternion currentRotation = transform.rotation;
+            // 목표 회전 각도 (현재 각도에서 180도 추가)
+            Vector3 targetRotation = new Vector3(currentRotation.x, currentRotation.y, currentRotation.z + 180f);
+            float rotationSpeed = 200f;
+            while (transform.rotation != Quaternion.Euler(targetRotation))
+            {
+                // 부드럽게 회전시키기
+                float step = rotationSpeed * Time.unscaledDeltaTime;
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(targetRotation), step);
 
-            yield return null;
+                yield return null;
+            }
         }
-
         StartCoroutine(followLine());
     }
 

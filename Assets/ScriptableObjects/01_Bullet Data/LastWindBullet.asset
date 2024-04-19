@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47c73ae0cd5c93f4c87d7c7cb50d7625, type: 3}
-  m_Name: SunBullet
+  m_Name: LastWindBullet
   m_EditorClassIdentifier: 
-  BulletName: SunBullet
-  damage: 4
-  moveSpeed: 30
+  BulletName: LastWindBullet
+  damage: 2
+  moveSpeed: 10
   maxDistance: 0
   rotateSpeed: 0
-  parryPercent: 0
-  material: {fileID: 2100000, guid: 9804508e5f58a2140a561036622c1956, type: 2}
+  parryPercent: 1
+  material: {fileID: 2100000, guid: ff3d780da2104304d99ab1208dc48ff4, type: 2}

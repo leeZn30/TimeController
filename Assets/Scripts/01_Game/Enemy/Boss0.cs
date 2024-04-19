@@ -15,6 +15,7 @@ public class Boss0 : Enemy
     [SerializeField] Bullet bulletPfb;
     [SerializeField] Bullet sunPfb;
     [SerializeField] Bullet windBulletPfb;
+    [SerializeField] Bullet lastWindBulletPfb;
 
     [Header("Map Info")]
     [SerializeField] float MapRightLimit;
@@ -367,15 +368,27 @@ public class Boss0 : Enemy
         float duration = 0f;
         float fireRate = 1.7f;
         float spawnTimer = 0f;
+        float windCnt = 0;
         while (duration < 6f)
         {
             duration += Time.deltaTime;
             spawnTimer -= Time.deltaTime;
             while (spawnTimer <= 0f)
             {
-                Bullet w = BulletManager.TakeOutBullet(windBulletPfb.name, rigid.position + Vector2.right * playerXpose);
-                w.targetDirection = (Vector3.right * playerXpose).normalized;
-                w.transform.rotation = Quaternion.identity;
+                windCnt++;
+
+                if (windCnt <= 3)
+                {
+                    Bullet w = BulletManager.TakeOutBullet(windBulletPfb.name, rigid.position + Vector2.right * playerXpose);
+                    w.targetDirection = (Vector3.right * playerXpose).normalized;
+                    w.transform.rotation = Quaternion.identity;
+                }
+                else
+                {
+                    Bullet w = BulletManager.TakeOutBullet(lastWindBulletPfb.name, rigid.position + Vector2.right * playerXpose);
+                    w.targetDirection = (Vector3.right * playerXpose).normalized;
+                    w.transform.rotation = Quaternion.identity;
+                }
 
                 spawnTimer = fireRate;
                 yield return null;
@@ -499,7 +512,6 @@ public class Boss0 : Enemy
                         throwSun();
                     }
                 }
-
                 isEvasioning = false;
             }
         }

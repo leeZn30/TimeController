@@ -295,7 +295,9 @@ public class Character : Singleton<Character>
                     anim.SetBool("isAttacking", true);
                     StartCoroutine(detectCombo());
 
-                    Collider2D enemy = Physics2D.OverlapBox(hitPosition, hitBox, 0, LayerMask.GetMask("Enemy"));
+                    int layerMask =
+                    (1 << LayerMask.NameToLayer("Enemy")) | (1 << LayerMask.NameToLayer("CollapsedEnemy"));
+                    Collider2D enemy = Physics2D.OverlapBox(hitPosition, hitBox, 0, layerMask);
                     if (enemy != null)
                     {
                         if (enemy.tag == "Enemy")
