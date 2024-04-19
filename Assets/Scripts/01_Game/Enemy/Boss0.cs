@@ -40,21 +40,9 @@ public class Boss0 : Enemy
     !anim.GetBool("isUltimate") &&
     !isWindAttacking;
 
-    bool manualLongChase = true;
-    bool isOKToLongChase =>
-    manualLongChase &&
-    !isDash &&
-    currentDistance > LongDistance &&
-    !anim.GetBool("isAttacking") &&
-    !isEvasioning &&
-    !anim.GetBool("isCharging") &&
-    !anim.GetBool("isUltimate") &&
-    !isWindAttacking;
-
-    bool manualShortChase = true;
-    bool isOkToShortChase =>
-    manualShortChase &&
-    currentDistance < LongDistance &&
+    bool manualChase = true;
+    bool isOkToChase =>
+    manualChase &&
     currentDistance > ShortDistance &&
     !anim.GetBool("isAttacking") &&
     !isEvasioning &&
@@ -172,49 +160,35 @@ public class Boss0 : Enemy
 
     void Chase()
     {
-        /*
-        조건: 
-        1. 플레이어와의 격차가 많이 남 > 플랫폼 위인지 확인 후 플랫폼 떨어트리기 or 해던지기 or 대쉬 or 파트공격
-        2. 플레이어와의 격차가 얼마 나지 않고, shrot보다 멀면 > 달려가기
-        */
-        if (isOKToLongChase)
+        if (isOkToChase)
         {
-            turn();
-            Dash();
-        }
-        else
-        {
-            if (isOkToShortChase)
+            bool nowFlip = sprite.flipX;
+            bool newFlip = playerXpose <= 0 ? false : true;
+
+            if (nowFlip != newFlip)
             {
-                bool nowFlip = sprite.flipX;
-                bool newFlip = playerXpose <= 0 ? false : true;
-
-                if (nowFlip != newFlip)
-                {
-                    StartCoroutine(turnDelay(newFlip));
-                }
-                else
-                {
-                    anim.SetInteger("AnimState", 2);
-                    rigid.AddForce(Vector2.right * playerXpose * 7f, ForceMode2D.Impulse);
-                }
-
-
-                if (Mathf.Abs(rigid.velocity.x) > 7f)
-                {
-                    rigid.velocity = new Vector2(7f * playerXpose, rigid.velocity.y);
-                }
+                StartCoroutine(turnDelay(newFlip));
             }
             else
             {
-                if (!isEvasioning && !isDash && shieldCoroutine == null)
-                {
-                    anim.SetInteger("AnimState", 1);
-                    rigid.velocity = new Vector2(0, rigid.velocity.y);
-                }
+                anim.SetInteger("AnimState", 2);
+                rigid.AddForce(Vector2.right * playerXpose * 7f, ForceMode2D.Impulse);
+            }
+
+
+            if (Mathf.Abs(rigid.velocity.x) > 7f)
+            {
+                rigid.velocity = new Vector2(7f * playerXpose, rigid.velocity.y);
             }
         }
-
+        else
+        {
+            if (!isEvasioning && !isDash && shieldCoroutine == null)
+            {
+                anim.SetInteger("AnimState", 1);
+                rigid.velocity = new Vector2(0, rigid.velocity.y);
+            }
+        }
     }
 
     protected override void attack()
@@ -403,8 +377,7 @@ public class Boss0 : Enemy
     {
         Character.Instance.KnockBack(rigid.position, 10f);
 
-        manualLongChase = false;
-        manualShortChase = false;
+        manualChase = false;
         manualEvasion = false;
         manualAttack = false;
 
@@ -463,8 +436,7 @@ public class Boss0 : Enemy
             hitCount = 0;
             anim.SetBool("isUltimate", false);
 
-            manualLongChase = true;
-            manualShortChase = true;
+            manualChase = true;
             manualAttack = true;
 
             Dash(30f);
@@ -588,8 +560,7 @@ public class Boss0 : Enemy
     {
         manualHit = true;
 
-        manualLongChase = true;
-        manualShortChase = true;
+        manualChase = true;
         manualEvasion = true;
         manualAttack = true;
     }
