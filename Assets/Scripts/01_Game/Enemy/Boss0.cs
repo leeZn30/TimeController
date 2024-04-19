@@ -116,8 +116,6 @@ public class Boss0 : Enemy
         {
             attackPosition = new Vector2(collider.bounds.center.x + collider.bounds.extents.x * (sprite.flipX ? 1 : -1), collider.bounds.center.y);
 
-            // if (isOKToTurn)
-            //     sprite.flipX = playerXpose <= 0 ? false : true;
             land();
 
             attack();
@@ -141,14 +139,6 @@ public class Boss0 : Enemy
     IEnumerator Delay(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-    }
-
-    void turn()
-    {
-        if (isOKToTurn)
-        {
-            sprite.flipX = playerXpose <= 0 ? false : true;
-        }
     }
 
     IEnumerator turnDelay(bool newFlip)

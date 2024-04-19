@@ -7,8 +7,10 @@ public class BanditEnemy : Enemy
 {
     [SerializeField] float maxSpeed;
     [SerializeField] float WeaponAtk;
+    int playerXpose => collider.bounds.center.x - Character.Instance.transform.position.x >= 0 ? -1 : 1;
+    bool isOKToTurn => !anim.GetBool("isAttacking");
 
-    bool isMovable = true;
+    [SerializeField] bool isMovable = true;
 
     Vector2 hitPosition = new Vector2(0, 0);
     Vector2 hitBox = new Vector2(1f, 2.5f);
@@ -44,7 +46,6 @@ public class BanditEnemy : Enemy
     {
         if (!anim.GetBool("isAttacking"))
         {
-            isMovable = false;
             anim.SetBool("isAttacking", true);
             anim.SetTrigger("Attack");
         }
@@ -75,40 +76,48 @@ public class BanditEnemy : Enemy
 
     void run()
     {
-        if (isPlayerFound && isMovable)
+        if (isPlayerFound && isMovable && !anim.GetBool("isAttacking"))
         {
-            if (Vector2.Distance(Character.Instance.transform.position, transform.position) > 2f)
+            if (Vector2.Distance(Character.Instance.transform.position, transform.position) > 1.5f)
             {
                 if (anim.GetInteger("AnimState") != 2)
                     anim.SetInteger("AnimState", 2);
 
-                float direction;
-                if (Character.Instance.gameObject.transform.position.x - transform.position.x >= 0)
+                if (isOKToTurn)
                 {
-                    direction = 1;
-                    sprite.flipX = true;
-                }
-                else
-                {
-                    direction = -1;
-                    sprite.flipX = false;
-                }
+                    bool nowFlip = sprite.flipX;
+                    bool newFlip = playerXpose <= 0 ? false : true;
 
-                rigid.AddForce(Vector2.right * direction * enemyData.MoveSpeed, ForceMode2D.Impulse);
+                    if (nowFlip != newFlip)
+                    {
+                        StartCoroutine(turnDelay(newFlip));
+                    }
+                    else
+                    {
+                        anim.SetInteger("AnimState", 2);
+                        rigid.AddForce(Vector2.right * playerXpose * 7f, ForceMode2D.Impulse);
+                    }
+                }
 
                 if (Mathf.Abs(rigid.velocity.x) > maxSpeed)
                 {
-                    rigid.velocity = new Vector2(maxSpeed * direction, rigid.velocity.y);
+                    rigid.velocity = new Vector2(maxSpeed * playerXpose, rigid.velocity.y);
                 }
 
             }
             else
             {
                 rigid.velocity = new Vector2(0, rigid.velocity.y);
-
                 attack();
             }
         }
+    }
+
+    IEnumerator turnDelay(bool newFlip)
+    {
+        yield return new WaitForSeconds(0.2f);
+        sprite.flipX = newFlip;
+        rigid.AddForce(Vector2.right * playerXpose * 7f, ForceMode2D.Impulse);
     }
 
     void AttackDelayEvent()
@@ -121,18 +130,17 @@ public class BanditEnemy : Enemy
         anim.SetInteger("AnimState", 1);
         yield return new WaitForSeconds(0.5f);
 
-        isMovable = true;
         anim.SetBool("isAttacking", false);
     }
 
     void OnMovable()
     {
         isMovable = true;
-        anim.SetBool("isAttacking", false);
     }
 
     void OffMovable()
     {
+        anim.SetBool("isAttacking", false);
         isMovable = false;
     }
 
