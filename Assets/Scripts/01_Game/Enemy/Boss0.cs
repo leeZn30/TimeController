@@ -1,10 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.UIElements;
 
 public class Boss0 : Enemy
 {
@@ -19,13 +14,16 @@ public class Boss0 : Enemy
     [Header("Prefabs")]
     [SerializeField] Bullet bulletPfb;
     [SerializeField] Bullet sunPfb;
+    [SerializeField] Bullet windBulletPfb;
 
     [Header("Map Info")]
     [SerializeField] float MapRightLimit;
     [SerializeField] float MapLeftLimit;
 
+    int sunAttackCnt = 0;
+    int windAttackCnt = 0;
     int bulletCount = 10;
-    float circleRadius = 1f; // 원의 반지름
+    float circleRadius = 0f; // 원의 반지름
     float fireRate = 0.5f; // 탄막 발사 속도
     float nextFireTime = 1f;
     float originGravityScale;
@@ -38,7 +36,8 @@ public class Boss0 : Enemy
     hitCount >= 5 &&
     !anim.GetBool("isCharging") &&
     accumulatedDmg < sheildDmg &&
-    !anim.GetBool("isUltimate");
+    !anim.GetBool("isUltimate") &&
+    !isWindAttacking;
 
     bool manualLongChase = true;
     bool isOKToLongChase =>
@@ -48,7 +47,8 @@ public class Boss0 : Enemy
     !anim.GetBool("isAttacking") &&
     !isEvasioning &&
     !anim.GetBool("isCharging") &&
-    !anim.GetBool("isUltimate");
+    !anim.GetBool("isUltimate") &&
+    !isWindAttacking;
 
     bool manualShortChase = true;
     bool isOkToShortChase =>
@@ -60,11 +60,11 @@ public class Boss0 : Enemy
     !anim.GetBool("isThrowingSun") &&
     !isDash &&
     !anim.GetBool("isCharging") &&
-    !anim.GetBool("isUltimate");
+    !anim.GetBool("isUltimate") &&
+    !isWindAttacking;
 
     bool manualHit = true;
-    bool isOKToHit =>
-    !anim.GetBool("isUltimate");
+    bool isOKToHit => manualHit;
 
     bool isOKToTurn => !anim.GetBool("isAttacking") && !isDash && !anim.GetBool("isCollapsed");
 
@@ -74,6 +74,7 @@ public class Boss0 : Enemy
     currentDistance < ShortDistance &&
     !anim.GetBool("isAttacking");
 
+    bool isWindAttacking = false;
     bool isDash = false;
     bool isEvasioning = false;
     int hitCount = 0;
@@ -205,7 +206,7 @@ public class Boss0 : Enemy
             }
             else
             {
-                if (!isEvasioning && !isDash)
+                if (!isEvasioning && !isDash && shieldCoroutine == null)
                 {
                     anim.SetInteger("AnimState", 1);
                     rigid.velocity = new Vector2(0, rigid.velocity.y);
@@ -314,6 +315,7 @@ public class Boss0 : Enemy
 
     void throwSun()
     {
+        sunAttackCnt++;
         anim.SetTrigger("ThrowReady");
     }
 
@@ -351,48 +353,47 @@ public class Boss0 : Enemy
         Dash(30f);
     }
 
-    [SerializeField] GameObject multiSunPfb;
-    IEnumerator spawnSuns()
+    void windAttack()
+    {
+        windAttackCnt++;
+        isWindAttacking = true;
+        anim.SetInteger("AnimState", 1);
+        anim.SetBool("isAttacking", false);
+        StartCoroutine(knifeWind());
+    }
+
+    IEnumerator knifeWind()
     {
         float duration = 0f;
+        float fireRate = 1.7f;
         float spawnTimer = 0f;
-        float spawnRate = 0.5f;
-
-        while (duration < 3f)
+        while (duration < 6f)
         {
             duration += Time.deltaTime;
-            // 생성 타이머가 0 이하일 때
-            if (spawnTimer <= 0)
+            spawnTimer -= Time.deltaTime;
+            while (spawnTimer <= 0f)
             {
-                spawnTimer -= Time.deltaTime;
+                Bullet w = BulletManager.TakeOutBullet(windBulletPfb.name, rigid.position + Vector2.right * playerXpose);
+                w.targetDirection = (Vector3.right * playerXpose).normalized;
+                w.transform.rotation = Quaternion.identity;
 
-                float screenHalfWidthInWorldUnits = Camera.main.aspect * Camera.main.orthographicSize;
-                float screenHalfWidth = screenHalfWidthInWorldUnits - sun.transform.localScale.x / 2;
-
-                // 기둥의 X 위치를 랜덤하게 설정
-                float randomX = Random.Range(-screenHalfWidth, screenHalfWidth);
-                // 기둥의 위치 설정
-                Vector3 spawnPosition = new Vector3(randomX, 5f, 0);
-                // 기둥 생성
-                GameObject newSun = Instantiate(multiSunPfb, spawnPosition, Quaternion.identity);
-
-                spawnTimer = spawnRate; // 생성 타이머 재설정
+                spawnTimer = fireRate;
+                yield return null;
             }
-
             yield return null;
         }
+
+        isWindAttacking = false;
     }
 
     IEnumerator Shield()
     {
-        Character.Instance.KnockBack(collider.bounds.center);
+        Character.Instance.KnockBack(rigid.position, 10f);
 
         manualLongChase = false;
         manualShortChase = false;
         manualEvasion = false;
         manualAttack = false;
-
-        Character.Instance.transform.position += Vector3.right * playerXpose * 5f;
 
         anim.SetTrigger("Charge");
         anim.SetBool("isCharging", true);
@@ -433,7 +434,7 @@ public class Boss0 : Enemy
                 {
                     float angle = i * (360f / bulletCount) + radiusOffset; // 원형을 구성하는 각도 계산
                     Vector2 bulletDirection = Quaternion.Euler(0, 0, angle) * Vector3.right; // 각도에 따른 방향 계산
-                    Vector2 bulletPosition = rigid.position + bulletDirection * circleRadius; // 원 주위의 위치 계산
+                    Vector2 bulletPosition = (Vector2)collider.bounds.center + bulletDirection * circleRadius; // 원 주위의 위치 계산
 
                     // 탄막 생성
                     Bullet b = BulletManager.TakeOutBullet(bulletPfb.name, bulletPosition);
@@ -469,8 +470,36 @@ public class Boss0 : Enemy
 
             if (isEvasioning)
             {
-                throwSun();
-                // StartCoroutine(spawnSuns());
+                if (Mathf.Abs(sunAttackCnt - windAttackCnt) < 2)
+                {
+                    int randomValue = Random.Range(0, 2);
+                    switch (randomValue)
+                    {
+                        case 0:
+                            throwSun();
+                            break;
+
+                        case 1:
+                            windAttack();
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    if (sunAttackCnt > windAttackCnt)
+                    {
+                        windAttack();
+
+                    }
+                    else
+                    {
+                        throwSun();
+                    }
+                }
+
                 isEvasioning = false;
             }
         }
@@ -508,9 +537,10 @@ public class Boss0 : Enemy
             {
                 if (shieldCoroutine != null)
                     StopCoroutine(shieldCoroutine);
-                anim.SetBool("isCharging", false);
-
                 accumulatedDmg = 0f;
+                gameObject.layer = 16;
+
+                anim.SetBool("isCharging", false);
                 shield.SetActive(false);
                 anim.SetTrigger("Collapse");
                 anim.SetBool("isCollapsed", true);
@@ -526,7 +556,6 @@ public class Boss0 : Enemy
             if (hp <= 0)
                 Dead();
 
-
         }
     }
 
@@ -534,6 +563,7 @@ public class Boss0 : Enemy
     {
         yield return Delay(3f);
 
+        gameObject.layer = 7;
         anim.SetBool("isCollapsed", false);
     }
 
@@ -562,6 +592,11 @@ public class Boss0 : Enemy
                 BossActive = true;
             }
         }
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D other)
+    {
+        base.OnTriggerEnter2D(other);
     }
 
 }

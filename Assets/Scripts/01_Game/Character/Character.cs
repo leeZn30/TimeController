@@ -430,10 +430,10 @@ public class Character : Singleton<Character>
         Invoke("OffDamaged", invincibilityTime);
     }
 
-    public void KnockBack(Vector2 targetPos)
+    public void KnockBack(Vector2 targetPos, float power = 7f)
     {
         int dirc = transform.position.x - targetPos.x > 0 ? 1 : -1;
-        rigid.AddForce(new Vector2(dirc, 1) * 7, ForceMode2D.Impulse);
+        rigid.AddForce(new Vector2(dirc, 1) * power, ForceMode2D.Impulse);
     }
 
     // 무적 해제
@@ -604,7 +604,7 @@ public class Character : Singleton<Character>
         if (other.gameObject.tag.Equals("Enemy"))
         {
             Enemy e = other.gameObject.GetComponent<Enemy>();
-            if (e != null && e.atk > 0)
+            if (e != null && e.atk > 0 && e.gameObject.layer != 16)
                 OnDamaged(other.transform.position, e.atk);
         }
     }
