@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CCTVBullet
   m_EditorClassIdentifier: 
   BulletName: CCTVBullet
-  damage: 4
+  damage: 2
   moveSpeed: 15
   maxDistance: 0
   rotateSpeed: 0

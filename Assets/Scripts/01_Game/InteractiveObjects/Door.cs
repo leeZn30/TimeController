@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
@@ -51,8 +50,7 @@ public class Door : MonoBehaviour
         if (isInteractable)
         {
             isInteractable = false;
-            SceneManager.LoadScene(NextScene);
-            Background.Instance.resetMaterial();
+            SceneChanger.LoadScene(NextScene);
         }
         else
         {

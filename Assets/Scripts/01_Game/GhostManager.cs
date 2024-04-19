@@ -14,6 +14,8 @@ public class GhostManager : Singleton<GhostManager>
     private void Awake()
     {
         text = GetComponentInChildren<TextMeshProUGUI>();
+        ghostCount = GameData.Ghosts;
+        text.SetText(ghostCount.ToString());
     }
 
     public void CreateGhost(int score, Vector3 createdPoint)

@@ -453,7 +453,7 @@ public class Character : Singleton<Character>
 
     void DeadAnimationEvent()
     {
-        GameManager.Instance.OpenMenu();
+        GameManager.Instance.Failed();
         Destroy(gameObject);
     }
 

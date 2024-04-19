@@ -34,7 +34,7 @@ public class HeartManager : Singleton<HeartManager>
 
     public void calculateHeart(float damage)
     {
-        while (damage > 0)
+        while (damage > 0 && heartHps.Count > 0)
         {
             heartHps[heartHps.Count - 1]--;
             if (heartHps[heartHps.Count - 1] == 0)

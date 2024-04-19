@@ -54,12 +54,28 @@ public class GameManager : Singleton<GameManager>
 
     public void Retry()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (GameData.ReviveScene != -1)
+            SceneChanger.LoadScene(GameData.ReviveScene);
+        else
+        {
+            SceneChanger.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
         popESC();
     }
 
     public void Exit()
     {
         popESC();
+    }
+
+    public void Clear()
+    {
+
+    }
+
+    public void Failed()
+    {
+        OpenMenu();
     }
 }

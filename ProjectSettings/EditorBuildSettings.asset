@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stage1/Tower2.unity
     guid: b89956af2d3d33c48936ca7f131f86ec
+  - enabled: 1
+    path: Assets/Scenes/Stage1/Boss0.unity
+    guid: 48e54d67a1437b9438f108e324da2c1b
   m_configObjects: {}
