@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletName: CCTVSpecial
   damage: 2
-  moveSpeed: 20
+  moveSpeed: 15
   maxDistance: 10
   rotateSpeed: 0
   parryPercent: 1

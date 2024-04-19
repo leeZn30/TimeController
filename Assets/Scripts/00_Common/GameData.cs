@@ -8,7 +8,7 @@ public class GameData : Singleton<GameData>
     [Header("Game Info")]
     static int _stage;
     public static int Stage { get { return _stage; } set { _stage = value; } }
-    static int _reviveScene;
+    static int _reviveScene = -1;
     public static int ReviveScene { get { return _reviveScene; } set { _reviveScene = value; } }
     static int _checkpoint = -1;
     public static int CheckPoint { get { return _checkpoint; } set { _checkpoint = value; } }
@@ -24,7 +24,9 @@ public class GameData : Singleton<GameData>
     public static bool RewindActive;
     static bool _slowActive;
     public static bool SlowActive;
-    public static int nowGhosts;
+    static int _nowGhosts;
+    public static int NowGhosts { get { return _nowGhosts; } set { _nowGhosts = value; } }
+
 
     private void Awake()
     {

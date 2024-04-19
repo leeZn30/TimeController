@@ -61,7 +61,7 @@ public class GameManager : Singleton<GameManager>
             SceneChanger.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
-        GameData.nowGhosts = GameData.Ghosts;
+        GameData.NowGhosts = GameData.Ghosts;
         popESC();
     }
 
