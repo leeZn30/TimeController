@@ -8,6 +8,8 @@ public class SightView : MonoBehaviour
 
     Color blinkColor;
     [SerializeField] float blinkDuration = 1.0f;
+    [SerializeField] float blinkedTime = 3f;
+    [SerializeField] float coloredTime = 3f;
 
     new private SpriteRenderer renderer;
     private Color initialColor;
@@ -51,7 +53,7 @@ public class SightView : MonoBehaviour
             }
 
             cctv.isSightVewing = false;
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(blinkedTime);
 
             cctv.isSightVewing = true;
             // 색을 되돌리는 부분 추가
@@ -63,7 +65,7 @@ public class SightView : MonoBehaviour
                 yield return null;
             }
 
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(coloredTime);
         }
     }
 }
