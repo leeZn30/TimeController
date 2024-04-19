@@ -29,7 +29,7 @@ public class Door : MonoBehaviour
     private void Awake()
     {
         Fixedcanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
-        collider = GetComponent<BoxCollider2D>();
+        collider = GetComponent<Collider2D>();
 
         ItemPosition = collider.bounds.center;
         InteractPosition = collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2 + interactPfb.transform.localScale.y / 2, 0);
