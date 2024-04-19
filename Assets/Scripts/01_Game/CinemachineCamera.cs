@@ -27,7 +27,7 @@ public class CinemachineCamera : Singleton<CinemachineCamera>
 
     public void ResetCamera()
     {
-        Transform character = FindObjectOfType<Character>().transform;
+        Transform character = Character.Instance.transform;
 
         Camera.m_Lens.OrthographicSize = DefaultOrthographicSize;
         composer.m_DeadZoneWidth = DeadZone.x;

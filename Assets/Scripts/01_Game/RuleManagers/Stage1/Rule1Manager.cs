@@ -32,4 +32,16 @@ public class Rule1Manager : Singleton<Rule1Manager>
             }
         }
     }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag.Equals("Player"))
+        {
+            // 또로롱~ 울리게 하기
+            if (CC.Instance.OrthographicSize != ZoomInSize)
+            {
+                CC.Instance.ResetCamera();
+            }
+        }
+    }
 }

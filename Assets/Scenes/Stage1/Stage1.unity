@@ -690,7 +690,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4556573247717929748, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_Name
-      value: Door3_B
+      value: Door3
       objectReference: {fileID: 0}
     - target: {fileID: 6348746982244196779, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: NextScene
@@ -702,11 +702,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6748512786115392562, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 102.05731
+      value: 102
       objectReference: {fileID: 0}
     - target: {fileID: 6748512786115392562, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 98.9
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 6748512786115392562, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4993,7 +4993,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702430221}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 99.8, y: 70.1, z: -1}
+  m_LocalPosition: {x: 98.4, y: 68.2, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10810,7 +10810,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753688381}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 99.8, y: 70.1, z: -11}
+  m_LocalPosition: {x: 98.4, y: 68.2, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11024,7 +11024,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791943028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 99.8, y: 70.1, z: -11}
+  m_LocalPosition: {x: 98.4, y: 68.2, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45893,6 +45893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StageId: 1
+  DoorName: 
 --- !u!1 &1923291711
 GameObject:
   m_ObjectHideFlags: 0
@@ -46912,11 +46913,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6748512786115392562, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 102.05731
+      value: 102
       objectReference: {fileID: 0}
     - target: {fileID: 6748512786115392562, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 66.04
+      value: 66
       objectReference: {fileID: 0}
     - target: {fileID: 6748512786115392562, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_LocalPosition.z

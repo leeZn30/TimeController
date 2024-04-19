@@ -1244,7 +1244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4556573247717929748, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_Name
-      value: Door
+      value: Door3
       objectReference: {fileID: 0}
     - target: {fileID: 4556573247717929748, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_IsActive
@@ -3805,7 +3805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4556573247717929748, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: m_Name
-      value: Door (1)
+      value: Door2
       objectReference: {fileID: 0}
     - target: {fileID: 6348746982244196779, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: isOpen
