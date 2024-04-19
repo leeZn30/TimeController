@@ -59,14 +59,26 @@ public class Parriable : MonoBehaviour
         {
             // 현재 회전 상태
             Quaternion currentRotation = transform.rotation;
+
             // 목표 회전 각도 (현재 각도에서 180도 추가)
-            Vector3 targetRotation = new Vector3(currentRotation.x, currentRotation.y, currentRotation.z + 180f);
+            Vector3 targetRotation = new Vector3(currentRotation.eulerAngles.x, currentRotation.eulerAngles.y, currentRotation.eulerAngles.z + 180f);
             float rotationSpeed = 200f;
-            while (transform.rotation != Quaternion.Euler(targetRotation))
+
+            while (true)
             {
                 // 부드럽게 회전시키기
                 float step = rotationSpeed * Time.unscaledDeltaTime;
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(targetRotation), step);
+
+                // 회전 각도 비교
+                float angleDifference = Quaternion.Angle(transform.rotation, Quaternion.Euler(targetRotation));
+
+                // 회전이 거의 완료되었을 때 루프 종료
+                if (angleDifference < 0.1f)
+                {
+                    transform.rotation = Quaternion.Euler(targetRotation);
+                    break;
+                }
 
                 yield return null;
             }
@@ -92,6 +104,11 @@ public class Parriable : MonoBehaviour
         FindObjectOfType<Volume>().profile.TryGet(out vignette);
         vignette.intensity.value = 0f;
         Time.timeScale = 1;
+
+        // trigger 감지를 위해 살짝 지연
+        yield return new WaitForSeconds(0.1f);
+        Bullet bullet = GetComponent<Bullet>();
+        BulletManager.InsertBullet(bullet);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
