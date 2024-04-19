@@ -62,6 +62,7 @@ public class Boss0 : Enemy
     !anim.GetBool("isCharging") &&
     !anim.GetBool("isUltimate");
 
+    bool manualHit = true;
     bool isOKToHit =>
     !anim.GetBool("isUltimate");
 
@@ -81,7 +82,7 @@ public class Boss0 : Enemy
     float currentDistance => Vector3.Distance(collider.bounds.center, Character.Instance.transform.position);
     Vector2 attackRange = new Vector2(2, 3);
     Vector2 attackPosition;
-    Coroutine shieldC;
+    Coroutine shieldCoroutine;
 
     GameObject sun;
     GameObject shield;
@@ -134,7 +135,7 @@ public class Boss0 : Enemy
 
             // Evasion과 겹칠때 우선순위 둬야 함
             if (accumulatedDmg > sheildDmg && !anim.GetBool("isCharging") && !isEvasioning)
-                shieldC = StartCoroutine(Shield());
+                shieldCoroutine = StartCoroutine(Shield());
         }
     }
 
@@ -384,7 +385,7 @@ public class Boss0 : Enemy
 
     IEnumerator Shield()
     {
-        Character.Instance.KnockBack(rigid.position);
+        Character.Instance.KnockBack(collider.bounds.center);
 
         manualLongChase = false;
         manualShortChase = false;
@@ -505,8 +506,8 @@ public class Boss0 : Enemy
 
             if (anim.GetBool("isCharging"))
             {
-                if (shieldC != null)
-                    StopCoroutine(shieldC);
+                if (shieldCoroutine != null)
+                    StopCoroutine(shieldCoroutine);
                 anim.SetBool("isCharging", false);
 
                 accumulatedDmg = 0f;
@@ -534,6 +535,21 @@ public class Boss0 : Enemy
         yield return Delay(3f);
 
         anim.SetBool("isCollapsed", false);
+    }
+
+    void OnRecoverStart()
+    {
+        manualHit = false;
+    }
+
+    void OnRecoverEnd()
+    {
+        manualHit = true;
+
+        manualLongChase = true;
+        manualShortChase = true;
+        manualEvasion = true;
+        manualAttack = true;
     }
 
     protected override void detectPlayer()

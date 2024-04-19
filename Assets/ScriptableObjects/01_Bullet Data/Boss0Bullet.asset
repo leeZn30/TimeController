@@ -17,5 +17,5 @@ MonoBehaviour:
   moveSpeed: 10
   maxDistance: 0
   rotateSpeed: 0
-  parryPercent: 0
+  parryPercent: 0.1
   material: {fileID: 2100000, guid: ff3d780da2104304d99ab1208dc48ff4, type: 2}
