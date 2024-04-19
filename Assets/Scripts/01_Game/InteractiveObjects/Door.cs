@@ -50,6 +50,7 @@ public class Door : MonoBehaviour
         if (isInteractable)
         {
             isInteractable = false;
+            GameData.nowGhosts = GhostManager.Instance.ghostCount;
             SceneChanger.LoadScene(NextScene);
         }
         else

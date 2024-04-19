@@ -24,6 +24,7 @@ public class GameData : Singleton<GameData>
     public static bool RewindActive;
     static bool _slowActive;
     public static bool SlowActive;
+    public static int nowGhosts;
 
     private void Awake()
     {
