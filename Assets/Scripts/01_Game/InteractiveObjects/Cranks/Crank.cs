@@ -46,11 +46,12 @@ public class Crank : MonoBehaviour
 
     virtual protected void interact()
     {
+        SoundManager.Instance.PlaySFX(AudioType.Crank, "Interact");
+
         isInteractable = false;
         spriteRenderer.sprite = CrankDown;
 
         StartCoroutine(Push());
-
     }
 
     IEnumerator Push()

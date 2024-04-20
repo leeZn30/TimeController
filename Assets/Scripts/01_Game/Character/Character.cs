@@ -167,6 +167,7 @@ public class Character : Singleton<Character>
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                SoundManager.Instance.PlaySFX(AudioType.Character, "Jump");
                 if (!anim.GetBool("isJumpping"))
                 {
                     isJumping = true;
