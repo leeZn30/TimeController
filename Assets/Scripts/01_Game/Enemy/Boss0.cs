@@ -8,7 +8,7 @@ public class Boss0 : Enemy
     [SerializeField] float LongDistance;
     [SerializeField] float WeaponAtk;
     float accumulatedDmg = 0f;
-    float sheildDmg = 100f;
+    float shieldDmg = 50f;
     float shootTime = 0f;
 
     [Header("Prefabs")]
@@ -36,7 +36,7 @@ public class Boss0 : Enemy
     !isEvasioning &&
     hitCount >= 5 &&
     !anim.GetBool("isCharging") &&
-    accumulatedDmg < sheildDmg &&
+    accumulatedDmg < shieldDmg &&
     !anim.GetBool("isUltimate") &&
     !isWindAttacking;
 
@@ -121,7 +121,7 @@ public class Boss0 : Enemy
             Shoot();
 
             // Evasion과 겹칠때 우선순위 둬야 함
-            if (accumulatedDmg > sheildDmg && !anim.GetBool("isCharging") && !isEvasioning)
+            if (accumulatedDmg > shieldDmg && !anim.GetBool("isCharging") && !isEvasioning)
                 shieldCoroutine = StartCoroutine(Shield());
         }
     }
@@ -364,8 +364,6 @@ public class Boss0 : Enemy
 
     IEnumerator Shield()
     {
-        Character.Instance.KnockBack(rigid.position, 10f);
-
         manualChase = false;
         manualEvasion = false;
         manualAttack = false;

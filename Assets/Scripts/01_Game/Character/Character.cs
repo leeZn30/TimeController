@@ -49,7 +49,7 @@ public class Character : Singleton<Character>
     Vector2 hitPosition;
     Vector2 hitBox = new Vector2(1f, 2);
     Vector2 parryingPosition;
-    Vector2 parryingBox = new Vector2(1.5f, 2.2f);
+    Vector2 parryingBox = new Vector2(1.3f, 2.2f); //1.3f, 2.2f
 
     // **************** 프리팹 ********************
     [Header("Prefabs")]
@@ -77,7 +77,7 @@ public class Character : Singleton<Character>
         background = FindObjectOfType<Background>();
 
         hitPosition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
-        parryingPosition = transform.position;
+        parryingPosition = rigid.position;
 
         TrailQueue = ObjectPool.CreateQueue<Trail>(5, trailPrefab);
 
@@ -94,7 +94,7 @@ public class Character : Singleton<Character>
             extraMove();
             parry();
             hitPosition = new Vector2(rigid.position.x + (sprite.flipX ? -1 : 1) * transform.localScale.x, rigid.position.y);
-            parryingPosition = transform.position;
+            parryingPosition = rigid.position;
 
             // 스킬
             chargeSkill();
@@ -120,7 +120,6 @@ public class Character : Singleton<Character>
         Gizmos.DrawWireCube(hitPosition, hitBox);
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(parryingPosition, parryingBox);
-        // Gizmos.DrawWireSphere(parryingPosition, parryingRadius);
     }
 
     void Init()
@@ -368,6 +367,7 @@ public class Character : Singleton<Character>
             if (Input.GetMouseButtonDown(1))
             {
                 Collider2D bullet = Physics2D.OverlapBox(parryingPosition, parryingBox, 0, LayerMask.GetMask("Bullet"));
+                // Collider2D bullet = Physics2D.OverlapCapsule(rigid.position, new Vector2(1.3f, 2.1f), CapsuleDirection2D.Vertical, 0f);
                 if (bullet != null)
                 {
                     Parriable p = bullet.GetComponent<Parriable>();
@@ -431,12 +431,6 @@ public class Character : Singleton<Character>
         sprite.color = new Color(1, 1, 1, 0.5f);
 
         Invoke("OffDamaged", invincibilityTime);
-    }
-
-    public void KnockBack(Vector2 targetPos, float power = 7f)
-    {
-        int dirc = transform.position.x - targetPos.x > 0 ? 1 : -1;
-        rigid.AddForce(new Vector2(dirc, 1) * power, ForceMode2D.Impulse);
     }
 
     // 무적 해제
