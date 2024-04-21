@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5916426422564169759}
   - component: {fileID: 1004266734094253463}
-  - component: {fileID: 3676940268329847047}
   - component: {fileID: 6884398433987056156}
+  - component: {fileID: -7790165021631166997}
   m_Layer: 0
   m_Name: BossDoor
   m_TagString: Untagged
@@ -86,24 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3676940268329847047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6397463812978769668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1954c16d42cabe4fb03f3a9148a6898, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NextScene: Boss0
-  isGainItem: 1
-  isInteractable: 1
-  NoItemPfb: {fileID: 2767282933022604344, guid: d11540c3fe2e1f547b96c58ce2f40e38, type: 3}
-  HaveItemPfb: {fileID: 6449160280108145350, guid: 36a3117d049c2ea4f9051f77e09fe851, type: 3}
-  interactPfb: {fileID: 6440122066688137083, guid: d16fe705140f39c429a94c8ed9af8061, type: 3}
 --- !u!70 &6884398433987056156
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -139,3 +121,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 2.5374908, y: 4}
   m_Direction: 0
+--- !u!114 &-7790165021631166997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6397463812978769668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8f86ca35ca4674aa7b6fc557254da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOpen: 1
+  NextScene: 
+  interactPfb: {fileID: 6440122066688137083, guid: d16fe705140f39c429a94c8ed9af8061, type: 3}

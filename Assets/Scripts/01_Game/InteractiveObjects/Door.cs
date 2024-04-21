@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    public string PairKeyName = "";
     [SerializeField] string NextScene;
-    [SerializeField] bool isGainItem = false;
+    public bool isGainItem = false;
     [SerializeField] bool isInteractable = false;
     bool isPlayerIn = false;
 
@@ -12,8 +13,8 @@ public class Door : MonoBehaviour
     [SerializeField] GameObject HaveItemPfb;
     [SerializeField] GameObject interactPfb;
 
-    Canvas Fixedcanvas;
-    Collider2D collider;
+    protected Canvas Fixedcanvas;
+    protected Collider2D collider;
 
     GameObject interactUI;
     GameObject HaveItemUI;
@@ -23,7 +24,7 @@ public class Door : MonoBehaviour
     Vector3 InteractPosition;
 
 
-    private void Awake()
+    protected void Awake()
     {
         Fixedcanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
         collider = GetComponent<Collider2D>();
@@ -45,10 +46,14 @@ public class Door : MonoBehaviour
         }
     }
 
-    void interact()
+    protected void interact()
     {
         if (isInteractable)
         {
+            // 문 한번 열면 저장
+            if (!PairKeyName.Equals(""))
+                GameData.itemDatas.Find(x => x.ID == PairKeyName).IsGain = true;
+
             isInteractable = false;
             GameData.NowGhosts = GhostManager.Instance.ghostCount;
             SceneChanger.LoadSceneByDoor(NextScene, gameObject.name);
@@ -83,8 +88,9 @@ public class Door : MonoBehaviour
         transform.position = startPosition;
     }
 
-    public void Open()
+    public virtual void Unlock()
     {
+        isGainItem = true;
         isInteractable = true;
         Destroy(NoItemUI);
         HaveItemUI = Instantiate(HaveItemPfb, ItemPosition, Quaternion.identity, Fixedcanvas.transform);

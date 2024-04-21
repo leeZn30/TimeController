@@ -8,12 +8,13 @@ using UnityEngine.SceneManagement;
 public class StageManager : Singleton<StageManager>
 {
     public int StageId;
-    int currentCheckPoint;
     List<CheckPoint> CheckPoints = new List<CheckPoint>();
+    public static List<ItemData> tempItemDatas;
 
     private void Awake()
     {
         GameData.Stage = StageId;
+        tempItemDatas = new List<ItemData>();
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -31,8 +32,6 @@ public class StageManager : Singleton<StageManager>
 
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-
-
 
     public static void SaveStage(int CheckIdx)
     {

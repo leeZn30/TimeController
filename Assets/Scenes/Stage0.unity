@@ -2928,7 +2928,7 @@ MonoBehaviour:
   Atk: 10
   TeleportActive: 0
   TeleportGauge: {fileID: 1924361079}
-  teleportChargeSpeed: 10
+  teleportChargeSpeed: 100
   RewindActive: 0
   RewindGauge: 0
   maxRewindGauge: 0
@@ -3289,7 +3289,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StageId: 0
-  DoorName: 
 --- !u!4 &1133362168
 Transform:
   m_ObjectHideFlags: 0

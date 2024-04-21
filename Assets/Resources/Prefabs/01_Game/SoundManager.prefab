@@ -161,7 +161,7 @@ Transform:
   - {fileID: 2521455717222597225}
   - {fileID: 3336045340596621401}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2142522029558262930
 MonoBehaviour:
@@ -183,6 +183,8 @@ MonoBehaviour:
   Crank:
   - {fileID: 8300000, guid: d8d04c6f80a1140db85ede568dab1f51, type: 3}
   Door: []
+  BossDoor:
+  - {fileID: 8300000, guid: 4e1ff8faed12a475eba9be0e46072269, type: 3}
   Puzzle:
   - {fileID: 8300000, guid: 2667a0a008b044e218b63df62e2be749, type: 3}
 --- !u!1 &3772120442829735833

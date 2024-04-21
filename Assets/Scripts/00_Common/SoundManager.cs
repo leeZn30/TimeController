@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum AudioType
 {
-    Character, Crank, Door, Puzzle
+    Character, Crank, Door, BossDoor, Puzzle
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -21,6 +21,7 @@ public class SoundManager : Singleton<SoundManager>
     [Header("Object")]
     [SerializeField] List<AudioClip> Crank = new List<AudioClip>();
     [SerializeField] List<AudioClip> Door = new List<AudioClip>();
+    [SerializeField] List<AudioClip> BossDoor = new List<AudioClip>();
 
     [Header("Puzzle")]
     public List<AudioClip> Puzzle = new List<AudioClip>();
@@ -48,6 +49,10 @@ public class SoundManager : Singleton<SoundManager>
 
             case AudioType.Door:
                 ObjectSC.PlayOneShot(Door.Find(e => e.name == sound));
+                break;
+
+            case AudioType.BossDoor:
+                ObjectSC.PlayOneShot(BossDoor.Find(e => e.name == sound));
                 break;
 
             case AudioType.Puzzle:
