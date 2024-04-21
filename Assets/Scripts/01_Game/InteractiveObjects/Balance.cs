@@ -93,6 +93,7 @@ public class Balance : MonoBehaviour
         return sum;
     }
 
+    // Balance마다 다름
     virtual protected void CheckClear()
     {
         if (!isClear)
@@ -103,7 +104,7 @@ public class Balance : MonoBehaviour
                 if (leftHit.collider != null && leftHit.collider.tag.Equals("Player"))
                 {
                     isClear = true;
-                    Rule0Manager.Instance.GiveKey();
+                    RuleManager.Instance.Clear();
                 }
             }
 

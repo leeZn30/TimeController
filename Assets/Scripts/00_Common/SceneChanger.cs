@@ -24,7 +24,7 @@ public class SceneChanger : Singleton<SceneChanger>
     {
         SceneManager.sceneLoaded += StageManager.Instance.OnSceneLoaded;
 
-        StageManager.Instance.DoorName = dName;
+        GameData.Door = dName;
 
         SceneManager.LoadScene(sceneName);
         Background.Instance.resetMaterial();

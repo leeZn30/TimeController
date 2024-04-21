@@ -11,22 +11,17 @@ public class StageManager : Singleton<StageManager>
     int currentCheckPoint;
     List<CheckPoint> CheckPoints = new List<CheckPoint>();
 
-    [Header("Stage Data")]
-    public string DoorName;
-
     private void Awake()
     {
-        DontDestroyOnLoad(this);
-
         GameData.Stage = StageId;
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (!DoorName.Equals(""))
+        if (!GameData.Door.Equals(""))
         {
-            Character.Instance.transform.position = GameObject.Find(DoorName).transform.position;
-            DoorName = "";
+            Character.Instance.transform.position = GameObject.Find(GameData.Door).transform.position;
+            GameData.Door = "";
         }
         else if (GameData.CheckPoint > -1)
         {

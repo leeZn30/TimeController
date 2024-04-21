@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rule0Manager : Singleton<Rule0Manager>
+public class Rule0Manager : RuleManager
 {
     [SerializeField] Key key;
+
+    public override void Clear()
+    {
+        base.Clear();
+
+        GiveKey();
+    }
 
     public void GiveKey()
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Rule3Manager : Singleton<Rule3Manager>
+public class Rule3Manager : RuleManager
 {
     bool isClear = false;
 
@@ -21,7 +21,14 @@ public class Rule3Manager : Singleton<Rule3Manager>
         }
     }
 
-    public void Clear()
+    public override void Clear()
+    {
+        base.Clear();
+
+        DestroyRock();
+    }
+
+    public void DestroyRock()
     {
         isClear = true;
         Destroy(rock.gameObject);

@@ -5,9 +5,8 @@ using UnityEngine.Tilemaps;
 
 using CC = CinemachineCamera;
 
-public class Rule1Manager : Singleton<Rule1Manager>
+public class Rule1Manager : RuleManager
 {
-    [SerializeField] Tilemap ThroughGround;
     [SerializeField] float ZoomInSize;
 
     IEnumerator CameraZoom()
@@ -25,9 +24,10 @@ public class Rule1Manager : Singleton<Rule1Manager>
     {
         if (other.tag.Equals("Player"))
         {
-            // 또로롱~ 울리게 하기
             if (CC.Instance.OrthographicSize != ZoomInSize)
             {
+                base.Clear();
+
                 StartCoroutine(CameraZoom());
             }
         }
@@ -37,7 +37,6 @@ public class Rule1Manager : Singleton<Rule1Manager>
     {
         if (other.tag.Equals("Player"))
         {
-            // 또로롱~ 울리게 하기
             if (CC.Instance.OrthographicSize != ZoomInSize)
             {
                 CC.Instance.ResetCamera();

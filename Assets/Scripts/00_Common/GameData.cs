@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameData : Singleton<GameData>
 {
-    [Header("Game Info")]
+    [Header("Stage Data")]
     static int _stage;
     public static int Stage { get { return _stage; } set { _stage = value; } }
     static int _reviveScene = -1;
@@ -14,8 +14,10 @@ public class GameData : Singleton<GameData>
     public static int CheckPoint { get { return _checkpoint; } set { _checkpoint = value; } }
     static int _ghosts;
     public static int Ghosts { get { return _ghosts; } set { _ghosts = value; } }
+    static string _door;
+    public static string Door { get { return _door; } set { _door = value; } }
 
-    [Header("PlayerData")]
+    [Header("Player Data")]
     static float _hp = 16;
     public static float Hp { get { return _hp; } set { _hp = value; } }
     static bool _teleportActive;

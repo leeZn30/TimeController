@@ -62,7 +62,7 @@ public class Parriable : MonoBehaviour
 
             // 목표 회전 각도 (현재 각도에서 180도 추가)
             Vector3 targetRotation = new Vector3(currentRotation.eulerAngles.x, currentRotation.eulerAngles.y, currentRotation.eulerAngles.z + 180f);
-            float rotationSpeed = 200f;
+            float rotationSpeed = 400f;
 
             while (true)
             {

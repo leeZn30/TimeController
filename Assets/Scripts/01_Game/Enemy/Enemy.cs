@@ -82,8 +82,6 @@ public abstract class Enemy : MonoBehaviour
     {
         rigid.velocity = Vector2.zero;
 
-        anim.SetTrigger("Hit");
-
         damage *= Random.Range(0.9f, 1.1f);
         bool isCritical = false;
 
@@ -102,6 +100,8 @@ public abstract class Enemy : MonoBehaviour
         }
         damage = Mathf.Round(damage);
 
+        if (damage > 0)
+            anim.SetTrigger("Hit");
         FixedUIManager.Instance.ShowDamage((int)damage, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2), isCritical);
 
         hp -= damage;

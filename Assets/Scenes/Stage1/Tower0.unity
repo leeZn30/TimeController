@@ -255,7 +255,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StageId: 1
-  DoorName: 
 --- !u!4 &112542857
 Transform:
   m_ObjectHideFlags: 0
