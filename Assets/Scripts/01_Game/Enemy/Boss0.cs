@@ -526,10 +526,7 @@ public class Boss0 : Enemy
             hp -= damage;
             if (hp <= 0)
             {
-                StopAllCoroutines();
-                BossActive = false;
                 Dead();
-                BossManager.Instance.Clear();
             }
         }
         else
@@ -565,7 +562,7 @@ public class Boss0 : Enemy
         if (!BossActive)
         {
             Collider2D player = Physics2D.OverlapCircle(transform.position, enemyData.SightRange, LayerMask.GetMask("Player"));
-            if (player != null)
+            if (player != null && gameObject.layer != 11)
             {
                 BossActive = true;
             }
@@ -575,6 +572,27 @@ public class Boss0 : Enemy
     protected override void OnTriggerEnter2D(Collider2D other)
     {
         base.OnTriggerEnter2D(other);
+    }
+
+    protected override void Dead()
+    {
+        BossActive = false;
+        anim.SetBool("isDead", true);
+
+        rigid.gravityScale = originGravityScale;
+        StopAllCoroutines();
+        BossManager.Instance.Clear();
+
+        base.Dead();
+    }
+
+    void OnDead()
+    {
+        anim.SetBool("isAttacking", false);
+        anim.SetBool("isCharging", false);
+        anim.SetBool("isUltimate", false);
+        anim.SetBool("isCollapsed", false);
+        anim.SetBool("isThrowingsun", false);
     }
 
 }

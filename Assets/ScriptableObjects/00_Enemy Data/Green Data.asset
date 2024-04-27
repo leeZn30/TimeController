@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Green Data
   m_EditorClassIdentifier: 
   EnemyName: Green
-  hp: 5
+  hp: 10
   damage: 2
   sightRange: 20
   moveSpeed: 7

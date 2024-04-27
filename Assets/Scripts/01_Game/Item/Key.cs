@@ -16,7 +16,6 @@ public class Key : MonoBehaviour
         {
             if (data.IsGain)
             {
-                PairDoor.isGainItem = true;
                 Destroy(gameObject);
             }
         }

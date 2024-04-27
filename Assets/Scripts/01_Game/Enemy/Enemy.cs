@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 enum SigthType
@@ -66,7 +62,7 @@ public abstract class Enemy : MonoBehaviour
 
     abstract protected void attack();
 
-    protected void Dead()
+    protected virtual void Dead()
     {
         rigid.velocity = Vector2.zero;
         anim.SetTrigger("Dead");

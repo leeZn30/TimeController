@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Door : MonoBehaviour
@@ -6,7 +7,6 @@ public class Door : MonoBehaviour
     public string PairKeyName = "";
     [SerializeField] string NextScene;
     public bool isGainItem = false;
-    [SerializeField] bool isInteractable = false;
     bool isPlayerIn = false;
 
     [SerializeField] GameObject NoItemPfb;
@@ -23,7 +23,6 @@ public class Door : MonoBehaviour
     Vector3 ItemPosition;
     Vector3 InteractPosition;
 
-
     protected void Awake()
     {
         Fixedcanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
@@ -32,10 +31,19 @@ public class Door : MonoBehaviour
         ItemPosition = collider.bounds.center;
         InteractPosition = collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2 + interactPfb.transform.localScale.y / 2, 0);
 
+        ItemData data = GameData.itemDatas.Find(x => x.ID == PairKeyName);
+        if (data != null)
+        {
+            if (data.IsGain)
+            {
+                isGainItem = true;
+            }
+        }
         if (isGainItem)
             HaveItemUI = Instantiate(HaveItemPfb, ItemPosition, Quaternion.identity, Fixedcanvas.transform);
         else
             NoItemUI = Instantiate(NoItemPfb, ItemPosition, Quaternion.identity, Fixedcanvas.transform);
+
     }
 
     private void Update()
@@ -48,13 +56,14 @@ public class Door : MonoBehaviour
 
     protected void interact()
     {
-        if (isInteractable)
+        if (isGainItem)
         {
             // 문 한번 열면 저장
             if (!PairKeyName.Equals(""))
+            {
                 GameData.itemDatas.Find(x => x.ID == PairKeyName).IsGain = true;
+            }
 
-            isInteractable = false;
             GameData.NowGhosts = GhostManager.Instance.ghostCount;
             SceneChanger.LoadSceneByDoor(NextScene, gameObject.name);
         }
@@ -91,7 +100,6 @@ public class Door : MonoBehaviour
     public virtual void Unlock()
     {
         isGainItem = true;
-        isInteractable = true;
         Destroy(NoItemUI);
         HaveItemUI = Instantiate(HaveItemPfb, ItemPosition, Quaternion.identity, Fixedcanvas.transform);
     }

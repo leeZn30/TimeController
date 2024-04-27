@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -142,6 +141,34 @@ public class BanditEnemy : Enemy
     {
         anim.SetBool("isAttacking", false);
         isMovable = false;
+    }
+
+    public override void OnDamaged(float damage, DamageType damageType)
+    {
+        rigid.velocity = Vector2.zero;
+        bool isCritical = false;
+
+        if (damageType == DamageType.Player)
+        {
+            if (Random.value >= 0.95f)
+            {
+                isCritical = true;
+                damage *= Random.Range(1.1f, 2.0f);
+            }
+        }
+        else
+        {
+            isCritical = true;
+            damage *= Random.Range(2.0f, 3.0f);
+        }
+        damage = Mathf.Round(damage);
+
+        FixedUIManager.Instance.ShowDamage((int)damage, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2), isCritical);
+
+        hp -= damage;
+
+        if (hp <= 0)
+            Dead();
     }
 
 }

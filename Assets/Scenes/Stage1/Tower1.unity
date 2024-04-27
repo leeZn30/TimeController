@@ -438,7 +438,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 181817494}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.489, y: 3.985, z: -1}
+  m_LocalPosition: {x: -10.47, y: 3.99, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -505,7 +505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6348746982244196779, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: NextScene
-      value: Tower2
+      value: Tower0
       objectReference: {fileID: 0}
     - target: {fileID: 6348746982244196779, guid: 38be8314d66edb344bca73854b76cac2, type: 3}
       propertyPath: isGainItem
@@ -574,7 +574,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1742737815606337662, guid: ff2496560cef96c4cb74c115176f224d, type: 3}
       propertyPath: m_Name
-      value: Key
+      value: Key2
       objectReference: {fileID: 0}
     - target: {fileID: 2354720453115400030, guid: ff2496560cef96c4cb74c115176f224d, type: 3}
       propertyPath: PairDoor
@@ -1062,7 +1062,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 541857108}
   m_LocalRotation: {x: 0.00000011920929, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.21682358, y: -0.118992805, z: -11}
+  m_LocalPosition: {x: 0.21682262, y: -0.118992805, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1264,7 +1264,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700003558}
   m_LocalRotation: {x: 0.00000011920929, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.489, y: 3.9850025, z: -11}
+  m_LocalPosition: {x: -10.47, y: 3.9900026, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5120,7 +5120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b765302487c19704187c32fc35dadfc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThroughGround: {fileID: 1388520028}
   ZoomInSize: 3
 --- !u!61 &1836060992
 BoxCollider2D:

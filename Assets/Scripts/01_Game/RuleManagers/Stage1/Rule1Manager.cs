@@ -14,7 +14,7 @@ public class Rule1Manager : RuleManager
         CC.Instance.ChangeSoftZone(new Vector2(0, 0));
         while (CC.Instance.OrthographicSize > ZoomInSize)
         {
-            CC.Instance.OrthographicSize -= Time.unscaledDeltaTime * 20f;
+            CC.Instance.OrthographicSize -= Time.deltaTime * 20f;
 
             yield return null;
         }

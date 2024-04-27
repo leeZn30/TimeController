@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bandit Data
   m_EditorClassIdentifier: 
   EnemyName: Bandit
-  hp: 30
+  hp: 40
   damage: 2
   sightRange: 15
   moveSpeed: 15
