@@ -81,8 +81,6 @@ public abstract class Enemy : MonoBehaviour
     virtual public void OnDamaged(float damage, DamageType damageType)
     {
         rigid.velocity = Vector2.zero;
-
-        damage *= Random.Range(0.9f, 1.1f);
         bool isCritical = false;
 
         if (damageType == DamageType.Player)
@@ -90,7 +88,7 @@ public abstract class Enemy : MonoBehaviour
             if (Random.value >= 0.95f)
             {
                 isCritical = true;
-                damage *= Random.Range(1.5f, 2.0f);
+                damage *= Random.Range(1.1f, 2.0f);
             }
         }
         else

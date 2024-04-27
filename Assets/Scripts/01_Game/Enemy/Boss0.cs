@@ -8,7 +8,7 @@ public class Boss0 : Enemy
     [SerializeField] float LongDistance;
     [SerializeField] float WeaponAtk;
     float accumulatedDmg = 0f;
-    float shieldDmg = 50f;
+    float shieldDmg = 100f;
     float shootTime = 0f;
 
     [Header("Prefabs")]
@@ -525,7 +525,12 @@ public class Boss0 : Enemy
 
             hp -= damage;
             if (hp <= 0)
+            {
+                StopAllCoroutines();
+                BossActive = false;
                 Dead();
+                BossManager.Instance.Clear();
+            }
         }
         else
         {
