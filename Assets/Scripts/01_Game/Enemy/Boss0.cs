@@ -7,7 +7,7 @@ public class Boss0 : Enemy
     [Header("Boss Data")]
     [SerializeField] float ShortDistance;
     float accumulatedDmg = 0f;
-    float shieldDmg = 100f;
+    float shieldDmg = 10f;
     float shootTime = 0f;
 
     [Header("Prefabs")]
@@ -61,6 +61,7 @@ public class Boss0 : Enemy
     currentDistance < ShortDistance &&
     !anim.GetBool("isAttacking");
 
+    bool readyToShield = false;
     bool isWindAttacking = false;
     bool isDash = false;
     bool isEvasioning = false;
@@ -125,12 +126,9 @@ public class Boss0 : Enemy
 
             attack();
             Shoot();
-
-            // Evasion과 겹칠때 우선순위 둬야 함
-            if (accumulatedDmg > shieldDmg && !anim.GetBool("isCharging") && !isEvasioning)
-                shieldCoroutine = StartCoroutine(Shield());
         }
     }
+
 
     private void FixedUpdate()
     {
@@ -138,6 +136,12 @@ public class Boss0 : Enemy
         {
             Chase();
             Evasion();
+
+            // Evasion과 겹칠때 우선순위 둬야 함
+            if (accumulatedDmg > shieldDmg && !anim.GetBool("isCharging") && !isEvasioning)
+            {
+                jumpToShield();
+            }
         }
     }
 
@@ -178,7 +182,7 @@ public class Boss0 : Enemy
         }
         else
         {
-            if (!isEvasioning && !isDash && shieldCoroutine == null)
+            if (!isEvasioning && !isDash && !readyToShield)
             {
                 anim.SetInteger("AnimState", 1);
                 rigid.velocity = new Vector2(0, rigid.velocity.y);
@@ -368,11 +372,28 @@ public class Boss0 : Enemy
         isWindAttacking = false;
     }
 
+    void jumpToShield()
+    {
+        if (!readyToShield)
+        {
+            readyToShield = true;
+
+            manualChase = false;
+            manualEvasion = false;
+            manualAttack = false;
+
+            Vector2 targetPosition = new Vector2(rigid.position.x + -playerXpose, rigid.position.y);
+            if (targetPosition.x < MapLeftLimit || targetPosition.x > MapRightLimit)
+            {
+                targetPosition = new Vector2(rigid.position.x + playerXpose, rigid.position.y);
+            }
+            Jump(targetPosition);
+        }
+    }
+
     IEnumerator Shield()
     {
-        manualChase = false;
-        manualEvasion = false;
-        manualAttack = false;
+        readyToShield = false;
 
         anim.SetTrigger("Charge");
         anim.SetBool("isCharging", true);
@@ -446,6 +467,12 @@ public class Boss0 : Enemy
         {
             anim.SetBool("Grounded", true);
 
+            if (readyToShield)
+            {
+                Debug.Log("land Finish");
+                shieldCoroutine = StartCoroutine(Shield());
+            }
+
             if (isEvasioning)
             {
                 if (Mathf.Abs(sunAttackCnt - windAttackCnt) < 2)
@@ -483,8 +510,6 @@ public class Boss0 : Enemy
         else
         {
             anim.SetBool("Grounded", false);
-
-            // rigid.gravityScale = originGravityScale;
         }
     }
 
