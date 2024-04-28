@@ -18,6 +18,10 @@ public class EnemyData : ScriptableObject
     public int Damage { get { return damage; } }
 
     [SerializeField]
+    private int weaponDmg;
+    public int WeaponDmg { get { return weaponDmg; } }
+
+    [SerializeField]
     private float sightRange;
     public float SightRange { get { return sightRange; } }
 

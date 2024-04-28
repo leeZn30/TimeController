@@ -70,6 +70,8 @@ public class Character : Singleton<Character>
 
     private void Awake()
     {
+        Init();
+
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
@@ -80,8 +82,6 @@ public class Character : Singleton<Character>
         parryingPosition = rigid.position;
 
         TrailQueue = ObjectPool.CreateQueue<Trail>(5, trailPrefab);
-
-        Init();
     }
 
     private void Update()
@@ -125,6 +125,12 @@ public class Character : Singleton<Character>
     void Init()
     {
         Hp = GameData.Hp;
+
+        TeleportActive = GameData.TeleportActive;
+        teleportChargeSpeed = GameData.TeleportChargeSpeed;
+        if (TeleportActive)
+            TeleportGauge.gameObject.SetActive(true);
+        RewindActive = GameData.RewindActive;
     }
 
     void move()

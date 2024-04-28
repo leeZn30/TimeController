@@ -5,7 +5,6 @@ using UnityEngine;
 public class BanditEnemy : Enemy
 {
     [SerializeField] float maxSpeed;
-    [SerializeField] float WeaponAtk;
     int playerXpose => collider.bounds.center.x - Character.Instance.transform.position.x >= 0 ? -1 : 1;
     bool isOKToTurn => !anim.GetBool("isAttacking");
 
@@ -56,7 +55,7 @@ public class BanditEnemy : Enemy
         Collider2D player = Physics2D.OverlapBox(hitPosition, hitBox, 0, LayerMask.GetMask("Player"));
         if (player != null)
         {
-            Character.Instance.OnDamaged(transform.position, WeaponAtk);
+            Character.Instance.OnDamaged(transform.position, enemyData.WeaponDmg);
         }
     }
 

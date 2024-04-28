@@ -11,7 +11,7 @@ public class Key : MonoBehaviour
     {
         PairDoor.PairKeyName = gameObject.name;
 
-        ItemData data = GameData.itemDatas.Find(x => x.ID == gameObject.name);
+        ItemData data = GameData.ItemDatas.Find(x => x.ID == gameObject.name);
         if (data != null)
         {
             if (data.IsGain)
@@ -22,7 +22,7 @@ public class Key : MonoBehaviour
         else
         {
             ItemData itemData = new ItemData(gameObject.name, false);
-            GameData.itemDatas.Add(itemData);
+            GameData.ItemDatas.Add(itemData);
         }
 
         anim = GetComponent<Animator>();

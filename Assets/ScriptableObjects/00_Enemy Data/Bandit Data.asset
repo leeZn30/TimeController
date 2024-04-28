@@ -15,6 +15,7 @@ MonoBehaviour:
   EnemyName: Bandit
   hp: 40
   damage: 2
+  weaponDmg: 1
   sightRange: 15
   moveSpeed: 15
   ghost: 2

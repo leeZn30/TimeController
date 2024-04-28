@@ -6,8 +6,6 @@ using UnityEngine.Events;
 
 public class Rule3Manager : RuleManager
 {
-    bool isClear = false;
-
     [SerializeField] GameObject rock;
     [SerializeField] GameObject door;
     [SerializeField] GameObject key;
@@ -24,13 +22,11 @@ public class Rule3Manager : RuleManager
     public override void Clear()
     {
         base.Clear();
-
         DestroyRock();
     }
 
     public void DestroyRock()
     {
-        isClear = true;
         Destroy(rock.gameObject);
         key.SetActive(true);
         StartCoroutine(movekey());

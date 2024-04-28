@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Box : MonoBehaviour
 {
+    [SerializeField] String BoxID => gameObject.name;
+
     [SerializeField] GameObject interactPfb;
     [SerializeField] GameObject ItemInfoPfb;
     Canvas Fixedcanvas;
@@ -15,6 +18,17 @@ public class Box : MonoBehaviour
 
     private void Awake()
     {
+        ObjectData data = GameData.ObjectDatas.Find(e => e.ID == BoxID);
+        if (data == null)
+        {
+            GameData.ObjectDatas.Add(new ObjectData(BoxID, true));
+        }
+        else
+        {
+            if (!data.IsExist) isInteractable = false;
+
+        }
+
         Fixedcanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
         Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
     }
@@ -31,6 +45,7 @@ public class Box : MonoBehaviour
     virtual protected void interact()
     {
         isInteractable = false;
+        GameData.ObjectDatas.Find(e => e.ID == BoxID).IsExist = false;
     }
 
     protected void ShowItem()

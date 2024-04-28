@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyName: Green
   hp: 10
-  damage: 2
+  damage: 1
+  weaponDmg: 0
   sightRange: 20
   moveSpeed: 7
   ghost: 1

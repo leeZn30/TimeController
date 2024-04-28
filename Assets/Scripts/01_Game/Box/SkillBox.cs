@@ -12,6 +12,18 @@ public class SkillBox : Box
         base.interact();
 
         Character.Instance.activeSkill(Skill);
+        switch (Skill)
+        {
+            case "Teleport":
+                GameData.TeleportActive = true;
+                break;
+            case "Rewind":
+                GameData.RewindActive = true;
+                break;
+            case "Slow":
+                GameData.SlowActive = true;
+                break;
+        }
         ShowItem();
     }
 }

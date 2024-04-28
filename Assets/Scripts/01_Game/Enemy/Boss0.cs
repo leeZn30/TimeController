@@ -1,12 +1,11 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Boss0 : Enemy
 {
     [Header("Boss Data")]
     [SerializeField] float ShortDistance;
-    [SerializeField] float LongDistance;
-    [SerializeField] float WeaponAtk;
     float accumulatedDmg = 0f;
     float shieldDmg = 100f;
     float shootTime = 0f;
@@ -67,8 +66,15 @@ public class Boss0 : Enemy
     bool isEvasioning = false;
     int hitCount = 0;
     int playerXpose => collider.bounds.center.x - Character.Instance.transform.position.x >= 0 ? -1 : 1;
-    // 단순 거리 재기이므로 rigid 사용할 필요 없음
-    float currentDistance => Vector3.Distance(collider.bounds.center, Character.Instance.transform.position);
+    float currentDistance
+    {
+        get
+        {
+            if (Character.Instance != null) return Vector3.Distance(collider.bounds.center, Character.Instance.transform.position);
+            else return 0f;
+        }
+    }
+
     Vector2 attackRange = new Vector2(2, 3);
     Vector2 attackPosition;
     Coroutine shieldCoroutine;
@@ -198,7 +204,7 @@ public class Boss0 : Enemy
         Collider2D player = Physics2D.OverlapBox(attackPosition, attackRange, 0, LayerMask.GetMask("Player"));
         if (player != null)
         {
-            Character.Instance.OnDamaged(transform.position, WeaponAtk);
+            Character.Instance.OnDamaged(transform.position, enemyData.WeaponDmg);
         }
     }
 

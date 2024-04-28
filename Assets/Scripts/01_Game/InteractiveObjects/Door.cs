@@ -31,7 +31,7 @@ public class Door : MonoBehaviour
         ItemPosition = collider.bounds.center;
         InteractPosition = collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2 + interactPfb.transform.localScale.y / 2, 0);
 
-        ItemData data = GameData.itemDatas.Find(x => x.ID == PairKeyName);
+        ItemData data = GameData.ItemDatas.Find(x => x.ID == PairKeyName);
         if (data != null)
         {
             if (data.IsGain)
@@ -61,7 +61,7 @@ public class Door : MonoBehaviour
             // 문 한번 열면 저장
             if (!PairKeyName.Equals(""))
             {
-                GameData.itemDatas.Find(x => x.ID == PairKeyName).IsGain = true;
+                GameData.ItemDatas.Find(x => x.ID == PairKeyName).IsGain = true;
             }
 
             GameData.NowGhosts = GhostManager.Instance.ghostCount;
