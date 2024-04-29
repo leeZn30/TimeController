@@ -7,7 +7,7 @@ public class Boss0 : Enemy
     [Header("Boss Data")]
     [SerializeField] float ShortDistance;
     float accumulatedDmg = 0f;
-    float shieldDmg = 10f;
+    float shieldDmg = 100f;
     float shootTime = 0f;
 
     [Header("Prefabs")]
@@ -109,7 +109,6 @@ public class Boss0 : Enemy
             }
         }
 
-
         base.Awake();
 
         line = GetComponent<LineRenderer>();
@@ -125,7 +124,6 @@ public class Boss0 : Enemy
         trail.enabled = false;
 
         originGravityScale = rigid.gravityScale;
-
     }
 
     protected override void Update()
