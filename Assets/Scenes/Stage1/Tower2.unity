@@ -4704,6 +4704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b4a70f39c8ceff4c88f063934123350, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ruleID: 2
   rock: {fileID: 1573879678}
   door: {fileID: 783284151}
   key: {fileID: 841858706}

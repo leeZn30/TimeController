@@ -96,6 +96,20 @@ public class Boss0 : Enemy
 
     protected override void Awake()
     {
+        ObjectData data = GameData.ObjectDatas.Find(e => e.ID == gameObject.name);
+        if (data == null)
+        {
+            GameData.ObjectDatas.Add(new ObjectData(gameObject.name, true));
+        }
+        else
+        {
+            if (!data.IsExist)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+
         base.Awake();
 
         line = GetComponent<LineRenderer>();
@@ -613,6 +627,8 @@ public class Boss0 : Enemy
         rigid.gravityScale = originGravityScale;
         StopAllCoroutines();
         BossManager.Instance.Clear();
+        ObjectData data = GameData.ObjectDatas.Find(e => e.ID == gameObject.name);
+        data.IsExist = false;
 
         base.Dead();
     }
