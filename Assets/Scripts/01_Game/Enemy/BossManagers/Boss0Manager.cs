@@ -15,6 +15,8 @@ public class Boss0Manager : BossManager
         base.Awake();
         director = FindObjectOfType<PlayableDirector>();
 
+        if (!isClear)
+            director.Play();
     }
 
     public override void Clear()
