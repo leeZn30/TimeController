@@ -205,7 +205,7 @@ MonoBehaviour:
   m_MatchTargetFields: 63
   m_RemoveStartOffset: 0
   m_ApplyFootIK: 1
-  m_Loop: 1
+  m_Loop: 2
   m_Version: 1
   m_Rotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &-2506174697744747975
@@ -1530,9 +1530,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -1050445932, guid: 8c84945357eb93744bc1dbdb90c16dfe, type: 3}
-    - time: 0.016666668
-      value: {fileID: -459726025, guid: 8c84945357eb93744bc1dbdb90c16dfe, type: 3}
+      value: {fileID: -1094722645, guid: 8c84945357eb93744bc1dbdb90c16dfe, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -1555,14 +1553,13 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -1050445932, guid: 8c84945357eb93744bc1dbdb90c16dfe, type: 3}
-    - {fileID: -459726025, guid: 8c84945357eb93744bc1dbdb90c16dfe, type: 3}
+    - {fileID: -1094722645, guid: 8c84945357eb93744bc1dbdb90c16dfe, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.033333335
+    m_StopTime: 0.016666668
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -1583,7 +1580,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: OnBossStart
+    functionName: OnChromatic
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

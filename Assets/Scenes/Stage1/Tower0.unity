@@ -234,7 +234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 112542857}
-  - component: {fileID: 112542856}
+  - component: {fileID: 112542858}
   m_Layer: 0
   m_Name: StageManager
   m_TagString: Untagged
@@ -242,19 +242,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &112542856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 112542855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38b9802f9122ce14bb8972d99ba9df82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StageId: 1
 --- !u!4 &112542857
 Transform:
   m_ObjectHideFlags: 0
@@ -270,6 +257,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &112542858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112542855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4982bf791e18b6489d24425adda9d1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StageId: 0
 --- !u!1 &311264357
 GameObject:
   m_ObjectHideFlags: 0
@@ -5195,6 +5195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2cb850f98904ce4faf6ec47c81d70fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ruleID: Tower0
   key: {fileID: 710721795}
 --- !u!4 &1673662383
 Transform:

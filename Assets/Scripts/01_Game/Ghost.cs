@@ -29,7 +29,6 @@ public class Ghost : MonoBehaviour
 
     void DoAddGhost()
     {
-        Debug.Log("Do addGhost");
         GhostManager.Instance.AddGhost(Score);
     }
 

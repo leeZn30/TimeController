@@ -35,15 +35,15 @@ public class ObjectData
 }
 
 [System.Serializable]
-public class RuleData
+public class ClearData
 {
-    int id;
-    public int ID { get { return id; } set { id = value; } }
+    string id;
+    public string ID { get { return id; } set { id = value; } }
 
     bool isClear;
     public bool IsClear { get { return isClear; } set { isClear = value; } }
 
-    public RuleData(int id, bool isClear)
+    public ClearData(string id, bool isClear)
     {
         ID = id;
         IsClear = isClear;

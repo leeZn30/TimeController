@@ -31,6 +31,8 @@ public class Boss0Manager : BossManager
         Sun.transform.position = Boss.transform.position;
         Sun.gameObject.SetActive(true);
 
+        director.playableAsset = BossEndTimeline;
+
         float duration = 0f;
         while (duration < 1.5f)
         {
@@ -40,7 +42,6 @@ public class Boss0Manager : BossManager
             yield return null;
         }
 
-        director.playableAsset = BossEndTimeline;
         director.Play();
     }
 }

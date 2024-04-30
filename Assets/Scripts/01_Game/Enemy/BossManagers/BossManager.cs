@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BossManager : Singleton<BossManager>
 {
+    protected bool isClear = false;
+    [SerializeField] string StageId;
+
     BossDoor bossDoor;
     NextStage nextStage;
     SkillBox skillBox;
@@ -11,6 +14,16 @@ public class BossManager : Singleton<BossManager>
 
     protected virtual void Awake()
     {
+        ClearData data = GameData.ClearDatas.Find(e => e.ID == StageId);
+        if (data == null)
+        {
+            GameData.ClearDatas.Add(new ClearData(StageId, false));
+        }
+        else
+        {
+            isClear = data.IsClear;
+        }
+
         bossDoor = FindObjectOfType<BossDoor>();
         nextStage = FindObjectOfType<NextStage>();
         skillBox = FindObjectOfType<SkillBox>();
@@ -21,6 +34,9 @@ public class BossManager : Singleton<BossManager>
 
     public virtual void Clear()
     {
+        ClearData data = GameData.ClearDatas.Find(e => e.ID == StageId);
+        data.IsClear = true;
+
         bossDoor.Open();
         nextStage.gameObject.SetActive(true);
         skillBox.gameObject.SetActive(true);

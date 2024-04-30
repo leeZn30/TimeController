@@ -5,13 +5,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StageManager : Singleton<StageManager>
+public abstract class StageManager : Singleton<StageManager>
 {
     public int StageId;
     List<CheckPoint> CheckPoints = new List<CheckPoint>();
     public static List<ItemData> tempItemDatas;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         GameData.Stage = StageId;
         tempItemDatas = new List<ItemData>();
@@ -40,5 +40,7 @@ public class StageManager : Singleton<StageManager>
         GameData.Ghosts = GhostManager.Instance.ghostCount;
         GameData.ReviveScene = SceneManager.GetActiveScene().buildIndex;
     }
+
+    public abstract void PostClear();
 
 }

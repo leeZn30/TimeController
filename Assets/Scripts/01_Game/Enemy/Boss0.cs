@@ -642,9 +642,9 @@ public class Boss0 : Enemy
         anim.SetBool("isThrowingsun", false);
     }
 
-    void OnBossStart()
+    void OnChromatic()
     {
-        ChromaticAberration chromatic;
+        ChromaticAberration chromatic = null;
         FindObjectOfType<Volume>().profile.TryGet(out chromatic);
 
         StartCoroutine(ShimmerWindow(chromatic));
@@ -653,7 +653,7 @@ public class Boss0 : Enemy
     IEnumerator ShimmerWindow(ChromaticAberration chromatic)
     {
         float duration = 0;
-        while (duration < 0.1f)
+        while (duration < 2.5f)
         {
             duration += Time.deltaTime;
 
