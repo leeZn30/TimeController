@@ -7,8 +7,9 @@ public class BossManager : Singleton<BossManager>
     BossDoor bossDoor;
     NextStage nextStage;
     SkillBox skillBox;
+    [SerializeField] protected Enemy Boss;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         bossDoor = FindObjectOfType<BossDoor>();
         nextStage = FindObjectOfType<NextStage>();
@@ -18,14 +19,10 @@ public class BossManager : Singleton<BossManager>
         nextStage.gameObject.SetActive(false);
     }
 
-    public void BossStart()
-    {
-
-    }
-
-    public void Clear()
+    public virtual void Clear()
     {
         bossDoor.Open();
         nextStage.gameObject.SetActive(true);
+        skillBox.gameObject.SetActive(true);
     }
 }

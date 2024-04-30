@@ -1,6 +1,8 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class Boss0 : Enemy
 {
@@ -638,6 +640,41 @@ public class Boss0 : Enemy
         anim.SetBool("isUltimate", false);
         anim.SetBool("isCollapsed", false);
         anim.SetBool("isThrowingsun", false);
+    }
+
+    void OnBossStart()
+    {
+        ChromaticAberration chromatic;
+        FindObjectOfType<Volume>().profile.TryGet(out chromatic);
+
+        StartCoroutine(ShimmerWindow(chromatic));
+    }
+
+    IEnumerator ShimmerWindow(ChromaticAberration chromatic)
+    {
+        float duration = 0;
+        while (duration < 0.1f)
+        {
+            duration += Time.deltaTime;
+
+            if (chromatic.intensity.value < 1f)
+            {
+                chromatic.intensity.value += 0.1f;
+            }
+            else
+            {
+                chromatic.intensity.value -= 0.1f;
+            }
+
+            if (chromatic.intensity.value < 0)
+            {
+                chromatic.intensity.value = 0f;
+            }
+
+            yield return null;
+        }
+
+        chromatic.intensity.value = 0f;
     }
 
 }

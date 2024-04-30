@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boss0 Data
   m_EditorClassIdentifier: 
   EnemyName: 
-  hp: 400
+  hp: 10
   damage: 2
   weaponDmg: 1
   sightRange: 4
