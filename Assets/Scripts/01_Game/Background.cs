@@ -1,12 +1,14 @@
 using UnityEngine.UI;
 using UnityEngine;
 using System.Linq.Expressions;
+using System.Collections.Generic;
 
 public class Background : Singleton<Background>
 {
     [SerializeField] bool isStuck;
     [SerializeField] float[] speeds = new float[1];
     [SerializeField] Image[] backgrounds = new Image[1];
+    public int BackgroundCnt => backgrounds.Length;
 
     public void BackgroundScroll(float direction)
     {
@@ -30,5 +32,12 @@ public class Background : Singleton<Background>
         }
     }
 
+    public void ChangeBackground(List<Sprite> newBGs)
+    {
+        for (int i = 0; i < newBGs.Count; i++)
+        {
+            backgrounds[i].sprite = newBGs[i];
+        }
+    }
 
 }
