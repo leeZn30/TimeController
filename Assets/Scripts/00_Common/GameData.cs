@@ -30,6 +30,7 @@ public class GameData : Singleton<GameData>
     public static int Ghosts { get { return _ghosts; } set { _ghosts = value; } }
     static string _door = "";
     public static string Door { get { return _door; } set { _door = value; } }
+    public static int BossTryCnt = 0;
     public static List<ItemData> ItemDatas = new List<ItemData>();
     public static List<ClearData> ClearDatas = new List<ClearData>();
     public static List<ObjectData> ObjectDatas = new List<ObjectData>();

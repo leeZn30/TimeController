@@ -15,7 +15,7 @@ public class Boss0Manager : BossManager
         base.Awake();
         director = FindObjectOfType<PlayableDirector>();
 
-        if (!isClear)
+        if (!isClear && GameData.BossTryCnt == 1)
             director.Play();
     }
 

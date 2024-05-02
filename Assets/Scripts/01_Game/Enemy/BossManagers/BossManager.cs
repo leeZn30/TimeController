@@ -24,6 +24,9 @@ public class BossManager : Singleton<BossManager>
             isClear = data.IsClear;
         }
 
+        if (!isClear)
+            GameData.BossTryCnt++;
+
         bossDoor = FindObjectOfType<BossDoor>();
         nextStage = FindObjectOfType<NextStage>();
         skillBox = FindObjectOfType<SkillBox>();
