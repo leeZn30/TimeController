@@ -69,7 +69,7 @@ public class SoundManager : Singleton<SoundManager>
             BGMSC.clip = clip;
             BGMSC.Play();
         }
-        else
+        else if (clip != BGMSC.clip)
         {
             StartCoroutine(FadeBGM(clip));
         }
@@ -77,7 +77,7 @@ public class SoundManager : Singleton<SoundManager>
 
     IEnumerator FadeBGM(AudioClip clip)
     {
-        float duration = 1f;
+        float duration = 0.5f;
         float timer = 0.0f;
 
         // 페이딩 진행

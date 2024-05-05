@@ -5737,7 +5737,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7572615757305773025, guid: 2ac2e4e8172639b46b19de098b6d2c24, type: 3}
       propertyPath: blinkedTime
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7572615757305773025, guid: 2ac2e4e8172639b46b19de098b6d2c24, type: 3}
       propertyPath: coloredTime

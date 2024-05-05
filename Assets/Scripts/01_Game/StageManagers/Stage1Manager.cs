@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Stage1Manager : StageManager
 {
     [Header("Post Clear")]
-    [SerializeField] AnimatorController flowerAnim;
+    [SerializeField] RuntimeAnimatorController flowerAnim;
     [SerializeField] Sprite flowerWall;
     [SerializeField] List<Sprite> BGs;
 

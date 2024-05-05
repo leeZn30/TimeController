@@ -5337,7 +5337,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &821299127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10433,25 +10433,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2142522029558262930, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
-      propertyPath: Door.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2142522029558262930, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
-      propertyPath: Door.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 44d1a9b27fc3eaa40b2d1a76d6dfa6f7, type: 3}
-    - target: {fileID: 2142522029558262930, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
-      propertyPath: Door.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
     - target: {fileID: 3339933313923904709, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
     - target: {fileID: 3339933313923904709, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5947138379203305987, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
       propertyPath: m_RootOrder
