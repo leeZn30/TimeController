@@ -10,6 +10,7 @@ public class SkillBox : Box
     protected override void interact()
     {
         base.interact();
+        SoundManager.Instance.PlaySFX(AudioType.Clock, "Ticking");
 
         Character.Instance.activeSkill(Skill);
         switch (Skill)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum AudioType
 {
-    Character, Crank, Door, BossDoor, Puzzle, Clock
+    Character, Crank, Door, BossDoor, Puzzle, Clock, Enemy
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -13,10 +13,10 @@ public class SoundManager : Singleton<SoundManager>
     [SerializeField] AudioSource CharcterSC;
     [SerializeField] AudioSource ObjectSC;
     [SerializeField] AudioSource ETCSC;
+    [SerializeField] AudioSource BGMSC;
 
     [Header("Character")]
     [SerializeField] List<AudioClip> Character = new List<AudioClip>();
-
 
     [Header("Object")]
     [SerializeField] List<AudioClip> Crank = new List<AudioClip>();
@@ -29,6 +29,11 @@ public class SoundManager : Singleton<SoundManager>
     [Header("Clock")]
     public List<AudioClip> Clock = new List<AudioClip>();
 
+    [Header("BGMs")]
+    public List<AudioClip> ETCBGM = new List<AudioClip>();
+    public List<AudioClip> Stage0 = new List<AudioClip>();
+    public List<AudioClip> Stage1 = new List<AudioClip>();
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
@@ -36,6 +41,64 @@ public class SoundManager : Singleton<SoundManager>
         CharcterSC = transform.GetChild(0).GetComponent<AudioSource>();
         ObjectSC = transform.GetChild(1).GetComponent<AudioSource>();
         ETCSC = transform.GetChild(2).GetComponent<AudioSource>();
+        BGMSC = transform.GetChild(3).GetComponent<AudioSource>();
+    }
+
+    public void PlayBGM(string bgm)
+    {
+        List<AudioClip> stageList;
+        switch (GameData.Stage)
+        {
+            case 0:
+                stageList = Stage0;
+                break;
+
+            case 1:
+                stageList = Stage1;
+                break;
+
+            default:
+                stageList = ETCBGM;
+                break;
+        }
+
+        AudioClip clip = stageList.Find(e => e.name == bgm);
+
+        if (BGMSC.clip == null)
+        {
+            BGMSC.clip = clip;
+            BGMSC.Play();
+        }
+        else
+        {
+            StartCoroutine(FadeBGM(clip));
+        }
+    }
+
+    IEnumerator FadeBGM(AudioClip clip)
+    {
+        float duration = 1f;
+        float timer = 0.0f;
+
+        // 페이딩 진행
+        while (timer < duration)
+        {
+            // 각 소스의 볼륨 조절
+            BGMSC.volume = Mathf.Lerp(1.0f, 0.0f, timer / duration);
+
+            // 시간 증가
+            timer += Time.deltaTime;
+
+            // 다음 프레임까지 대기
+            yield return null;
+        }
+        BGMSC.Stop();
+
+        BGMSC.clip = clip;
+        BGMSC.volume = 1.0f;
+
+        // 기존 오디오 소스 정지
+        BGMSC.Play();
     }
 
     public void PlaySFX(AudioType type, string sound)
@@ -43,7 +106,6 @@ public class SoundManager : Singleton<SoundManager>
         switch (type)
         {
             case AudioType.Character:
-                Debug.Log(sound);
                 CharcterSC.PlayOneShot(Character.Find(e => e.name == sound));
                 break;
 

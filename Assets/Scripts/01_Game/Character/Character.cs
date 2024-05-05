@@ -379,9 +379,9 @@ public class Character : Singleton<Character>
                 if (bullet != null)
                 {
                     Parriable p = bullet.GetComponent<Parriable>();
+                    SoundManager.Instance.PlaySFX(AudioType.Character, "Parrying");
                     if (bullet.tag == "Bullet" && p.enabled)
                     {
-                        SoundManager.Instance.PlaySFX(AudioType.Character, "Parrying");
                         Time.timeScale = 0f;
                         this.bullet = p;
                         StartCoroutine(CharacterZoom());

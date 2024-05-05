@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public abstract class StageManager : Singleton<StageManager>
 {
     public int StageId;
+    [SerializeField] string BGM;
     List<CheckPoint> CheckPoints = new List<CheckPoint>();
     public static List<ItemData> tempItemDatas;
 
@@ -15,6 +15,10 @@ public abstract class StageManager : Singleton<StageManager>
     {
         GameData.Stage = StageId;
         tempItemDatas = new List<ItemData>();
+
+        // Boss가 있는 경우는 거기서 처리
+        if (BossManager.Instance == null || BossManager.Instance.isClear)
+            SoundManager.Instance.PlayBGM(BGM);
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)

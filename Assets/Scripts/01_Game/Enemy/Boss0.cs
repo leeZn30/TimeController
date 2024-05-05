@@ -483,7 +483,6 @@ public class Boss0 : Enemy
 
             if (readyToShield)
             {
-                Debug.Log("land Finish");
                 shieldCoroutine = StartCoroutine(Shield());
             }
 
@@ -629,6 +628,8 @@ public class Boss0 : Enemy
         BossManager.Instance.Clear();
         ObjectData data = GameData.ObjectDatas.Find(e => e.ID == gameObject.name);
         data.IsExist = false;
+
+        SoundManager.Instance.PlayBGM("Stage");
 
         base.Dead();
     }

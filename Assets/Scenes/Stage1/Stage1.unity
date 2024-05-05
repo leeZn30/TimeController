@@ -2926,14 +2926,6 @@ CompositeCollider2D:
       - X: -140000000
         Y: 214375008
       - X: -140000000
-        Y: 213124992
-      - X: -141875008
-        Y: 215624992
-      - X: -148124992
-        Y: 215624992
-      - X: -150000000
-        Y: 214375008
-      - X: -150000000
         Y: 210000000
       - X: -110000000
         Y: 210000000
@@ -3068,11 +3060,7 @@ CompositeCollider2D:
       - {x: -13.187513, y: 21.5625}
       - {x: -13.812506, y: 21.562494}
       - {x: -14, y: 21.437487}
-      - {x: -14.000069, y: 21.312592}
-      - {x: -14.187513, y: 21.5625}
-      - {x: -14.812506, y: 21.562494}
-      - {x: -15, y: 21.437487}
-      - {x: -14.999971, y: 21}
+      - {x: -13.999971, y: 21}
     - - {x: 20.812492, y: 15.437501}
       - {x: 21, y: 15.562513}
       - {x: 21.000069, y: 15.687409}
@@ -3378,16 +3366,6 @@ Tilemap:
       m_TileIndex: 0
       m_TileSpriteIndex: 0
       m_TileMatrixIndex: 2
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -15, y: 21, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
@@ -4464,7 +4442,7 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 17
+  - m_RefCount: 16
     m_Data: {fileID: 11400000, guid: 6e32a51c8c06d274b949c408f107a82a, type: 2}
   - m_RefCount: 14
     m_Data: {fileID: 11400000, guid: cb9eaee732a5b734da9b567019bcb1b4, type: 2}
@@ -4479,7 +4457,7 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {fileID: 0}
   m_TileSpriteArray:
-  - m_RefCount: 17
+  - m_RefCount: 16
     m_Data: {fileID: 21300000, guid: da2176ef0629bfd42958a94b2bf225a4, type: 3}
   - m_RefCount: 14
     m_Data: {fileID: 1768563473, guid: f73ab6e2631a3674992eca468951ea93, type: 3}
@@ -4494,7 +4472,7 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {fileID: 0}
   m_TileMatrixArray:
-  - m_RefCount: 108
+  - m_RefCount: 107
     m_Data:
       e00: 1
       e01: 0
@@ -4549,7 +4527,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 121
+  - m_RefCount: 120
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -6311,6 +6289,10 @@ PrefabInstance:
     - target: {fileID: 3339933313923904709, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
       propertyPath: m_Name
       value: SoundManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3339933313923904709, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5947138379203305987, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
       propertyPath: m_RootOrder
@@ -8951,6 +8933,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage1Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 4182763703458047162, guid: 35af8034eb9eb4441a6b0330effe792e, type: 3}
+      propertyPath: BGM
+      value: Stage
+      objectReference: {fileID: 0}
     - target: {fileID: 8242875671747597789, guid: 35af8034eb9eb4441a6b0330effe792e, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -9691,7 +9677,7 @@ GameObject:
   - component: {fileID: 1660852262}
   - component: {fileID: 1660852264}
   - component: {fileID: 1660852263}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: GroundObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47578,7 +47564,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2038180610
 MonoBehaviour:
   m_ObjectHideFlags: 0
