@@ -134,4 +134,44 @@ public class SoundManager : Singleton<SoundManager>
         }
     }
 
+
+    public void PlaySFX(AudioType type, AudioClip clip)
+    {
+        switch (type)
+        {
+            case AudioType.Character:
+                CharcterSC.PlayOneShot(clip);
+                break;
+
+            case AudioType.Crank:
+                ObjectSC.PlayOneShot(clip);
+                break;
+
+            case AudioType.Door:
+                ObjectSC.PlayOneShot(clip);
+                break;
+
+            case AudioType.BossDoor:
+                ObjectSC.PlayOneShot(clip);
+                break;
+
+            case AudioType.Puzzle:
+                ETCSC.PlayOneShot(clip);
+                break;
+
+            case AudioType.Clock:
+                ETCSC.PlayOneShot(clip);
+                break;
+
+            case AudioType.Enemy:
+                ObjectSC.PlayOneShot(clip);
+                break;
+
+
+            default:
+                break;
+        }
+    }
+
+
 }

@@ -219,6 +219,7 @@ public class Boss0 : Enemy
 
     void OnAttack()
     {
+        SoundManager.Instance.PlaySFX(AudioType.Enemy, BossSoundData.Instance.GetSound("Attack"));
         Collider2D player = Physics2D.OverlapBox(attackPosition, attackRange, 0, LayerMask.GetMask("Player"));
         if (player != null)
         {
@@ -362,6 +363,7 @@ public class Boss0 : Enemy
             spawnTimer -= Time.deltaTime;
             while (spawnTimer <= 0f)
             {
+                SoundManager.Instance.PlaySFX(AudioType.Enemy, BossSoundData.Instance.GetSound("Wind"));
                 windCnt++;
 
                 if (windCnt <= 3)
@@ -431,6 +433,7 @@ public class Boss0 : Enemy
         shield.SetActive(false);
         anim.SetTrigger("Ultimate");
         anim.SetBool("isUltimate", true);
+        SoundManager.Instance.PlaySFX(AudioType.Enemy, BossSoundData.Instance.GetSound("Roar"));
     }
 
     void Shoot()
@@ -620,6 +623,8 @@ public class Boss0 : Enemy
 
     protected override void Dead()
     {
+        SoundManager.Instance.PlaySFX(AudioType.Enemy, BossSoundData.Instance.GetSound("Dead"));
+
         BossActive = false;
         anim.SetBool("isDead", true);
 
@@ -653,6 +658,8 @@ public class Boss0 : Enemy
 
     IEnumerator ShimmerWindow(ChromaticAberration chromatic)
     {
+        SoundManager.Instance.PlaySFX(AudioType.Enemy, BossSoundData.Instance.GetSound("Roar"));
+
         float duration = 0;
         while (duration < 2.5f)
         {

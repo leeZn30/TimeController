@@ -58,6 +58,8 @@ public class Door : MonoBehaviour
     {
         if (isGainItem)
         {
+            SoundManager.Instance.PlaySFX(AudioType.Door, "Open");
+
             // 문 한번 열면 저장
             if (!PairKeyName.Equals(""))
             {
@@ -75,6 +77,8 @@ public class Door : MonoBehaviour
 
     IEnumerator Vibrate()
     {
+        SoundManager.Instance.PlaySFX(AudioType.Door, "Locked");
+
         Vector3 startPosition = transform.position;
         float vibrationStrength = 0.05f;
         float vibrationSpeed = 20f;

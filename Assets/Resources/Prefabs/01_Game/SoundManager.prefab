@@ -188,7 +188,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5a20b703de28b1e47a6d99031e6f468c, type: 3}
   Crank:
   - {fileID: 8300000, guid: d8d04c6f80a1140db85ede568dab1f51, type: 3}
-  Door: []
+  Door:
+  - {fileID: 8300000, guid: 44d1a9b27fc3eaa40b2d1a76d6dfa6f7, type: 3}
+  - {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
   BossDoor:
   - {fileID: 8300000, guid: 4e1ff8faed12a475eba9be0e46072269, type: 3}
   Puzzle:

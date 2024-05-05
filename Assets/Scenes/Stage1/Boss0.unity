@@ -8439,6 +8439,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1604162132}
+  - component: {fileID: 1604162133}
   m_Layer: 0
   m_Name: BossSoundData
   m_TagString: Untagged
@@ -8461,6 +8462,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1604162133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604162131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4be99714d15f10e47a773cda5b4462f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - {fileID: 8300000, guid: bea88d1354cb7714cb94a13537696733, type: 3}
+  - {fileID: 8300000, guid: 888b18cd7c7fcb84eb4b6d79abb1f6d4, type: 3}
+  - {fileID: 8300000, guid: da047acd1997ed8478afb89de0c0c87e, type: 3}
+  - {fileID: 8300000, guid: 33eb6b53bae28594a8c7b98ffc194bb6, type: 3}
 --- !u!1 &1654304512
 GameObject:
   m_ObjectHideFlags: 0
@@ -10415,6 +10433,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2142522029558262930, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
+      propertyPath: Door.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2142522029558262930, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
+      propertyPath: Door.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 44d1a9b27fc3eaa40b2d1a76d6dfa6f7, type: 3}
+    - target: {fileID: 2142522029558262930, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
+      propertyPath: Door.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
     - target: {fileID: 3339933313923904709, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
       propertyPath: m_Name
       value: SoundManager
