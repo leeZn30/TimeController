@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum AudioType
 {
-    Character, Crank, Door, BossDoor, Puzzle
+    Character, Crank, Door, BossDoor, Puzzle, Clock
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -26,6 +26,9 @@ public class SoundManager : Singleton<SoundManager>
     [Header("Puzzle")]
     public List<AudioClip> Puzzle = new List<AudioClip>();
 
+    [Header("Clock")]
+    public List<AudioClip> Clock = new List<AudioClip>();
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
@@ -40,6 +43,7 @@ public class SoundManager : Singleton<SoundManager>
         switch (type)
         {
             case AudioType.Character:
+                Debug.Log(sound);
                 CharcterSC.PlayOneShot(Character.Find(e => e.name == sound));
                 break;
 
@@ -57,6 +61,10 @@ public class SoundManager : Singleton<SoundManager>
 
             case AudioType.Puzzle:
                 ETCSC.PlayOneShot(Puzzle.Find(e => e.name == sound));
+                break;
+
+            case AudioType.Clock:
+                ETCSC.PlayOneShot(Clock.Find(e => e.name == sound));
                 break;
 
             default:

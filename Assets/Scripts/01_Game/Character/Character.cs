@@ -293,9 +293,10 @@ public class Character : Singleton<Character>
         {
             if (Input.GetMouseButtonDown(0))
             {
-                // attack 하면 안되는 조건 
                 if (!anim.GetBool("isAttacking") && !anim.GetBool("isJumpping") && !isTeleport)
                 {
+                    SoundManager.Instance.PlaySFX(AudioType.Character, "Attack1");
+
                     rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
 
                     anim.SetBool("isAttacking", true);
@@ -323,6 +324,7 @@ public class Character : Singleton<Character>
     void comboAttack()
     {
         anim.SetTrigger("Combo1");
+        SoundManager.Instance.PlaySFX(AudioType.Character, "Attack2");
 
         Collider2D enemy = Physics2D.OverlapBox(hitPosition, hitBox, 0, LayerMask.GetMask("Enemy"));
         if (enemy != null)
@@ -379,6 +381,7 @@ public class Character : Singleton<Character>
                     Parriable p = bullet.GetComponent<Parriable>();
                     if (bullet.tag == "Bullet" && p.enabled)
                     {
+                        SoundManager.Instance.PlaySFX(AudioType.Character, "Parrying");
                         Time.timeScale = 0f;
                         this.bullet = p;
                         StartCoroutine(CharacterZoom());
@@ -521,6 +524,8 @@ public class Character : Singleton<Character>
 
     public void DoTeleport()
     {
+        SoundManager.Instance.PlaySFX(AudioType.Character, "Teleport");
+
         transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         // 가속도 쌓이는 거 방지
         rigid.velocity = new Vector2(0, 0);

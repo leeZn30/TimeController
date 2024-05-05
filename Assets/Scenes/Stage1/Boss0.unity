@@ -9316,8 +9316,8 @@ MonoBehaviour:
   sunPfb: {fileID: -7516169345985215381, guid: 9064624c979fa5c43811a53472707f94, type: 3}
   windBulletPfb: {fileID: 3461232003358250952, guid: a4b9feffa739fde44a13d9196a3a3a47, type: 3}
   lastWindBulletPfb: {fileID: 3461232003358250952, guid: 87d59a9e1b0258543b75840f019fcf47, type: 3}
-  MapRightLimit: 30
-  MapLeftLimit: -23
+  MapRightLimit: 25
+  MapLeftLimit: -22
 --- !u!61 &1829948765
 BoxCollider2D:
   m_ObjectHideFlags: 0

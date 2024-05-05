@@ -161,7 +161,7 @@ Transform:
   - {fileID: 2521455717222597225}
   - {fileID: 3336045340596621401}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2142522029558262930
 MonoBehaviour:
@@ -179,14 +179,19 @@ MonoBehaviour:
   ObjectSC: {fileID: 0}
   ETCSC: {fileID: 0}
   Character:
-  - {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
+  - {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  - {fileID: 8300000, guid: fd6b4023abb9799409b34163b5e31098, type: 3}
+  - {fileID: 8300000, guid: 741a981c21f56b14d97c799d6a1b4925, type: 3}
+  - {fileID: 8300000, guid: e73855914b100624a80fefb489c1f46d, type: 3}
+  - {fileID: 8300000, guid: 5a20b703de28b1e47a6d99031e6f468c, type: 3}
   Crank:
   - {fileID: 8300000, guid: d8d04c6f80a1140db85ede568dab1f51, type: 3}
   Door: []
   BossDoor:
   - {fileID: 8300000, guid: 4e1ff8faed12a475eba9be0e46072269, type: 3}
   Puzzle:
-  - {fileID: 8300000, guid: 2667a0a008b044e218b63df62e2be749, type: 3}
+  - {fileID: 8300000, guid: a0ca8964c08d54c5dbebf245bdc474ca, type: 3}
+  Clock: []
 --- !u!1 &3772120442829735833
 GameObject:
   m_ObjectHideFlags: 0
