@@ -8,9 +8,16 @@ public class Rule0Manager : RuleManager
 
     public override void Clear()
     {
-        base.Clear();
+        if (!isClear)
+        {
+            isClear = true;
+            GameData.ClearDatas.Find(e => e.ID == ruleID).IsClear = true;
 
-        GiveKey();
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX(AudioType.Puzzle, "Clear");
+
+            GiveKey();
+        }
     }
 
     public void GiveKey()

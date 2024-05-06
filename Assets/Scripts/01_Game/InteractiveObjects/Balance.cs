@@ -4,110 +4,81 @@ using UnityEngine;
 
 public class Balance : MonoBehaviour
 {
-    [SerializeField] float LeftMass => ComputeArmMass(leftBar);
-    [SerializeField] float RightMass => ComputeArmMass(rightBar);
+    Transform leftArm;
+    Transform rightArm;
+    HingeJoint2D barJoint;
+    DistanceJoint2D leftJoint;
+    DistanceJoint2D rightJoint;
 
-    GameObject LeftArm;
-    GameObject RightArm;
-    [SerializeField] GameObject leftBar;
-    [SerializeField] GameObject rightBar;
+    bool isCleared = false;
 
-    [SerializeField] float Heavy;
-    [SerializeField] float Middle;
-    [SerializeField] float Light;
-    [SerializeField] float MoveSpeed;
-
-    bool isClear = false;
+    bool isBalanced = false;
+    float balanceTime = 0;
+    [SerializeField] float forceLimit = 1f;
+    [SerializeField] float distanceLimit = 1f;
+    [SerializeField] float checkDuration = 3f;
 
     private void Awake()
     {
-        LeftArm = transform.GetChild(0).gameObject;
-        RightArm = transform.GetChild(1).gameObject;
+        leftArm = transform.Find("LeftArm");
+        rightArm = transform.Find("RightArm");
+
+        barJoint = transform.Find("Bar").GetComponent<HingeJoint2D>();
+        leftJoint = leftArm.GetComponent<DistanceJoint2D>();
+        rightJoint = rightArm.GetComponent<DistanceJoint2D>();
     }
 
     private void Update()
     {
-        CheckClear();
-
-        if (LeftMass < RightMass)
+        if (!isCleared)
         {
-            if (LeftArm.transform.position.y != Light)
-            {
-                LeftArm.transform.position = Vector3.MoveTowards(LeftArm.transform.position, new Vector2(LeftArm.transform.position.x, Light), MoveSpeed * Time.deltaTime);
-            }
-
-            if (RightArm.transform.position.y != Heavy)
-            {
-                RightArm.transform.position = Vector3.MoveTowards(RightArm.transform.position, new Vector2(RightArm.transform.position.x, Heavy), MoveSpeed * Time.deltaTime);
-            }
+            CheckClear();
         }
-        else if (LeftMass > RightMass)
+    }
+
+    private void FixedUpdate()
+    {
+        // Debug.Log(barJoint.GetReactionTorque(0.5f));
+        // Debug.Log(leftJoint.GetReactionForce(0.5f).y + " " + rightJoint.GetReactionForce(0.5f));
+    }
+
+    // 클리어 조건 다 다름
+    // defualt: 단순 확인
+    protected virtual void CheckClear()
+    {
+        float yDifference = Mathf.Abs(leftArm.position.y - rightArm.position.y);
+        float yForceDiffernce = Mathf.Abs(leftJoint.reactionForce.y - rightJoint.reactionForce.y);
+
+        if (yDifference <= distanceLimit)
         {
-            if (LeftArm.transform.position.y != Heavy)
+            if (!isBalanced)
             {
-                LeftArm.transform.position = Vector3.MoveTowards(LeftArm.transform.position, new Vector2(LeftArm.transform.position.x, Heavy), MoveSpeed * Time.deltaTime);
+                balanceTime = 0.0f;
+                isBalanced = true;
             }
 
-            if (RightArm.transform.position.y != Light)
+            balanceTime += Time.deltaTime;
+
+            if (balanceTime >= checkDuration)
             {
-                RightArm.transform.position = Vector3.MoveTowards(RightArm.transform.position, new Vector2(RightArm.transform.position.x, Light), MoveSpeed * Time.deltaTime);
+                float Ypose = (leftArm.position.y + rightArm.position.y) / 2;
+                leftArm.position = new Vector3(leftArm.position.x, Ypose, leftArm.position.z);
+                rightArm.position = new Vector3(rightArm.position.x, Ypose, rightArm.position.z);
+
+                isCleared = true;
+                Clear();
             }
         }
         else
         {
-            if (LeftArm.transform.position.y != Middle)
-            {
-                LeftArm.transform.position = Vector3.MoveTowards(LeftArm.transform.position, new Vector2(LeftArm.transform.position.x, Middle), MoveSpeed * Time.deltaTime);
-            }
-
-            if (RightArm.transform.position.y != Middle)
-            {
-                RightArm.transform.position = Vector3.MoveTowards(RightArm.transform.position, new Vector2(RightArm.transform.position.x, Middle), MoveSpeed * Time.deltaTime);
-            }
+            balanceTime = 0.0f;
+            isBalanced = false;
         }
     }
 
-    float ComputeArmMass(GameObject arm)
+    // 클리어 때는 다 다름
+    public virtual void Clear()
     {
-        float sum = 0;
-
-        for (int i = 0; i < arm.transform.childCount; i++)
-        {
-            Rigidbody2D rigid = arm.transform.GetChild(i).GetComponent<Rigidbody2D>();
-            if (rigid != null)
-            {
-                sum += rigid.mass;
-            }
-        }
-
-        Debug.DrawRay(arm.transform.position, Vector2.right, Color.red);
-        RaycastHit2D[] hits = Physics2D.RaycastAll(arm.transform.position, Vector2.right, 2f);
-        for (int i = 0; i < hits.Length; i++)
-        {
-            Rigidbody2D rigid = hits[i].transform.GetComponent<Rigidbody2D>();
-            if (rigid != null)
-            {
-                sum += rigid.mass;
-            }
-        }
-        return sum;
-    }
-
-    // Balance마다 다름
-    virtual protected void CheckClear()
-    {
-        if (!isClear)
-        {
-            if (LeftArm.transform.position.y == RightArm.transform.position.y)
-            {
-                RaycastHit2D leftHit = Physics2D.Raycast(leftBar.transform.position, Vector2.right, 2f, LayerMask.GetMask("Player"));
-                if (leftHit.collider != null && leftHit.collider.tag.Equals("Player"))
-                {
-                    isClear = true;
-                    RuleManager.Instance.Clear();
-                }
-            }
-
-        }
+        RuleManager.Instance.Clear();
     }
 }

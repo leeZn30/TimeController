@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RuleManager : Singleton<RuleManager>
 {
-    [SerializeField] string ruleID;
+    [SerializeField] protected string ruleID;
     protected bool isClear = false;
 
     private void Awake()
