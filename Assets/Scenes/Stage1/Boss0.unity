@@ -7887,7 +7887,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5370084715019783153, guid: c8486f9fe1a736f41bee549578b8998e, type: 3}
       propertyPath: m_Name
-      value: SkillBox
+      value: RewindBox
       objectReference: {fileID: 0}
     - target: {fileID: 5370084715019783153, guid: c8486f9fe1a736f41bee549578b8998e, type: 3}
       propertyPath: m_Layer

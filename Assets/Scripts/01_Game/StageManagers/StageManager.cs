@@ -15,7 +15,11 @@ public abstract class StageManager : Singleton<StageManager>
     {
         GameData.Stage = StageId;
         tempItemDatas = new List<ItemData>();
+    }
 
+    private void Start()
+    {
+        // Awake에 하면 Soundmanager에서 먼저 처리 못함
         // Boss가 있는 경우는 거기서 처리
         if (BossManager.Instance == null || BossManager.Instance.isClear)
             SoundManager.Instance.PlayBGM(BGM);

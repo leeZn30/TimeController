@@ -9,14 +9,14 @@ public class Box : MonoBehaviour
 
     [SerializeField] GameObject interactPfb;
     [SerializeField] GameObject ItemInfoPfb;
-    Canvas Fixedcanvas;
-    Canvas Canvas;
+    protected Canvas Fixedcanvas;
+    protected Canvas Canvas;
     GameObject interactUI;
 
     bool isInteractable = true;
     bool isPlayerIn;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         ObjectData data = GameData.ObjectDatas.Find(e => e.ID == BoxID);
         if (data == null)

@@ -3022,7 +3022,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1133362168}
-  - component: {fileID: 1133362167}
+  - component: {fileID: 1133362169}
   m_Layer: 0
   m_Name: StageManager
   m_TagString: Untagged
@@ -3030,18 +3030,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1133362167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133362166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38b9802f9122ce14bb8972d99ba9df82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1133362168
 Transform:
   m_ObjectHideFlags: 0
@@ -3057,6 +3045,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1133362169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133362166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f65f329aa08deb4fa98b80cbf59571a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StageId: 0
+  BGM: Stage0
 --- !u!1 &1176018186
 GameObject:
   m_ObjectHideFlags: 0
@@ -12564,7 +12566,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5370084715019783153, guid: c8486f9fe1a736f41bee549578b8998e, type: 3}
       propertyPath: m_Name
-      value: SkillBox
+      value: TeleportBox
       objectReference: {fileID: 0}
     - target: {fileID: 6892447934892109028, guid: c8486f9fe1a736f41bee549578b8998e, type: 3}
       propertyPath: m_RootOrder

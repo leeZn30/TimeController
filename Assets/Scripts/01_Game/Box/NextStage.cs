@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class NextStage : Box
 {
+    override protected void Awake()
+    {
+        Fixedcanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
+        Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+    }
+
     protected override void interact()
     {
         base.interact();

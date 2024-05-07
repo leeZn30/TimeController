@@ -162,7 +162,7 @@ Transform:
   - {fileID: 3336045340596621401}
   - {fileID: 8611921434993922912}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2142522029558262930
 MonoBehaviour:
@@ -196,9 +196,10 @@ MonoBehaviour:
   Puzzle:
   - {fileID: 8300000, guid: a0ca8964c08d54c5dbebf245bdc474ca, type: 3}
   Clock:
-  - {fileID: 8300000, guid: fb379dd5ac135b14bbd21da0a0d3650e, type: 3}
+  - {fileID: 8300000, guid: 25cbaa3774f2b7847b3df8d1b54a70e9, type: 3}
   ETCBGM: []
-  Stage0: []
+  Stage0:
+  - {fileID: 8300000, guid: 7e62e1b59bdbe0c49ba87d5445a5fbf2, type: 3}
   Stage1:
   - {fileID: 8300000, guid: 4eb26f7425dd96d43aab75d902de9e5c, type: 3}
   - {fileID: 8300000, guid: 15084ff466dc269499f7a200306dd0d1, type: 3}
