@@ -19,6 +19,8 @@ public class TeleportPointer : MonoBehaviour
         // 텔레포트 중단
         if (Input.GetMouseButtonDown(1) && Character.Instance.isTeleport)
         {
+            Character.Instance.CallTeleportFinishingProduction();
+
             Character.Instance.isTeleport = false;
             Time.timeScale = 1f;
             Destroy(gameObject);

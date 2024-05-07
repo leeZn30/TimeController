@@ -8,7 +8,7 @@ public class GameData : Singleton<GameData>
     [Header("Player Data")]
     static float _hp = 16;
     public static float Hp { get { return _hp; } set { _hp = value; } }
-    static bool _teleportActive = false;
+    static bool _teleportActive = true;
     public static bool TeleportActive { get { return _teleportActive; } set { _teleportActive = value; } }
     static float _teleportChargeSpeed = 60f;
     public static float TeleportChargeSpeed { get { return _teleportChargeSpeed; } set { _teleportChargeSpeed = value; } }

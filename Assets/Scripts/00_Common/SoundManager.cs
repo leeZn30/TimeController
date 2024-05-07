@@ -34,6 +34,8 @@ public class SoundManager : Singleton<SoundManager>
     public List<AudioClip> Stage0 = new List<AudioClip>();
     public List<AudioClip> Stage1 = new List<AudioClip>();
 
+    Coroutine BGMPitchCoroutine;
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
@@ -170,6 +172,26 @@ public class SoundManager : Singleton<SoundManager>
 
             default:
                 break;
+        }
+    }
+
+    public void AdjucstBGMPitch(float targetPitch = 1f, float duration = 0.5f)
+    {
+        if (BGMPitchCoroutine != null)
+            StopCoroutine(BGMPitchCoroutine);
+
+        BGMPitchCoroutine = StartCoroutine(BGMPitching(targetPitch, duration));
+    }
+
+    IEnumerator BGMPitching(float targetPitch, float duration = 0.5f)
+    {
+        float currentTime = 0f;
+        while (currentTime < duration)
+        {
+            BGMSC.pitch = Mathf.Lerp(BGMSC.pitch, targetPitch, currentTime / duration);
+            currentTime += Time.unscaledDeltaTime;
+
+            yield return null;
         }
     }
 

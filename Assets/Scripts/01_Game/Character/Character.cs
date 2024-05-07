@@ -44,6 +44,7 @@ public class Character : Singleton<Character>
     float maxJumpTime = 1f;         // 최대 점프 시간
     float jumpTimeMultiplier = 7f;  // 점프 시간에 대한 곱셈 계수
     public Queue<Trail> TrailQueue;
+    Coroutine teleportCoroutine;
 
     // *************** 상호작용 박스 *************
     Vector2 hitPosition;
@@ -515,6 +516,13 @@ public class Character : Singleton<Character>
             // 텔레포트 시작
             if (Input.GetKeyDown(KeyCode.Q) && !isTeleport)
             {
+                if (teleportCoroutine != null)
+                    StopCoroutine(teleportCoroutine);
+
+                teleportCoroutine = StartCoroutine(teleportStartingProduction());
+
+                SoundManager.Instance.AdjucstBGMPitch(0.6f, 0.5f);
+
                 isTeleport = true;
                 Time.timeScale = 0.05f;
                 teleportPointer = Instantiate(amingPfb);
@@ -522,8 +530,34 @@ public class Character : Singleton<Character>
         }
     }
 
+    IEnumerator teleportStartingProduction()
+    {
+        Vignette vignette;
+        FindObjectOfType<Volume>().profile.TryGet(out vignette);
+
+        FilmGrain filmGrain;
+        FindObjectOfType<Volume>().profile.TryGet(out filmGrain);
+
+        float duration = 1f;
+        float targetVignette = 0.4f;
+        float targetFilmGrain = 1f;
+        float currentTime = 0f;
+        while (currentTime < duration)
+        {
+            float newVignette = Mathf.Lerp(vignette.intensity.value, targetVignette, currentTime / duration);
+            vignette.intensity.value = newVignette;
+            float newGrain = Mathf.Lerp(filmGrain.intensity.value, targetFilmGrain, currentTime / duration);
+            filmGrain.intensity.value = newGrain;
+
+            currentTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
+    }
+
     public void DoTeleport()
     {
+        CallTeleportFinishingProduction();
+
         SoundManager.Instance.PlaySFX(AudioType.Character, "Teleport");
 
         transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -531,6 +565,39 @@ public class Character : Singleton<Character>
         rigid.velocity = new Vector2(0, 0);
 
         TeleportGauge.value = 0f;
+    }
+
+    public void CallTeleportFinishingProduction()
+    {
+        if (teleportCoroutine != null)
+            StopCoroutine(teleportCoroutine);
+        teleportCoroutine = StartCoroutine(teleportFinishingProduction());
+
+        SoundManager.Instance.AdjucstBGMPitch();
+    }
+
+    IEnumerator teleportFinishingProduction()
+    {
+        Vignette vignette;
+        FindObjectOfType<Volume>().profile.TryGet(out vignette);
+
+        FilmGrain filmGrain;
+        FindObjectOfType<Volume>().profile.TryGet(out filmGrain);
+
+        float duration = 1f;
+        float targetVignette = 0f;
+        float targetFilmGrain = 0f;
+        float currentTime = 0f;
+        while (currentTime < duration)
+        {
+            float newVignette = Mathf.Lerp(vignette.intensity.value, targetVignette, currentTime / duration);
+            vignette.intensity.value = newVignette;
+            float newGrain = Mathf.Lerp(filmGrain.intensity.value, targetFilmGrain, currentTime / duration);
+            filmGrain.intensity.value = newGrain;
+
+            currentTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
     }
 
     void OnSlow()
