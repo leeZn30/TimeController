@@ -28,7 +28,7 @@ public class Rule0Manager : RuleManager
 
     IEnumerator movekey()
     {
-        while (key.transform.position.y > -1.5f)
+        while (key.transform.position.y > -1f)
         {
             key.transform.position += Vector3.down * 15f * Time.deltaTime;
             yield return null;
