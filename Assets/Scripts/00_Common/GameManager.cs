@@ -68,6 +68,7 @@ public class GameManager : Singleton<GameManager>
     public void Exit()
     {
         popESC();
+        Application.Quit();
     }
 
     public void Clear()

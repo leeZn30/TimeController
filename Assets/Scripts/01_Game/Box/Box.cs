@@ -13,7 +13,7 @@ public class Box : MonoBehaviour
     protected Canvas Canvas;
     GameObject interactUI;
 
-    bool isInteractable = true;
+    protected bool isInteractable = true;
     bool isPlayerIn;
 
     protected virtual void Awake()

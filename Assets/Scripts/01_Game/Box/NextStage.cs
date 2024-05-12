@@ -13,11 +13,12 @@ public class NextStage : Box
 
     protected override void interact()
     {
-        base.interact();
+        isInteractable = false;
 
         GameData.Stage++;
 
         SceneManager.LoadScene(string.Format("Stage{0}", GameData.Stage));
         FindObjectOfType<Background>().resetMaterial();
     }
+
 }
