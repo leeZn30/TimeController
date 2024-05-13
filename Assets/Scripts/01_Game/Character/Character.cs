@@ -55,7 +55,6 @@ public class Character : Singleton<Character>
     // **************** 프리팹 ********************
     [Header("Prefabs")]
     [SerializeField] GameObject amingPfb;
-    [SerializeField] GameObject dragPfb;
     [SerializeField] Trail trailPrefab;
 
     // ************* 컴포넌트&오브젝트 *************
@@ -101,7 +100,6 @@ public class Character : Singleton<Character>
             // 스킬
             chargeSkill();
             teleport();
-            Rewind();
             OnSlow();
             SlowRun();
         }
@@ -599,38 +597,6 @@ public class Character : Singleton<Character>
 
             currentTime += Time.unscaledDeltaTime;
             yield return null;
-        }
-    }
-
-    bool isRWDragging = false;
-    void Rewind()
-    {
-        if (RewindActive)
-        {
-            Vector3 startPos = new Vector3();
-            Vector3 endPos;
-
-            if (Input.GetMouseButtonDown(0) && !isRWDragging)
-            {
-                isRWDragging = true;
-                startPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                rewindPointer = Instantiate(dragPfb);
-            }
-
-            if (Input.GetMouseButtonUp(0) && isRWDragging)
-            {
-                isRWDragging = false;
-                if (rewindPointer != null)
-                    Destroy(rewindPointer);
-            }
-
-            if (isRWDragging)
-            {
-                endPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector2 size = endPos - startPos;
-                rewindPointer.transform.localScale = size;
-                // rewindPointer.GetComponent<SpriteRenderer>().size
-            }
         }
     }
 
