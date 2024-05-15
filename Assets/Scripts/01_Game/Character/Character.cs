@@ -633,6 +633,12 @@ public class Character : Singleton<Character>
         }
     }
 
+    public void FinishRewind()
+    {
+        isRewind = false;
+        Destroy(rewindPointer);
+    }
+
     void OnSlow()
     {
         if (SlowActive)

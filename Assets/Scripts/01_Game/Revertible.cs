@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Revertible : MonoBehaviour
 {
+    public bool isRevert = false;
+
     Collider2D collider;
     Collider2D draggerCollider;
     SpriteRenderer spriteRenderer;
@@ -14,6 +16,7 @@ public class Revertible : MonoBehaviour
     float originalSize;
 
     bool isActive = false;
+    bool isInDrag = false;
 
     private void Awake()
     {
@@ -24,6 +27,11 @@ public class Revertible : MonoBehaviour
         originalSize = collider.bounds.size.x * collider.bounds.size.y;
     }
 
+    private void Start()
+    {
+        GetComponent<Animator>().SetTrigger("Fall");
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -31,19 +39,42 @@ public class Revertible : MonoBehaviour
         {
             if (minOverlapArea <= calculateIntersectRegion())
             {
-                if (spriteRenderer.material != detectedMaterial)
-                    spriteRenderer.material = detectedMaterial;
+                if (!isInDrag)
+                    isInDrag = true;
             }
             else
             {
-                if (spriteRenderer.material != originalMaterial)
-                    spriteRenderer.material = originalMaterial;
+                if (isInDrag)
+                    isInDrag = false;
             }
+        }
+        else
+        {
+            if (isInDrag)
+                isInDrag = false;
+        }
+
+        if (isInDrag)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                DoRewind();
+            }
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (isInDrag)
+        {
+            if (spriteRenderer.material != detectedMaterial)
+                spriteRenderer.material = detectedMaterial;
         }
         else
         {
             if (spriteRenderer.material != originalMaterial)
                 spriteRenderer.material = originalMaterial;
+
         }
     }
 
@@ -62,6 +93,17 @@ public class Revertible : MonoBehaviour
         else
         {
             return 0;
+        }
+    }
+
+    public void DoRewind()
+    {
+        if (isInDrag && !isRevert)
+        {
+            GetComponent<Animator>().SetTrigger("Climb");
+
+            Character.Instance.FinishRewind();
+
         }
     }
 
