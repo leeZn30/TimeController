@@ -707,7 +707,6 @@ GameObject:
   - component: {fileID: 204348381}
   - component: {fileID: 204348383}
   - component: {fileID: 204348380}
-  - component: {fileID: 204348379}
   - component: {fileID: 204348384}
   m_Layer: 0
   m_Name: FallenStones
@@ -716,33 +715,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &204348379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 204348378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a739b6549f283f949bc2efa4bfe9e6c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 204348380}
-        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-        m_MethodName: SetTrigger
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Fallen
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!95 &204348380
 Animator:
   serializedVersion: 5
@@ -805,7 +777,7 @@ SpriteRenderer:
   m_SortingLayerID: -1320475405
   m_SortingLayer: 4
   m_SortingOrder: 1
-  m_Sprite: {fileID: -238385299, guid: b4588a3075ef6014a96b7f895448d1bb, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -813,7 +785,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &204348382
@@ -824,7 +796,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204348378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.88, y: 4.93, z: 0}
+  m_LocalPosition: {x: -12.98, y: 4.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -872,7 +844,7 @@ PolygonCollider2D:
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   m_Points:
     m_Paths:
     - - {x: 0.27738, y: -3.7565484}
@@ -895,12 +867,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 204348378}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a85770b560a13ed4fa756a62d5263a86, type: 3}
+  m_Script: {fileID: 11500000, guid: 28e176029afb80a449e73e4b18a80273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isRevert: 0
-  detectedMaterial: {fileID: 2100000, guid: dc2618d6015c0184eb03cde177524185, type: 2}
+  isRevertible: 0
+  returnTime: 3
   minOverlapArea: 0.4
+  detectedMaterial: {fileID: 0}
 --- !u!1 &222842430
 GameObject:
   m_ObjectHideFlags: 0

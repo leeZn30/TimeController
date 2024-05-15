@@ -27,7 +27,7 @@ public class Character : Singleton<Character>
     [Header("스킬")]
     [SerializeField] bool TeleportActive = false;
     [SerializeField] Slider TeleportGauge;
-    [SerializeField] float teleportChargeSpeed;
+    [SerializeField] float teleportChargeSpeed => GameData.TeleportChargeSpeed;
     [SerializeField] bool RewindActive = false;
     [SerializeField] float RewindGauge;
     [SerializeField] float maxRewindGauge;
@@ -133,7 +133,7 @@ public class Character : Singleton<Character>
         Hp = GameData.Hp;
 
         TeleportActive = GameData.TeleportActive;
-        teleportChargeSpeed = GameData.TeleportChargeSpeed;
+        // teleportChargeSpeed = GameData.TeleportChargeSpeed;
         if (TeleportActive)
             TeleportGauge.gameObject.SetActive(true);
         RewindActive = GameData.RewindActive;
@@ -622,13 +622,7 @@ public class Character : Singleton<Character>
 
             if (Input.GetMouseButtonUp(1) && isRewind)
             {
-                isRewind = false;
-                Destroy(rewindPointer);
-
-                VhsVol vhsVol;
-                FindObjectOfType<Volume>().profile.TryGet(out vhsVol);
-
-                vhsVol._weight.value = 0f;
+                FinishRewind();
             }
         }
     }
@@ -637,6 +631,11 @@ public class Character : Singleton<Character>
     {
         isRewind = false;
         Destroy(rewindPointer);
+
+        VhsVol vhsVol;
+        FindObjectOfType<Volume>().profile.TryGet(out vhsVol);
+
+        vhsVol._weight.value = 0f;
     }
 
     void OnSlow()

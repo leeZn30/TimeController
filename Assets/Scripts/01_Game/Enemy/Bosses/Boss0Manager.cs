@@ -9,10 +9,19 @@ public class Boss0Manager : BossManager
     PlayableDirector director;
     [SerializeField] TimelineAsset BossEndTimeline;
     [SerializeField] GameObject Sun;
+    [SerializeField] GameObject Stones;
 
     protected override void Awake()
     {
         base.Awake();
+        if (!isClear)
+        {
+            Stones.SetActive(false);
+        }
+        else
+        {
+            Stones.SetActive(true);
+        }
         director = FindObjectOfType<PlayableDirector>();
 
         if (!isClear && GameData.BossTryCnt == 1)
@@ -23,6 +32,7 @@ public class Boss0Manager : BossManager
     {
         base.Clear();
 
+        Stones.SetActive(true);
         StartCoroutine(SunGoUP());
     }
 

@@ -2,38 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Revertible : MonoBehaviour
+public abstract class Revertible : MonoBehaviour
 {
-    public bool isRevert = false;
+    public bool isRevertible = false;
+    bool isDoneInitChanged = false;
+    bool isActive = false;
+    bool isInDrag = false;
+    [SerializeField] float returnTime = 5f;
+    [SerializeField] float minOverlapArea = 0.4f;
+    float originalSize;
 
-    Collider2D collider;
+    protected Collider2D collider;
     Collider2D draggerCollider;
     SpriteRenderer spriteRenderer;
     [SerializeField] Material detectedMaterial;
     Material originalMaterial;
 
-    [SerializeField] float minOverlapArea = 0.4f;
-    float originalSize;
-
-    bool isActive = false;
-    bool isInDrag = false;
-
-    private void Awake()
+    protected virtual void Awake()
     {
         collider = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        detectedMaterial = Resources.Load<Material>("Materials/RevertMeterial");
 
         originalMaterial = spriteRenderer.material;
         originalSize = collider.bounds.size.x * collider.bounds.size.y;
     }
 
-    private void Start()
-    {
-        GetComponent<Animator>().SetTrigger("Fall");
-    }
-
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         if (isActive)
         {
@@ -54,18 +50,18 @@ public class Revertible : MonoBehaviour
                 isInDrag = false;
         }
 
-        if (isInDrag)
+        if (!isDoneInitChanged)
+            checkChangeCondition();
+
+        if (Input.GetMouseButton(0))
         {
-            if (Input.GetMouseButton(0))
-            {
-                DoRewind();
-            }
+            DoRewind();
         }
     }
 
     private void LateUpdate()
     {
-        if (isInDrag)
+        if (isInDrag && isRevertible)
         {
             if (spriteRenderer.material != detectedMaterial)
                 spriteRenderer.material = detectedMaterial;
@@ -96,15 +92,32 @@ public class Revertible : MonoBehaviour
         }
     }
 
-    public void DoRewind()
+    public virtual void Change()
     {
-        if (isInDrag && !isRevert)
+        if (!isDoneInitChanged)
+            isDoneInitChanged = true;
+    }
+
+    protected abstract void checkChangeCondition();
+
+    protected abstract void Rewind();
+
+    void DoRewind()
+    {
+        if (isInDrag && isRevertible)
         {
-            GetComponent<Animator>().SetTrigger("Climb");
-
-            Character.Instance.FinishRewind();
-
+            isRevertible = false;
+            Rewind();
+            StartCoroutine(returnAfterRewind());
         }
+        Character.Instance.FinishRewind();
+    }
+
+    IEnumerator returnAfterRewind()
+    {
+        yield return new WaitForSeconds(returnTime);
+
+        Change();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
