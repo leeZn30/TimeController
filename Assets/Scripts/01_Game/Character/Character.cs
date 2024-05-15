@@ -9,6 +9,7 @@ using CC = CinemachineCamera;
 
 public class Character : Singleton<Character>
 {
+
     // **************** 캐릭터 데이터 *****************
     [Header("Character Data")]
     public float Hp;
@@ -37,6 +38,7 @@ public class Character : Singleton<Character>
     public bool isMovable = true;
     bool isSlow = false;
     public bool isTeleport = false;
+    bool isRewind = false;
     bool isLooking = false;
     bool isJumping = false;
     float jumpTime = 0f;
@@ -55,6 +57,7 @@ public class Character : Singleton<Character>
     // **************** 프리팹 ********************
     [Header("Prefabs")]
     [SerializeField] GameObject amingPfb;
+    [SerializeField] GameObject draggingPfb;
     [SerializeField] Trail trailPrefab;
 
     // ************* 컴포넌트&오브젝트 *************
@@ -100,6 +103,7 @@ public class Character : Singleton<Character>
             // 스킬
             chargeSkill();
             teleport();
+            Rewind();
             OnSlow();
             SlowRun();
         }
@@ -597,6 +601,24 @@ public class Character : Singleton<Character>
 
             currentTime += Time.unscaledDeltaTime;
             yield return null;
+        }
+    }
+
+    void Rewind()
+    {
+        if (TeleportActive)
+        {
+            if (Input.GetMouseButtonDown(1) && !isRewind)
+            {
+                isRewind = true;
+                rewindPointer = Instantiate(draggingPfb);
+            }
+
+            if (Input.GetMouseButtonUp(1) && isRewind)
+            {
+                isRewind = false;
+                Destroy(rewindPointer);
+            }
         }
     }
 
