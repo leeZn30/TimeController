@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using VolFx;
 
 using CC = CinemachineCamera;
 
@@ -612,12 +613,22 @@ public class Character : Singleton<Character>
             {
                 isRewind = true;
                 rewindPointer = Instantiate(draggingPfb);
+
+                VhsVol vhsVol;
+                FindObjectOfType<Volume>().profile.TryGet(out vhsVol);
+
+                vhsVol._weight.value = 0.3f;
             }
 
             if (Input.GetMouseButtonUp(1) && isRewind)
             {
                 isRewind = false;
                 Destroy(rewindPointer);
+
+                VhsVol vhsVol;
+                FindObjectOfType<Volume>().profile.TryGet(out vhsVol);
+
+                vhsVol._weight.value = 0f;
             }
         }
     }

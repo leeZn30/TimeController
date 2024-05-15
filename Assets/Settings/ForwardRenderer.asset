@@ -56,7 +56,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _active: 1
   _shader: {fileID: 4800000, guid: 074eb04a5009453ea004483946e7c745, type: 3}
-  _glitch: {r: 1, g: 0, b: 0, a: 1}
+  _glitch: {r: 1, g: 0, b: 0.7194252, a: 0.78431374}
   _frameRate: 20
   _clip:
   - {fileID: 2800000, guid: 6cc3565298463314b9a2b63156556e63, type: 3}

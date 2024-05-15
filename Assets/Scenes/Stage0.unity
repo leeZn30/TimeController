@@ -2782,7 +2782,7 @@ MonoBehaviour:
   Atk: 10
   TeleportActive: 0
   TeleportGauge: {fileID: 1924361079}
-  teleportChargeSpeed: 100
+  teleportChargeSpeed: 60
   RewindActive: 0
   RewindGauge: 0
   maxRewindGauge: 0
@@ -2792,6 +2792,7 @@ MonoBehaviour:
   isMovable: 1
   isTeleport: 0
   amingPfb: {fileID: 3266036853785965160, guid: 6742604e6f34c5b4286f8b475c52f211, type: 3}
+  draggingPfb: {fileID: 2377096528277553022, guid: c85dba13bd8f19042851b8541f88adf6, type: 3}
   trailPrefab: {fileID: 5112178794755931766, guid: 750b41925fec25744b7ebc243ba15aaa, type: 3}
 --- !u!95 &1031556404
 Animator:
