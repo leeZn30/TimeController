@@ -181,7 +181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
       propertyPath: BulletInfos.Array.size
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7869037467241267234, guid: 6f097a8a7c2350c49ad2490ccd353214, type: 3}
       propertyPath: BulletInfos.Array.data[0].Name
@@ -3498,7 +3498,6 @@ MonoBehaviour:
   Atk: 10
   TeleportActive: 1
   TeleportGauge: {fileID: 1497729911}
-  teleportChargeSpeed: 60
   RewindActive: 0
   RewindGauge: 0
   maxRewindGauge: 0

@@ -20,6 +20,12 @@ public class NextStage : Box
 
         SceneManager.LoadScene(string.Format("Stage{0}", GameData.Stage));
         FindObjectOfType<Background>().resetMaterial();
+
+        GameData.ReviveScene = -1;
+        GameData.CheckPoint = -1;
+        GameData.Door = "";
+        GameData.ItemDatas.Clear();
+        GameData.ObjectDatas.Clear();
     }
 
 }
