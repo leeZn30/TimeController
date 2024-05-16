@@ -94,6 +94,7 @@ public class Character : Singleton<Character>
         if (isMovable)
         {
             jump();
+            land();
             attack();
             sightMove();
             extraMove();
@@ -116,7 +117,6 @@ public class Character : Singleton<Character>
         {
             move();
             jumping();
-            land();
         }
     }
 
@@ -236,20 +236,6 @@ public class Character : Singleton<Character>
                 anim.SetBool("isJumpping", false);
             }
         }
-
-        // 점프 변경 예정
-        // Debug.DrawRay(rigid.position, Vector2.down * collider.bounds.extents.y, Color.red);
-        // int layerMask = (1 << LayerMask.NameToLayer("ThroughMap")) | (1 << LayerMask.NameToLayer("Map"));
-        // RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, collider.bounds.extents.y, layerMask);
-
-        // if (hit.collider != null && hit.collider.tag.Equals("Ground"))
-        // {
-        //     anim.SetBool("Grounded", true);
-        // }
-        // else
-        // {
-        //     anim.SetBool("Grounded", false);
-        // }
     }
 
     void sightMove()
@@ -349,8 +335,6 @@ public class Character : Singleton<Character>
 
         AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
 
-        // Debug.LogFormat("[{0}]: {1}", info.IsName("Attack1") ? "Attack1" : info.shortNameHash.ToString(), info.length);
-
         float limit = info.length; //animation 길이로 측정
         float duration = 0f;
         float comboStart = limit * 0.6f; // 비율
@@ -363,14 +347,18 @@ public class Character : Singleton<Character>
             {
                 if (Input.GetMouseButtonDown(0) && anim.GetBool("isAttacking"))
                 {
-                    // Debug.Log("Combo Enter");
                     comboAttack();
                 }
             }
             yield return null;
         }
 
-        yield return new WaitForEndOfFrame();
+        // yield return new WaitForEndOfFrame();
+        // anim.SetBool("isAttacking", false);
+    }
+
+    public void OnAttackEnd()
+    {
         anim.SetBool("isAttacking", false);
     }
 
