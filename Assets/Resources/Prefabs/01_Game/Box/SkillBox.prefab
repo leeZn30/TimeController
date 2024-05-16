@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 25
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5471757853754664003
 SpriteRenderer:
@@ -145,4 +145,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactPfb: {fileID: 6440122066688137083, guid: d16fe705140f39c429a94c8ed9af8061, type: 3}
   ItemInfoPfb: {fileID: 5040350031196834446, guid: 5d99390c18e15304ca2c1a39803f96a7, type: 3}
+  positionOffset: 1
   Skill: Teleport

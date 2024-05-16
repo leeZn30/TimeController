@@ -12,6 +12,8 @@ public class Box : MonoBehaviour
     protected Canvas Fixedcanvas;
     protected Canvas Canvas;
     GameObject interactUI;
+    protected Collider2D collider;
+    [SerializeField] float positionOffset;
 
     protected bool isInteractable = true;
     bool isPlayerIn;
@@ -31,6 +33,7 @@ public class Box : MonoBehaviour
 
         Fixedcanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
         Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        collider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
@@ -58,7 +61,7 @@ public class Box : MonoBehaviour
     {
         if (other.tag.Equals("Player") && isInteractable)
         {
-            interactUI = Instantiate(interactPfb, transform.position + new Vector3(0, 2, 0), Quaternion.identity, Fixedcanvas.transform);
+            interactUI = Instantiate(interactPfb, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2 + interactPfb.transform.localScale.y / 2 + positionOffset, 0), Quaternion.identity, Fixedcanvas.transform);
             isPlayerIn = true;
         }
     }

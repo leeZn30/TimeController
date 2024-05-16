@@ -9,6 +9,7 @@ public class NextStage : Box
     {
         Fixedcanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
         Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        collider = GetComponent<Collider2D>();
     }
 
     protected override void interact()

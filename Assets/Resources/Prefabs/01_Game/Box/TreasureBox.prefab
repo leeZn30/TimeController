@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 26
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8208532879355787557
 SpriteRenderer:
@@ -145,3 +145,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactPfb: {fileID: 6440122066688137083, guid: 4b7a2de1c2bd0a643adbf09a033c0576, type: 3}
   ItemInfoPfb: {fileID: 0}
+  positionOffset: 1
