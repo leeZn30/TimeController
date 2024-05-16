@@ -222,8 +222,11 @@ public class Character : Singleton<Character>
 
     void land()
     {
-        if (rigid.velocity.normalized.y <= 0 && anim.GetBool("isJumpping")) // 내려가고 있음
+        if (rigid.velocity.normalized.y <= 0) // 내려가고 있음
         {
+            if (Mathf.Abs(rigid.velocity.y) > 20)
+                rigid.velocity = new Vector2(rigid.velocity.x, -30);
+
             Debug.DrawRay(rigid.position, Vector2.down, Color.red);
             int layerMask = (1 << LayerMask.NameToLayer("ThroughMap")) | (1 << LayerMask.NameToLayer("Map"));
             RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, 1f, layerMask);
@@ -233,7 +236,9 @@ public class Character : Singleton<Character>
                 jumpTime = 0f;
                 isJumping = false;
                 jumpCnt = 0;
-                anim.SetBool("isJumpping", false);
+
+                if (anim.GetBool("isJumpping"))
+                    anim.SetBool("isJumpping", false);
             }
         }
     }
