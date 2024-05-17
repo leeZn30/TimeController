@@ -30,25 +30,10 @@ public abstract class StageManager : Singleton<StageManager>
         if (GameData.CheckPoint > -1)
         {
             CheckPoints = FindObjectsOfType<CheckPoint>().ToList();
-            Character.Instance.transform.position = CheckPoints.Find(e => e.CheckIdx == GameData.CheckPoint).transform.position;
+            if (CheckPoints.Count > 0)
+                Character.Instance.transform.position = CheckPoints.Find(e => e.CheckIdx == GameData.CheckPoint).transform.position;
         }
     }
-
-    // public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    // {
-    //     if (!GameData.Door.Equals(""))
-    //     {
-    //         Character.Instance.transform.position = GameObject.Find(GameData.Door).transform.position;
-    //         GameData.Door = "";
-    //     }
-    //     else if (GameData.CheckPoint > -1)
-    //     {
-    //         CheckPoints = FindObjectsOfType<CheckPoint>().ToList();
-    //         Character.Instance.transform.position = CheckPoints.Find(e => e.CheckIdx == GameData.CheckPoint).transform.position;
-    //     }
-
-    //     SceneManager.sceneLoaded -= OnSceneLoaded;
-    // }
 
     public static void SaveStage(int CheckIdx)
     {

@@ -84,7 +84,7 @@ public class PostPrecessingController : Singleton<PostPrecessingController>
     }
     IEnumerator parry(float targetVignette)
     {
-        float duration = 0.5f;
+        float duration = 0.4f;
         float currentTime = 0f;
         while (currentTime < duration)
         {

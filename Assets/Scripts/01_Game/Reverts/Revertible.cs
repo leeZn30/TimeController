@@ -109,8 +109,8 @@ public abstract class Revertible : MonoBehaviour
             isRevertible = false;
             Rewind();
             StartCoroutine(returnAfterRewind());
+            Character.Instance.FinishRewind();
         }
-        Character.Instance.FinishRewind();
     }
 
     IEnumerator returnAfterRewind()

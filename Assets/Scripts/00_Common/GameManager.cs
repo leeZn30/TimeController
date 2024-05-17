@@ -58,10 +58,12 @@ public class GameManager : Singleton<GameManager>
 
         if (GameData.ReviveScene != -1)
         {
+            SceneChanger.MakeSceneHandOverData(ghostCount: GameData.Ghosts);
             SceneChanger.LoadScene(GameData.ReviveScene);
         }
         else
         {
+            SceneChanger.MakeSceneHandOverData(ghostCount: GameData.Ghosts);
             SceneChanger.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 

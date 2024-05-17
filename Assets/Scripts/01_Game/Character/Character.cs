@@ -367,14 +367,17 @@ public class Character : Singleton<Character>
                 if (bullet != null)
                 {
                     Parriable p = bullet.GetComponent<Parriable>();
-                    SoundManager.Instance.PlaySFX(AudioType.Character, "Parrying");
                     if (bullet.tag == "Bullet" && p.enabled)
                     {
                         Time.timeScale = 0f;
                         anim.updateMode = AnimatorUpdateMode.UnscaledTime;
                         this.bullet = p;
                         PostPrecessingController.Instance.CallParryStartEffect();
-                        CC.Instance.Zoom(1.5f, 0.5f, () => { anim.SetTrigger("Parry"); });
+                        CC.Instance.Zoom(1.5f, 0.4f, () =>
+                        {
+                            SoundManager.Instance.PlaySFX(AudioType.Character, "Parrying");
+                            anim.SetTrigger("Parry");
+                        });
                     }
                 }
             }

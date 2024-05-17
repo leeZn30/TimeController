@@ -7,11 +7,11 @@ public class SceneChanger : Singleton<SceneChanger>
 {
     static SceneHandOverData sceneHandOverData;
 
-    public static void MakeSceneHandOverData(string doorName = "")
+    public static void MakeSceneHandOverData(string doorName = "", int ghostCount = -1)
     {
         sceneHandOverData = new SceneHandOverData
         (
-            nowGhosts: GhostManager.Instance != null ? GhostManager.Instance.ghostCount : 0,
+            nowGhosts: ghostCount != -1 ? ghostCount : GhostManager.Instance != null ? GhostManager.Instance.ghostCount : 0,
             nowTeleportGauge: GameObject.Find("TeleportGauge") != null ? GameObject.Find("TeleportGauge").GetComponent<Slider>().value : 0,
             nowSlowGauge: GameObject.Find("SlowGauge") != null ? GameObject.Find("SlowGauge").GetComponent<Slider>().value : 0,
             door: doorName
