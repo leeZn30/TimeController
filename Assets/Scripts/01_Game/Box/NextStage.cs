@@ -23,7 +23,6 @@ public class NextStage : Box
 
         GameData.ReviveScene = -1;
         GameData.CheckPoint = -1;
-        GameData.Door = "";
         GameData.ItemDatas.Clear();
         GameData.ObjectDatas.Clear();
     }

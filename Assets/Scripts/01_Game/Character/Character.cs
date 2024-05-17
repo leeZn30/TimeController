@@ -24,16 +24,13 @@ public class Character : Singleton<Character>
     float trailTimer = 0f;
 
     // **************** 스킬 상태 ******************
-    [Header("스킬")]
-    [SerializeField] bool TeleportActive = false;
-    [SerializeField] Slider TeleportGauge;
-    [SerializeField] float teleportChargeSpeed => GameData.TeleportChargeSpeed;
-    [SerializeField] bool RewindActive = false;
-    [SerializeField] float RewindGauge;
-    [SerializeField] float maxRewindGauge;
-    [SerializeField] bool SlowActive = false;
-    [SerializeField] Slider SlowGauge;
-    [SerializeField] float slowChargeSpeed;
+    bool TeleportActive => GameData.TeleportActive;
+    Slider TeleportGauge;
+    float teleportChargeSpeed => GameData.TeleportChargeSpeed;
+    bool RewindActive => GameData.RewindActive;
+    bool SlowActive => GameData.SlowActive;
+    Slider SlowGauge;
+    [SerializeField] float slowChargeSpeed => GameData.SlowChargeSpeed;
 
     // **************** 변수 *************
     public bool isMovable = true;
@@ -75,18 +72,20 @@ public class Character : Singleton<Character>
 
     private void Awake()
     {
-        Init();
-
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
         sprite = GetComponent<SpriteRenderer>();
         background = FindObjectOfType<Background>();
+        TeleportGauge = GameObject.Find("TeleportGauge").GetComponent<Slider>();
+        SlowGauge = GameObject.Find("SlowGauge").GetComponent<Slider>();
 
         hitPosition = new Vector2(rigid.position.x + transform.localScale.x, rigid.position.y);
         parryingPosition = rigid.position;
 
         TrailQueue = ObjectPool.CreateQueue<Trail>(5, trailPrefab);
+
+        Init();
     }
 
     private void Update()
@@ -132,11 +131,10 @@ public class Character : Singleton<Character>
     {
         Hp = GameData.Hp;
 
-        TeleportActive = GameData.TeleportActive;
-        // teleportChargeSpeed = GameData.TeleportChargeSpeed;
-        if (TeleportActive)
-            TeleportGauge.gameObject.SetActive(true);
-        RewindActive = GameData.RewindActive;
+        if (!TeleportActive)
+            TeleportGauge.gameObject.SetActive(false);
+        if (!SlowActive)
+            SlowGauge.gameObject.SetActive(false);
     }
 
     void move()
@@ -465,16 +463,10 @@ public class Character : Singleton<Character>
         switch (skill)
         {
             case "Teleport":
-                TeleportActive = true;
                 TeleportGauge.gameObject.SetActive(true);
                 break;
 
-            case "Rewind":
-                RewindActive = true;
-                break;
-
             case "Slow":
-                SlowActive = true;
                 SlowGauge.gameObject.SetActive(true);
                 break;
 
@@ -600,7 +592,7 @@ public class Character : Singleton<Character>
 
     void Rewind()
     {
-        if (TeleportActive)
+        if (RewindActive)
         {
             if (Input.GetMouseButtonDown(1) && !isRewind)
             {

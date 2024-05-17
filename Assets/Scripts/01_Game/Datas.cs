@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 [System.Serializable]
@@ -48,5 +49,23 @@ public class ClearData
         ID = id;
         IsClear = isClear;
     }
+}
+
+public class SceneHandOverData
+{
+    public string door = "";
+    public int nowGhosts = 0;
+    public float nowTeleportGauge = 0;
+    public float nowSlowGauge = 0;
+
+    public SceneHandOverData(int nowGhosts, float nowTeleportGauge, float nowSlowGauge, string door)
+    {
+        this.door = door;
+        this.nowGhosts = nowGhosts;
+        this.nowTeleportGauge = nowTeleportGauge;
+        this.nowSlowGauge = nowSlowGauge;
+    }
+
+    public SceneHandOverData() { }
 }
 

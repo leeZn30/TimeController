@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class BossDoor : MonoBehaviour
 {
@@ -46,8 +47,8 @@ public class BossDoor : MonoBehaviour
         {
             SoundManager.Instance.PlaySFX(AudioType.BossDoor, "Enter");
 
-            GameData.NowGhosts = GhostManager.Instance.ghostCount;
-            SceneChanger.LoadSceneByDoor(NextScene, gameObject.name);
+            SceneChanger.MakeSceneHandOverData(gameObject.name);
+            SceneChanger.LoadSceneByDoor(NextScene);
         }
     }
 

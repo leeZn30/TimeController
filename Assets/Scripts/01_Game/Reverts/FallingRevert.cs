@@ -19,9 +19,12 @@ public class FallingRevert : Revertible
 
     protected override void checkChangeCondition()
     {
-        if (Vector3.Distance(Character.Instance.transform.position, collider.bounds.center) < 5f && !isRevertible)
+        if (Character.Instance != null)
         {
-            Change();
+            if (Vector3.Distance(Character.Instance.transform.position, collider.bounds.center) < 5f && !isRevertible)
+            {
+                Change();
+            }
         }
     }
 

@@ -25,21 +25,30 @@ public abstract class StageManager : Singleton<StageManager>
             SoundManager.Instance.PlayBGM(BGM);
     }
 
-    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    public void Init()
     {
-        if (!GameData.Door.Equals(""))
-        {
-            Character.Instance.transform.position = GameObject.Find(GameData.Door).transform.position;
-            GameData.Door = "";
-        }
-        else if (GameData.CheckPoint > -1)
+        if (GameData.CheckPoint > -1)
         {
             CheckPoints = FindObjectsOfType<CheckPoint>().ToList();
             Character.Instance.transform.position = CheckPoints.Find(e => e.CheckIdx == GameData.CheckPoint).transform.position;
         }
-
-        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+
+    // public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    // {
+    //     if (!GameData.Door.Equals(""))
+    //     {
+    //         Character.Instance.transform.position = GameObject.Find(GameData.Door).transform.position;
+    //         GameData.Door = "";
+    //     }
+    //     else if (GameData.CheckPoint > -1)
+    //     {
+    //         CheckPoints = FindObjectsOfType<CheckPoint>().ToList();
+    //         Character.Instance.transform.position = CheckPoints.Find(e => e.CheckIdx == GameData.CheckPoint).transform.position;
+    //     }
+
+    //     SceneManager.sceneLoaded -= OnSceneLoaded;
+    // }
 
     public static void SaveStage(int CheckIdx)
     {

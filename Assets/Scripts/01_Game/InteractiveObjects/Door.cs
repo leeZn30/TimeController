@@ -66,8 +66,8 @@ public class Door : MonoBehaviour
                 GameData.ItemDatas.Find(x => x.ID == PairKeyName).IsGain = true;
             }
 
-            GameData.NowGhosts = GhostManager.Instance.ghostCount;
-            SceneChanger.LoadSceneByDoor(NextScene, gameObject.name);
+            SceneChanger.MakeSceneHandOverData(gameObject.name);
+            SceneChanger.LoadSceneByDoor(NextScene);
         }
         else
         {

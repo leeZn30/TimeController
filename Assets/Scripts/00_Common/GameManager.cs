@@ -54,14 +54,17 @@ public class GameManager : Singleton<GameManager>
 
     public void Retry()
     {
+        SceneChanger.MakeSceneHandOverData();
+
         if (GameData.ReviveScene != -1)
+        {
             SceneChanger.LoadScene(GameData.ReviveScene);
+        }
         else
         {
             SceneChanger.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
-        GameData.NowGhosts = GameData.Ghosts;
         popESC();
     }
 

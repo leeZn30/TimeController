@@ -14,7 +14,7 @@ public class GhostManager : Singleton<GhostManager>
     private void Awake()
     {
         text = GetComponentInChildren<TextMeshProUGUI>();
-        SetGhost(GameData.NowGhosts);
+        // SetGhost(GameData.NowGhosts);
     }
 
     public void SetGhost(int cnt)

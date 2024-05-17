@@ -14,10 +14,11 @@ public class GameData : Singleton<GameData>
     public static float TeleportChargeSpeed { get { return _teleportChargeSpeed; } set { _teleportChargeSpeed = value; } }
     static bool _rewindActive = true;
     public static bool RewindActive { get { return _rewindActive; } set { _rewindActive = value; } }
-    static bool _slowActive;
-    public static bool SlowActive;
-    static int _nowGhosts;
-    public static int NowGhosts { get { return _nowGhosts; } set { _nowGhosts = value; } }
+    static bool _slowActive = false;
+    public static bool SlowActive { get { return _slowActive; } set { _slowActive = value; } }
+    static float _slowChargeSpeed = 100f;
+    public static float SlowChargeSpeed { get { return _slowChargeSpeed; } set { _slowChargeSpeed = value; } }
+    public static List<ClearData> ClearDatas = new List<ClearData>();
 
     [Header("Stage Data")]
     static int _stage;
@@ -28,12 +29,17 @@ public class GameData : Singleton<GameData>
     public static int CheckPoint { get { return _checkpoint; } set { _checkpoint = value; } }
     static int _ghosts;
     public static int Ghosts { get { return _ghosts; } set { _ghosts = value; } }
-    static string _door = "";
-    public static string Door { get { return _door; } set { _door = value; } }
     public static int BossTryCnt = 0;
     public static List<ItemData> ItemDatas = new List<ItemData>();
     public static List<ObjectData> ObjectDatas = new List<ObjectData>();
-    public static List<ClearData> ClearDatas = new List<ClearData>();
+
+    // 씬 전환시 넘겨줘야 할 것들
+    // [Header("Scene Hand Over Data")]
+    // public static int NowGhosts;
+    // public static string Door;
+    // public static int NowTeleportGauge;
+    // public static int NowSlowGauge;
+
 
     private void Awake()
     {
