@@ -29,8 +29,9 @@ public class RewindDragger : MonoBehaviour
 
     private void Update()
     {
-        if ((Mathf.Abs(size.x) > 0.3f || Mathf.Abs(size.y) > 0.3f) && !isDragStart)
+        if ((Mathf.Abs(size.x) > 0.5f || Mathf.Abs(size.y) > 0.5f) && !isDragStart)
         {
+            SoundManager.Instance.PlaySFX(AudioType.Character, "Rewind");
             isDragStart = true;
             PostPrecessingController.Instance.CallRewindEffect(0.3f);
         }

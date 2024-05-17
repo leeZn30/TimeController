@@ -162,7 +162,7 @@ Transform:
   - {fileID: 3336045340596621401}
   - {fileID: 8611921434993922912}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2142522029558262930
 MonoBehaviour:
@@ -186,6 +186,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 741a981c21f56b14d97c799d6a1b4925, type: 3}
   - {fileID: 8300000, guid: e73855914b100624a80fefb489c1f46d, type: 3}
   - {fileID: 8300000, guid: 5a20b703de28b1e47a6d99031e6f468c, type: 3}
+  - {fileID: 8300000, guid: 1c19e9493924eef41942ff061ae0d674, type: 3}
   Crank:
   - {fileID: 8300000, guid: d8d04c6f80a1140db85ede568dab1f51, type: 3}
   Door:
