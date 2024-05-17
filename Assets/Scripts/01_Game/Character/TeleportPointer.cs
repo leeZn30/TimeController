@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class TeleportPointer : MonoBehaviour
 {
@@ -12,28 +13,33 @@ public class TeleportPointer : MonoBehaviour
     private void Awake()
     {
         ground = GameObject.Find("Ground").GetComponent<Tilemap>();
+
+        Time.timeScale = 0.05f;
+        SoundManager.Instance.AdjucstBGMPitch(0.6f, 0.5f);
+        PostPrecessingController.Instance.CallTeleportStartEffect();
     }
 
     private void Update()
     {
         // 텔레포트 중단
-        if (Input.GetMouseButtonDown(1) && Character.Instance.isTeleport)
+        if (Input.GetMouseButtonDown(1))
         {
-            Character.Instance.CallTeleportFinishingProduction();
-
-            Character.Instance.isTeleport = false;
+            Character.Instance.StopTeleport();
             Time.timeScale = 1f;
+            SoundManager.Instance.AdjucstBGMPitch();
+            PostPrecessingController.Instance.CallTeleportFinishEffect();
             Destroy(gameObject);
         }
         // 텔레포트 완료
-        else if (Input.GetMouseButtonDown(0) && Character.Instance.isTeleport)
+        else if (Input.GetMouseButtonDown(0))
         {
             if (isTeleportable())
             {
-                Character.Instance.DoTeleport();
-
-                Character.Instance.isTeleport = false;
+                SoundManager.Instance.PlaySFX(AudioType.Character, "Teleport");
+                Character.Instance.FinishTeleport();
                 Time.timeScale = 1f;
+                SoundManager.Instance.AdjucstBGMPitch();
+                PostPrecessingController.Instance.CallTeleportFinishEffect();
                 Destroy(gameObject);
             }
         }

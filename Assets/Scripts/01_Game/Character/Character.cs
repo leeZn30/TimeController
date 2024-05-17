@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
-using VolFx;
 
 using CC = CinemachineCamera;
 
@@ -35,7 +34,7 @@ public class Character : Singleton<Character>
     // **************** 변수 *************
     public bool isMovable = true;
     bool isSlow = false;
-    public bool isTeleport = false;
+    bool isTeleport = false;
     bool isRewind = false;
     bool isLooking = false;
     bool isJumping = false;
@@ -44,7 +43,6 @@ public class Character : Singleton<Character>
     float maxJumpTime = 1f;         // 최대 점프 시간
     float jumpTimeMultiplier = 7f;  // 점프 시간에 대한 곱셈 계수
     public Queue<Trail> TrailQueue;
-    Coroutine teleportCoroutine;
 
     // *************** 상호작용 박스 *************
     Vector2 hitPosition;
@@ -62,11 +60,8 @@ public class Character : Singleton<Character>
     Animator anim;
     Rigidbody2D rigid;
     SpriteRenderer sprite;
-    GameObject teleportPointer;
-    GameObject rewindPointer;
     Background background;
     Parriable bullet;
-    Collider2D collider;
 
     // ************* 그 외 *************
 
@@ -74,7 +69,6 @@ public class Character : Singleton<Character>
     {
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
-        collider = GetComponent<Collider2D>();
         sprite = GetComponent<SpriteRenderer>();
         background = FindObjectOfType<Background>();
         TeleportGauge = GameObject.Find("TeleportGauge").GetComponent<Slider>();
@@ -284,7 +278,7 @@ public class Character : Singleton<Character>
 
     void attack()
     {
-        if (!isSlow && gameObject.layer != 9)
+        if (!isRewind && !isSlow && gameObject.layer != 9)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -355,9 +349,6 @@ public class Character : Singleton<Character>
             }
             yield return null;
         }
-
-        // yield return new WaitForEndOfFrame();
-        // anim.SetBool("isAttacking", false);
     }
 
     public void OnAttackEnd()
@@ -372,7 +363,7 @@ public class Character : Singleton<Character>
             if (Input.GetMouseButtonDown(1))
             {
                 Collider2D bullet = Physics2D.OverlapBox(parryingPosition, parryingBox, 0, LayerMask.GetMask("Bullet"));
-                // Collider2D bullet = Physics2D.OverlapCapsule(rigid.position, new Vector2(1.3f, 2.1f), CapsuleDirection2D.Vertical, 0f);
+
                 if (bullet != null)
                 {
                     Parriable p = bullet.GetComponent<Parriable>();
@@ -383,7 +374,6 @@ public class Character : Singleton<Character>
                         this.bullet = p;
                         StartCoroutine(CharacterZoom());
                     }
-
                 }
             }
         }
@@ -504,51 +494,24 @@ public class Character : Singleton<Character>
         if (TeleportActive && TeleportGauge.value == TeleportGauge.maxValue)
         {
             // 텔레포트 시작
-            if (Input.GetKeyDown(KeyCode.Q) && !isTeleport)
+            if (Input.GetKeyDown(KeyCode.Q) && !isTeleport && !isRewind)
             {
-                if (teleportCoroutine != null)
-                    StopCoroutine(teleportCoroutine);
-
-                teleportCoroutine = StartCoroutine(teleportStartingProduction());
-
-                SoundManager.Instance.AdjucstBGMPitch(0.6f, 0.5f);
-
                 isTeleport = true;
-                Time.timeScale = 0.05f;
-                teleportPointer = Instantiate(amingPfb);
+                Instantiate(amingPfb, (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
             }
         }
     }
 
-    IEnumerator teleportStartingProduction()
+    public void StopTeleport()
     {
-        Vignette vignette;
-        FindObjectOfType<Volume>().profile.TryGet(out vignette);
-
-        FilmGrain filmGrain;
-        FindObjectOfType<Volume>().profile.TryGet(out filmGrain);
-
-        float duration = 1f;
-        float targetVignette = 0.4f;
-        float targetFilmGrain = 1f;
-        float currentTime = 0f;
-        while (currentTime < duration)
-        {
-            float newVignette = Mathf.Lerp(vignette.intensity.value, targetVignette, currentTime / duration);
-            vignette.intensity.value = newVignette;
-            float newGrain = Mathf.Lerp(filmGrain.intensity.value, targetFilmGrain, currentTime / duration);
-            filmGrain.intensity.value = newGrain;
-
-            currentTime += Time.unscaledDeltaTime;
-            yield return null;
-        }
+        isTeleport = false;
+        Time.timeScale = 1f;
     }
 
-    public void DoTeleport()
+    public void FinishTeleport()
     {
-        CallTeleportFinishingProduction();
-
-        SoundManager.Instance.PlaySFX(AudioType.Character, "Teleport");
+        isTeleport = false;
+        Time.timeScale = 1f;
 
         transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         // 가속도 쌓이는 거 방지
@@ -557,57 +520,15 @@ public class Character : Singleton<Character>
         TeleportGauge.value = 0f;
     }
 
-    public void CallTeleportFinishingProduction()
-    {
-        if (teleportCoroutine != null)
-            StopCoroutine(teleportCoroutine);
-        teleportCoroutine = StartCoroutine(teleportFinishingProduction());
-
-        SoundManager.Instance.AdjucstBGMPitch();
-    }
-
-    IEnumerator teleportFinishingProduction()
-    {
-        Vignette vignette;
-        FindObjectOfType<Volume>().profile.TryGet(out vignette);
-
-        FilmGrain filmGrain;
-        FindObjectOfType<Volume>().profile.TryGet(out filmGrain);
-
-        float duration = 1f;
-        float targetVignette = 0f;
-        float targetFilmGrain = 0f;
-        float currentTime = 0f;
-        while (currentTime < duration)
-        {
-            float newVignette = Mathf.Lerp(vignette.intensity.value, targetVignette, currentTime / duration);
-            vignette.intensity.value = newVignette;
-            float newGrain = Mathf.Lerp(filmGrain.intensity.value, targetFilmGrain, currentTime / duration);
-            filmGrain.intensity.value = newGrain;
-
-            currentTime += Time.unscaledDeltaTime;
-            yield return null;
-        }
-    }
 
     void Rewind()
     {
         if (RewindActive)
         {
-            if (Input.GetMouseButtonDown(1) && !isRewind)
+            if (Input.GetMouseButtonDown(1) && !isRewind && !isTeleport)
             {
                 isRewind = true;
-                rewindPointer = Instantiate(draggingPfb);
-
-                VhsVol vhsVol;
-                FindObjectOfType<Volume>().profile.TryGet(out vhsVol);
-
-                vhsVol._weight.value = 0.3f;
-            }
-
-            if (Input.GetMouseButtonUp(1) && isRewind)
-            {
-                FinishRewind();
+                Instantiate(draggingPfb);
             }
         }
     }
@@ -615,12 +536,6 @@ public class Character : Singleton<Character>
     public void FinishRewind()
     {
         isRewind = false;
-        Destroy(rewindPointer);
-
-        VhsVol vhsVol;
-        FindObjectOfType<Volume>().profile.TryGet(out vhsVol);
-
-        vhsVol._weight.value = 0f;
     }
 
     void OnSlow()

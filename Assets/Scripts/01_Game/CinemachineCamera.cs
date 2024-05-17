@@ -48,4 +48,10 @@ public class CinemachineCamera : Singleton<CinemachineCamera>
         composer.m_SoftZoneHeight = newZone.y;
     }
 
+    public void Zoom(float targetFloat)
+    {
+
+    }
+
+
 }
