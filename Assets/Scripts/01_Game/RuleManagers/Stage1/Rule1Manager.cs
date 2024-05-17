@@ -17,7 +17,7 @@ public class Rule1Manager : RuleManager
             {
                 base.Clear();
 
-                CC.Instance.Zoom(3f, 0.5f);
+                CC.Instance.Zoom(3f, 1f);
             }
         }
     }
@@ -26,7 +26,7 @@ public class Rule1Manager : RuleManager
     {
         if (other.tag.Equals("Player"))
         {
-            if (CC.Instance.OrthographicSize != ZoomInSize)
+            if (CC.Instance != null && CC.Instance.OrthographicSize != ZoomInSize)
             {
                 CC.Instance.ResetCamera();
             }

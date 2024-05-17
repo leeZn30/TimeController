@@ -349,12 +349,15 @@ public class Character : Singleton<Character>
             }
             yield return null;
         }
-    }
 
-    public void OnAttackEnd()
-    {
+        yield return new WaitForEndOfFrame();
         anim.SetBool("isAttacking", false);
     }
+
+    // public void OnAttackEnd()
+    // {
+    //     anim.SetBool("isAttacking", false);
+    // }
 
     void parry()
     {
