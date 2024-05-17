@@ -350,7 +350,6 @@ MonoBehaviour:
   jumpPower: 15
   Atk: 10
   isMovable: 1
-  isTeleport: 0
   amingPfb: {fileID: 3266036853785965160, guid: 6742604e6f34c5b4286f8b475c52f211, type: 3}
   draggingPfb: {fileID: 2377096528277553022, guid: c85dba13bd8f19042851b8541f88adf6, type: 3}
   trailPrefab: {fileID: 5112178794755931766, guid: 750b41925fec25744b7ebc243ba15aaa, type: 3}
@@ -4611,6 +4610,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1321095406}
   - component: {fileID: 1321095405}
+  - component: {fileID: 1321095407}
   m_Layer: 0
   m_Name: Global Volume
   m_TagString: Untagged
@@ -4650,6 +4650,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1321095407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321095404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e177380356b692e42897b60dc81d447d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1437459268
 GameObject:
   m_ObjectHideFlags: 0

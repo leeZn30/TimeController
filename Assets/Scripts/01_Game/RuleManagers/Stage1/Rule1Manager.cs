@@ -9,17 +9,6 @@ public class Rule1Manager : RuleManager
 {
     [SerializeField] float ZoomInSize;
 
-    IEnumerator CameraZoom()
-    {
-        CC.Instance.ChangeSoftZone(new Vector2(0, 0));
-        while (CC.Instance.OrthographicSize > ZoomInSize)
-        {
-            CC.Instance.OrthographicSize -= Time.deltaTime * 20f;
-
-            yield return null;
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag.Equals("Player"))
@@ -28,7 +17,7 @@ public class Rule1Manager : RuleManager
             {
                 base.Clear();
 
-                StartCoroutine(CameraZoom());
+                CC.Instance.Zoom(3f, 0.5f);
             }
         }
     }

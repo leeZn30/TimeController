@@ -16,8 +16,7 @@ public class BanditEnemy : Enemy
 
     protected override void OnDrawGizmos()
     {
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireCube(transform.position, new Vector2(enemyData.SightRange, 1.5f));
+        base.OnDrawGizmos();
 
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(hitPosition, hitBox);

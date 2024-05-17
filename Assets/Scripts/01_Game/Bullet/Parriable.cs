@@ -100,9 +100,7 @@ public class Parriable : MonoBehaviour
         }
 
         CinemachineCamera.Instance.ResetCamera();
-        Vignette vignette;
-        FindObjectOfType<Volume>().profile.TryGet(out vignette);
-        vignette.intensity.value = 0f;
+        PostPrecessingController.Instance.CallParryFinishEffect();
         Time.timeScale = 1;
 
         // trigger 감지를 위해 살짝 지연
@@ -115,6 +113,7 @@ public class Parriable : MonoBehaviour
     {
         if (isParried && other.tag.Equals("Enemy"))
         {
+            PostPrecessingController.Instance.CallParryFinishEffect();
             other.GetComponent<Enemy>().OnDamaged(Character.Instance.Atk, DamageType.ParriedBullet);
 
             Bullet bullet = GetComponent<Bullet>();

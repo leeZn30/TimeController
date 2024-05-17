@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CinemachineCamera : Singleton<CinemachineCamera>
@@ -48,10 +48,27 @@ public class CinemachineCamera : Singleton<CinemachineCamera>
         composer.m_SoftZoneHeight = newZone.y;
     }
 
-    public void Zoom(float targetFloat)
+    public void Zoom(float targetFloat, float duration, Action callback = null)
     {
-
+        StartCoroutine(Zooming(targetFloat, duration, callback));
     }
 
+    IEnumerator Zooming(float targetSize, float duration, Action callback)
+    {
+        ChangeSoftZone(new Vector2(0, 0));
+
+        float currentTime = 0f;
+
+        while (currentTime < duration)
+        {
+            currentTime += Time.unscaledDeltaTime;
+            OrthographicSize = Mathf.Lerp(OrthographicSize, targetSize, currentTime / duration * 0.1f);
+
+            yield return null;
+        }
+
+        if (callback != null)
+            callback.Invoke();
+    }
 
 }

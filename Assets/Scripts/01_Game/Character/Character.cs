@@ -371,31 +371,14 @@ public class Character : Singleton<Character>
                     if (bullet.tag == "Bullet" && p.enabled)
                     {
                         Time.timeScale = 0f;
+                        anim.updateMode = AnimatorUpdateMode.UnscaledTime;
                         this.bullet = p;
-                        StartCoroutine(CharacterZoom());
+                        PostPrecessingController.Instance.CallParryStartEffect();
+                        CC.Instance.Zoom(1.5f, 0.5f, () => { anim.SetTrigger("Parry"); });
                     }
                 }
             }
         }
-    }
-
-    IEnumerator CharacterZoom()
-    {
-        Vignette vignette;
-        FindObjectOfType<Volume>().profile.TryGet(out vignette);
-        CC.Instance.ChangeSoftZone(new Vector2(0, 0));
-
-        while (CC.Instance.OrthographicSize > 1.5f)
-        {
-            CC.Instance.OrthographicSize -= Time.unscaledDeltaTime * 20f;
-            float newIntensity = Mathf.Clamp(vignette.intensity.value + 3 * Time.unscaledDeltaTime, 0f, 0.5f);
-            vignette.intensity.value = newIntensity;
-
-            yield return null;
-        }
-
-        anim.updateMode = AnimatorUpdateMode.UnscaledTime;
-        anim.SetTrigger("Parry");
     }
 
     void ParryAnimationEvent()
@@ -609,7 +592,6 @@ public class Character : Singleton<Character>
     }
 
 
-
     #endregion
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -617,7 +599,7 @@ public class Character : Singleton<Character>
         if (other.gameObject.tag.Equals("Enemy"))
         {
             Enemy e = other.gameObject.GetComponent<Enemy>();
-            if (e != null && e.atk > 0 && e.gameObject.layer != 16)
+            if (e != null && e.gameObject.layer != 16)
                 OnDamaged(other.transform.position, e.atk);
         }
     }

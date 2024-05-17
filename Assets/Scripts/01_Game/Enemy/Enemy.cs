@@ -27,16 +27,17 @@ public abstract class Enemy : MonoBehaviour
 
     virtual protected void OnDrawGizmos()
     {
+        collider = GetComponent<Collider2D>();
         Gizmos.color = Color.magenta;
 
         switch (sigthType)
         {
             case SigthType.Rectangle:
-                Gizmos.DrawWireCube(transform.position, new Vector2(enemyData.SightRange, 1.5f));
+                Gizmos.DrawWireCube(collider.bounds.center, new Vector2(enemyData.SightRange, collider.bounds.size.y));
                 break;
 
             case SigthType.Circle:
-                Gizmos.DrawWireSphere(transform.position, enemyData.SightRange);
+                Gizmos.DrawWireSphere(collider.bounds.center, enemyData.SightRange);
                 break;
 
             default:

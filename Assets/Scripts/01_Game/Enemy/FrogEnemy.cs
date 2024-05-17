@@ -28,7 +28,7 @@ public class FrogEnemy : Enemy
 
     protected override void detectPlayer()
     {
-        Collider2D player = Physics2D.OverlapBox(transform.position, new Vector2(enemyData.SightRange, 1.5f), 0, LayerMask.GetMask("Player"));
+        Collider2D player = Physics2D.OverlapBox(collider.bounds.center, new Vector2(enemyData.SightRange, 1.2f), 0, LayerMask.GetMask("Player"));
         if (player != null)
         {
             isPlayerFound = true;

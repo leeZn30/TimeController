@@ -68,6 +68,32 @@ public class PostPrecessingController : Singleton<PostPrecessingController>
         vhs._weight.value = value;
     }
 
-    public void CallParryEffectStart() { }
+    public void CallParryStartEffect()
+    {
+        if (parryEffect != null)
+            StopCoroutine(parryEffect);
+
+        StartCoroutine(parry(0.5f));
+    }
+    public void CallParryFinishEffect()
+    {
+        if (parryEffect != null)
+            StopCoroutine(parryEffect);
+
+        StartCoroutine(parry(0f));
+    }
+    IEnumerator parry(float targetVignette)
+    {
+        float duration = 0.5f;
+        float currentTime = 0f;
+        while (currentTime < duration)
+        {
+            currentTime += Time.unscaledDeltaTime;
+            float newIntensity = Mathf.Lerp(vignette.intensity.value, targetVignette, currentTime / duration * 0.1f);
+            vignette.intensity.value = newIntensity;
+
+            yield return null;
+        }
+    }
 
 }
