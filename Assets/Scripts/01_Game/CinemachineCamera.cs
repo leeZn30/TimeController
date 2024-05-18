@@ -48,12 +48,12 @@ public class CinemachineCamera : Singleton<CinemachineCamera>
         composer.m_SoftZoneHeight = newZone.y;
     }
 
-    public void Zoom(float targetFloat, float duration, Action callback = null)
+    public void Zoom(float targetFloat, float duration)
     {
-        StartCoroutine(Zooming(targetFloat, duration, callback));
+        StartCoroutine(Zooming(targetFloat, duration));
     }
 
-    IEnumerator Zooming(float targetSize, float duration, Action callback)
+    IEnumerator Zooming(float targetSize, float duration)
     {
         ChangeSoftZone(new Vector2(0, 0));
 
@@ -62,13 +62,11 @@ public class CinemachineCamera : Singleton<CinemachineCamera>
         while (currentTime < duration)
         {
             currentTime += Time.unscaledDeltaTime;
-            OrthographicSize = Mathf.Lerp(OrthographicSize, targetSize, currentTime / duration * 0.1f);
+            OrthographicSize = Mathf.Lerp(OrthographicSize, targetSize, currentTime / duration);
 
             yield return null;
         }
 
-        if (callback != null)
-            callback.Invoke();
     }
 
 }

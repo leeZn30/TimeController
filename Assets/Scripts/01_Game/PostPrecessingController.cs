@@ -84,12 +84,12 @@ public class PostPrecessingController : Singleton<PostPrecessingController>
     }
     IEnumerator parry(float targetVignette)
     {
-        float duration = 0.4f;
+        float duration = 0.8f;
         float currentTime = 0f;
         while (currentTime < duration)
         {
             currentTime += Time.unscaledDeltaTime;
-            float newIntensity = Mathf.Lerp(vignette.intensity.value, targetVignette, currentTime / duration * 0.1f);
+            float newIntensity = Mathf.Lerp(vignette.intensity.value, targetVignette, currentTime / duration);
             vignette.intensity.value = newIntensity;
 
             yield return null;

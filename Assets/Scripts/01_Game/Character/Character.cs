@@ -354,11 +354,6 @@ public class Character : Singleton<Character>
         anim.SetBool("isAttacking", false);
     }
 
-    // public void OnAttackEnd()
-    // {
-    //     anim.SetBool("isAttacking", false);
-    // }
-
     void parry()
     {
         if (!isTeleport && !isSlow)
@@ -376,11 +371,9 @@ public class Character : Singleton<Character>
                         anim.updateMode = AnimatorUpdateMode.UnscaledTime;
                         this.bullet = p;
                         PostPrecessingController.Instance.CallParryStartEffect();
-                        CC.Instance.Zoom(1.5f, 0.4f, () =>
-                        {
-                            SoundManager.Instance.PlaySFX(AudioType.Character, "Parrying");
-                            anim.SetTrigger("Parry");
-                        });
+                        CC.Instance.Zoom(1.5f, 0.8f);
+                        SoundManager.Instance.PlaySFX(AudioType.Character, "Parrying");
+                        anim.SetTrigger("Parry");
                     }
                 }
             }

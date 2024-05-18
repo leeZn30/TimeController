@@ -36,12 +36,6 @@ public class Balance : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        // Debug.Log(barJoint.GetReactionTorque(0.5f));
-        // Debug.Log(leftJoint.GetReactionForce(0.5f).y + " " + rightJoint.GetReactionForce(0.5f));
-    }
-
     // 클리어 조건 다 다름
     // defualt: 단순 확인
     protected virtual void CheckClear()
@@ -61,10 +55,6 @@ public class Balance : MonoBehaviour
 
             if (balanceTime >= checkDuration)
             {
-                float Ypose = (leftArm.position.y + rightArm.position.y) / 2;
-                leftArm.position = new Vector3(leftArm.position.x, Ypose, leftArm.position.z);
-                rightArm.position = new Vector3(rightArm.position.x, Ypose, rightArm.position.z);
-
                 isCleared = true;
                 Clear();
             }

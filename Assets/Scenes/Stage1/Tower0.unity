@@ -526,6 +526,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage1Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 394649204592699849, guid: 35af8034eb9eb4441a6b0330effe792e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4182763703458047162, guid: 35af8034eb9eb4441a6b0330effe792e, type: 3}
       propertyPath: BGM
       value: Tower
@@ -2106,7 +2110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceLimit: 0.5
-  distanceLimit: 1.5
+  distanceLimit: 1
   checkDuration: 1
 --- !u!1001 &906709916
 PrefabInstance:
@@ -2128,17 +2132,21 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6304162701422390413, guid: ff2496560cef96c4cb74c115176f224d, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7212011181070718371, guid: ff2496560cef96c4cb74c115176f224d, type: 3}
       propertyPath: m_RootOrder
       value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 7212011181070718371, guid: ff2496560cef96c4cb74c115176f224d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.45
+      value: 6.33
       objectReference: {fileID: 0}
     - target: {fileID: 7212011181070718371, guid: ff2496560cef96c4cb74c115176f224d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.64
+      value: 7.55
       objectReference: {fileID: 0}
     - target: {fileID: 7212011181070718371, guid: ff2496560cef96c4cb74c115176f224d, type: 3}
       propertyPath: m_LocalPosition.z
