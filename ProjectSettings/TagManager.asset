@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Trap
   - RewindDragger
+  - Revert
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - OverMap
   - SightView
   - CollapsedEnemy
-  - UnTeleportableObject
+  - 
   - 
   - 
   - 

@@ -15,7 +15,7 @@ public class Box : MonoBehaviour
     protected Collider2D collider;
     [SerializeField] float positionOffset;
 
-    protected bool isInteractable = true;
+    [SerializeField] protected bool isInteractable = true;
     bool isPlayerIn;
 
     protected virtual void Awake()
@@ -28,7 +28,6 @@ public class Box : MonoBehaviour
         else
         {
             if (!data.IsExist) isInteractable = false;
-
         }
 
         Fixedcanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
@@ -39,6 +38,20 @@ public class Box : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, collider.bounds.size, 0);
+        if (colliders.Length > 0)
+        {
+            foreach (Collider2D collider in colliders)
+            {
+                if (!collider.gameObject.CompareTag("Player"))
+                {
+                    Debug.Log(collider);
+                    isInteractable = false;
+                    break;
+                }
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.E) && isPlayerIn && isInteractable)
         {
             interact();
