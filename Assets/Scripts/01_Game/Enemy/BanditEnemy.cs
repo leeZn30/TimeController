@@ -35,7 +35,7 @@ public class BanditEnemy : Enemy
 
     private void FixedUpdate()
     {
-        if (gameObject.layer != 11)
+        if (!isDead)
             run();
     }
 

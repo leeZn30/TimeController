@@ -291,18 +291,20 @@ public class Character : Singleton<Character>
                     anim.SetBool("isAttacking", true);
                     StartCoroutine(detectCombo());
 
-                    int layerMask =
-                    (1 << LayerMask.NameToLayer("Enemy")) | (1 << LayerMask.NameToLayer("CollapsedEnemy"));
-                    Collider2D enemy = Physics2D.OverlapBox(hitPosition, hitBox, 0, layerMask);
-                    if (enemy != null)
+                    int layerMask = 1 << LayerMask.NameToLayer("Enemy");
+                    Collider2D[] enemies = Physics2D.OverlapBoxAll(hitPosition, hitBox, 0, layerMask);
+                    if (enemies.Length > 0)
                     {
-                        if (enemy.tag == "Enemy")
+                        foreach (Collider2D enemy in enemies)
                         {
-                            enemy.GetComponent<Enemy>().OnDamaged(Atk, DamageType.Player);
-                        }
-                        else
-                        {
-                            Destroy(enemy.gameObject);
+                            if (enemy.tag == "Enemy")
+                            {
+                                enemy.GetComponent<Enemy>().OnDamaged(Atk, DamageType.Player);
+                            }
+                            else
+                            {
+                                Destroy(enemy.gameObject);
+                            }
                         }
                     }
                 }

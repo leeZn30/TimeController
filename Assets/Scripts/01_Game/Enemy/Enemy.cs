@@ -14,6 +14,7 @@ public abstract class Enemy : MonoBehaviour
 {
     [SerializeField] protected EnemyData enemyData;
 
+    protected bool isDead = false;
     protected bool isPlayerFound = false;
     public float hp;
     public float atk;
@@ -67,7 +68,8 @@ public abstract class Enemy : MonoBehaviour
     {
         rigid.velocity = Vector2.zero;
         anim.SetTrigger("Dead");
-        gameObject.layer = 11;
+        gameObject.layer = LayerMask.NameToLayer("DeadEnemy");
+        isDead = true;
 
         if (GhostManager.Instance != null && enemyData.Ghost > 0)
             GhostManager.Instance.CreateGhost(enemyData.Ghost, transform.localPosition);
@@ -77,32 +79,35 @@ public abstract class Enemy : MonoBehaviour
 
     virtual public void OnDamaged(float damage, DamageType damageType)
     {
-        rigid.velocity = Vector2.zero;
-        bool isCritical = false;
-
-        if (damageType == DamageType.Player)
+        if (!isDead)
         {
-            if (Random.value >= 0.95f)
+            rigid.velocity = Vector2.zero;
+            bool isCritical = false;
+
+            if (damageType == DamageType.Player)
+            {
+                if (Random.value >= 0.95f)
+                {
+                    isCritical = true;
+                    damage *= Random.Range(1.1f, 2.0f);
+                }
+            }
+            else
             {
                 isCritical = true;
-                damage *= Random.Range(1.1f, 2.0f);
+                damage *= Random.Range(2.0f, 3.0f);
             }
+            damage = Mathf.Round(damage);
+
+            if (damage > 0)
+                anim.SetTrigger("Hit");
+            FixedUIManager.Instance.ShowDamage((int)damage, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2), isCritical);
+
+            hp -= damage;
+
+            if (hp <= 0)
+                Dead();
         }
-        else
-        {
-            isCritical = true;
-            damage *= Random.Range(2.0f, 3.0f);
-        }
-        damage = Mathf.Round(damage);
-
-        if (damage > 0)
-            anim.SetTrigger("Hit");
-        FixedUIManager.Instance.ShowDamage((int)damage, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2), isCritical);
-
-        hp -= damage;
-
-        if (hp <= 0)
-            Dead();
     }
 
     public void DoDestroy()
@@ -112,7 +117,7 @@ public abstract class Enemy : MonoBehaviour
 
     virtual protected void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Trap" && gameObject.layer != 11)
+        if (other.gameObject.tag == "Trap" && !isDead)
         {
             Dead();
         }

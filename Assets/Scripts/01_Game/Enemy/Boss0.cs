@@ -556,7 +556,6 @@ public class Boss0 : Enemy
                 if (shieldCoroutine != null)
                     StopCoroutine(shieldCoroutine);
                 accumulatedDmg = 0f;
-                gameObject.layer = 16;
 
                 anim.SetBool("isCharging", false);
                 shield.SetActive(false);
@@ -584,10 +583,16 @@ public class Boss0 : Enemy
 
     IEnumerator CollapseWaiting()
     {
+        collider.isTrigger = true;
+        rigid.constraints = RigidbodyConstraints2D.FreezeAll;
+
         yield return Delay(3f);
 
-        gameObject.layer = 7;
+        gameObject.layer = LayerMask.NameToLayer("Enemy");
         anim.SetBool("isCollapsed", false);
+
+        collider.isTrigger = false;
+        rigid.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
     }
 
     void OnRecoverStart()
@@ -609,7 +614,7 @@ public class Boss0 : Enemy
         if (!BossActive)
         {
             Collider2D player = Physics2D.OverlapCircle(transform.position, enemyData.SightRange, LayerMask.GetMask("Player"));
-            if (player != null && gameObject.layer != 11)
+            if (player != null && !isDead)
             {
                 BossActive = true;
             }
@@ -625,6 +630,7 @@ public class Boss0 : Enemy
     {
         SoundManager.Instance.PlaySFX(AudioType.Enemy, BossSoundData.Instance.GetSound("Dead"));
 
+        isDead = true;
         BossActive = false;
         anim.SetBool("isDead", true);
 

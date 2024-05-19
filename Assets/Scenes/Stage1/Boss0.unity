@@ -5846,6 +5846,7 @@ MonoBehaviour:
   interactPfb: {fileID: 6440122066688137083, guid: 4b7a2de1c2bd0a643adbf09a033c0576, type: 3}
   ItemInfoPfb: {fileID: 0}
   positionOffset: 0
+  isInteractable: 1
 --- !u!212 &951375684
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -23,12 +23,6 @@ public class BeeEnemy : Enemy
             // 목표 방향 계산
             Vector3 direction = (Character.Instance.transform.position - transform.position).normalized;
 
-            // 목표 방향으로 회전
-            // float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            // Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            // rigid.MoveRotation(Quaternion.Slerp(rigid.rotation, targetRotation, 20f * Time.fixedDeltaTime));
-
-
             // Rigidbody에 힘을 가해 목표 방향으로 이동
             rigid.MovePosition(rigid.position + (Vector2)(direction * enemyData.MoveSpeed * Time.fixedDeltaTime));
         }
