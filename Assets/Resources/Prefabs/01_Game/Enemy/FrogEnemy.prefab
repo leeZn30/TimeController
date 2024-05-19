@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 150750506167043455}
   - component: {fileID: 4723295329006518140}
   - component: {fileID: 615767621653067279}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: FrogEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -196,5 +196,6 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: 9ff1ca2ce9e438747a8f79b04c766cc0, type: 2}
   hp: 0
   atk: 0
+  sigthType: 0
   PbulletPfb: {fileID: 7232950028209192810, guid: 4ac8db999ca237b47a05e35bc6126ddb, type: 3}
   interval: 3

@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 5641467439458032672}
   - component: {fileID: 7322548845520854217}
   - component: {fileID: 3631326855238696036}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: "ESC\uBA54\uB274"
   m_TagString: Untagged
   m_Icon: {fileID: 0}

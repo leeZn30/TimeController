@@ -50,7 +50,7 @@ public class TeleportPointer : MonoBehaviour
     bool isTeleportable()
     {
         Vector3Int cellPosition = ground.WorldToCell(transform.position);
-        int layerMask = (1 << LayerMask.NameToLayer("Map")) | (1 << LayerMask.NameToLayer("UnTeleportableObject"));
+        int layerMask = 1 << LayerMask.NameToLayer("UnTeleportable");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.back, 1f, layerMask);
 
         if (ground.HasTile(cellPosition) || hit.collider != null)

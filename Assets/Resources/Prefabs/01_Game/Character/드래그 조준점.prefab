@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -789921092160750419}
   - component: {fileID: 2909380982485551339}
   - component: {fileID: 1582846087218157705}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: "\uB4DC\uB798\uADF8 \uC870\uC900\uC810"
   m_TagString: RewindDragger
   m_Icon: {fileID: 0}

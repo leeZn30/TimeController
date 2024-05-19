@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3411103849298133271}
   - component: {fileID: 3957604020971392668}
   - component: {fileID: 7578461496371036051}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: BeeEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1221324009
-  m_SortingLayer: 6
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: -7659945631384244969, guid: 8721cbbfe3ba6a8418cd21a8de3a410c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

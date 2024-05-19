@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7343268813000118044}
   - component: {fileID: 1892609687726779112}
   - component: {fileID: 4752421290635952132}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: CCTV
   m_TagString: Enemy
   m_Icon: {fileID: 0}

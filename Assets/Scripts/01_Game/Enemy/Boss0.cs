@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -477,10 +479,9 @@ public class Boss0 : Enemy
     void land()
     {
         Debug.DrawRay(rigid.position + new Vector2(0, collider.bounds.extents.y), Vector2.down * collider.bounds.extents.y, Color.red);
-        int layerMask = (1 << LayerMask.NameToLayer("ThroughMap")) | (1 << LayerMask.NameToLayer("Map"));
-        RaycastHit2D hit = Physics2D.Raycast(rigid.position + new Vector2(0, collider.bounds.extents.y), Vector2.down, collider.bounds.extents.y, layerMask);
+        List<RaycastHit2D> hits = Physics2D.RaycastAll(rigid.position + new Vector2(0, collider.bounds.extents.y), Vector2.down, collider.bounds.extents.y).ToList();
 
-        if (hit.collider != null && hit.collider.tag.Equals("Ground"))
+        if (hits.Count > 0 && hits.Find(e => e.collider.CompareTag("Ground")))
         {
             anim.SetBool("Grounded", true);
 

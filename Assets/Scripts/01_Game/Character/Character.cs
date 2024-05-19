@@ -278,7 +278,7 @@ public class Character : Singleton<Character>
 
     void attack()
     {
-        if (!isRewind && !isSlow && gameObject.layer != 9)
+        if (!isRewind && !isSlow && gameObject.layer != LayerMask.NameToLayer("DamagedPlayer"))
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -407,7 +407,7 @@ public class Character : Singleton<Character>
         rigid.AddForce(new Vector2(dirc, 1) * 7, ForceMode2D.Impulse);
 
         // 무적
-        gameObject.layer = 9;
+        gameObject.layer = LayerMask.NameToLayer("DamagedPlayer");
         sprite.color = new Color(1, 1, 1, 0.5f);
 
         Invoke("OffDamaged", invincibilityTime);
@@ -417,7 +417,7 @@ public class Character : Singleton<Character>
     void OffDamaged()
     {
         // isSlowable = true;
-        gameObject.layer = 8;
+        gameObject.layer = LayerMask.NameToLayer("Player");
         sprite.color = Color.white;
     }
 
@@ -600,7 +600,7 @@ public class Character : Singleton<Character>
         if (other.gameObject.tag.Equals("Enemy"))
         {
             Enemy e = other.gameObject.GetComponent<Enemy>();
-            if (e != null && e.gameObject.layer != 16)
+            if (e != null)
                 OnDamaged(other.transform.position, e.atk);
         }
     }

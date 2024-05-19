@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3971767301231401479}
   - component: {fileID: 2035457321326037891}
   - component: {fileID: 3963318951363434558}
-  m_Layer: 12
+  m_Layer: 11
   m_Name: "\uC21C\uAC04\uC774\uB3D9 \uC870\uC900\uC810"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,3 +97,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 189d3f0260f889441879493eb5b13a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grounds: []

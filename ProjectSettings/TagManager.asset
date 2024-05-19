@@ -17,15 +17,15 @@ TagManager:
   - 
   - Water
   - UI
-  - Map
-  - Enemy
   - Player
-  - PlayerDamaged
-  - Bullet
+  - DamagedPlayer
+  - Enemy
   - DeadEnemy
+  - Bullet
   - TeleportPointer
-  - ThroughMap
-  - OverMap
+  - UnTeleportable
+  - Object
+  - 
   - 
   - 
   - 
