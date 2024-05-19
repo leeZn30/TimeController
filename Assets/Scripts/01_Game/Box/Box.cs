@@ -45,7 +45,6 @@ public class Box : MonoBehaviour
             {
                 if (!collider.gameObject.CompareTag("Player"))
                 {
-                    Debug.Log(collider);
                     isInteractable = false;
                     break;
                 }

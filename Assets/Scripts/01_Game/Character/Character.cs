@@ -223,7 +223,7 @@ public class Character : Singleton<Character>
             int layerMask = (1 << LayerMask.NameToLayer("ThroughMap")) | (1 << LayerMask.NameToLayer("Map"));
             RaycastHit2D hit = Physics2D.Raycast(rigid.position, Vector2.down, 1f, layerMask);
 
-            if (hit.collider != null && hit.collider.tag.Equals("Ground"))
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("Ground"))
             {
                 jumpTime = 0f;
                 isJumping = false;
