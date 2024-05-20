@@ -27,19 +27,4 @@ public class FallingRevert : Revertible
             }
         }
     }
-
-
-    public override void Change()
-    {
-        base.Change();
-
-        isRevertible = true;
-        animator.SetTrigger("Fall");
-    }
-
-    protected override void Rewind()
-    {
-        animator.SetTrigger("Climb");
-    }
-
 }

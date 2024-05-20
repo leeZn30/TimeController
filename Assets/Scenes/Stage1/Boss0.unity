@@ -5403,7 +5403,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &821299127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5912,6 +5912,7 @@ MonoBehaviour:
   interactPfb: {fileID: 6440122066688137083, guid: 4b7a2de1c2bd0a643adbf09a033c0576, type: 3}
   ItemInfoPfb: {fileID: 0}
   positionOffset: 0
+  isGain: 0
   isInteractable: 1
 --- !u!212 &951375684
 SpriteRenderer:
@@ -6054,7 +6055,7 @@ GameObject:
   - component: {fileID: 1036252235}
   m_Layer: 0
   m_Name: CameraArea
-  m_TagString: Untagged
+  m_TagString: CameraArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8371,30 +8372,14 @@ GameObject:
   - component: {fileID: 1639122871}
   - component: {fileID: 1639122870}
   - component: {fileID: 1639122869}
-  - component: {fileID: 1639122868}
-  m_Layer: 17
+  - component: {fileID: 1639122873}
+  m_Layer: 0
   m_Name: FallenStones
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1639122868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1639122867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28e176029afb80a449e73e4b18a80273, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isRevertible: 0
-  returnTime: 3
-  minOverlapArea: 0.4
-  detectedMaterial: {fileID: 0}
 --- !u!95 &1639122869
 Animator:
   serializedVersion: 5
@@ -8405,7 +8390,7 @@ Animator:
   m_GameObject: {fileID: 1639122867}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d63d590d37f8bd5449e43e6fe2f2cd2c, type: 2}
+  m_Controller: {fileID: 22100000, guid: 627b5576a3cd0e64fbfcfcbb58e4795d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -8451,25 +8436,22 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 4, y: 16}
     newSize: {x: 4, y: 16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
-  m_AutoTiling: 1
+  m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.27738, y: -3.7565484}
-      - {x: -0.24071503, y: -3.9480677}
-      - {x: -0.7852354, y: -4.820523}
-      - {x: -0.9678669, y: -5.437406}
-      - {x: -1.742836, y: -6.2606573}
-      - {x: -1.7635498, y: -7.9964705}
-      - {x: 2, y: -8}
-      - {x: 2.0044994, y: -4.766263}
-      - {x: 1.7385378, y: -4.2301826}
-      - {x: 0.99699306, y: -3.7423728}
+    - - {x: -0.3270626, y: 4.3270636}
+      - {x: -1.1346588, y: 2.7163606}
+      - {x: -1.950243, y: 2.0309472}
+      - {x: -2, y: 0}
+      - {x: 2, y: 0}
+      - {x: 2.0746365, y: 3.4538844}
+      - {x: 1.0509701, y: 4.3519416}
   m_UseDelaunayMesh: 0
 --- !u!212 &1639122871
 SpriteRenderer:
@@ -8531,13 +8513,29 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639122867}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 28.9, y: 1.59, z: 0}
+  m_LocalPosition: {x: 28.99, y: -6.33, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1639122873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639122867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85770b560a13ed4fa756a62d5263a86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRevertible: 0
+  returnTime: 5
+  minOverlapArea: 0.4
+  detectedMaterial: {fileID: 0}
 --- !u!1 &1654304512
 GameObject:
   m_ObjectHideFlags: 0
@@ -9284,7 +9282,7 @@ GameObject:
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!50 &1829948759
 Rigidbody2D:
   serializedVersion: 4
@@ -9838,7 +9836,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1883528128
 Transform:
   m_ObjectHideFlags: 0
@@ -10500,7 +10498,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3339933313923904709, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5947138379203305987, guid: 01426969d236bf44193e81ff1edd080f, type: 3}
       propertyPath: m_RootOrder

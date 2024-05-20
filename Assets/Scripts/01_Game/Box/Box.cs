@@ -14,7 +14,7 @@ public class Box : MonoBehaviour
     GameObject interactUI;
     protected Collider2D collider;
     [SerializeField] float positionOffset;
-
+    [SerializeField] protected bool isGain = false;
     [SerializeField] protected bool isInteractable = true;
     bool isPlayerIn;
 
@@ -27,7 +27,11 @@ public class Box : MonoBehaviour
         }
         else
         {
-            if (!data.IsExist) isInteractable = false;
+            if (!data.IsExist)
+            {
+                isGain = true;
+                isInteractable = false;
+            }
         }
 
         Fixedcanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
@@ -38,28 +42,21 @@ public class Box : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, collider.bounds.size, 0);
-        if (colliders.Length > 0)
+        if (!isGain)
         {
-            foreach (Collider2D collider in colliders)
-            {
-                if (!collider.gameObject.CompareTag("Player"))
-                {
-                    isInteractable = false;
-                    break;
-                }
-            }
-        }
+            detectHidden();
 
-        if (Input.GetKeyDown(KeyCode.E) && isPlayerIn && isInteractable)
-        {
-            interact();
+            if (Input.GetKeyDown(KeyCode.E) && isPlayerIn && isInteractable)
+            {
+                interact();
+            }
         }
     }
 
     virtual protected void interact()
     {
         isInteractable = false;
+        isGain = true;
         GameData.ObjectDatas.Find(e => e.ID == BoxID).IsExist = false;
     }
 
@@ -69,9 +66,34 @@ public class Box : MonoBehaviour
         GameManager.pushESC(Instantiate(ItemInfoPfb, Canvas.transform));
     }
 
+    void detectHidden()
+    {
+        int layerMask = ~(1 << LayerMask.NameToLayer("UI") | 1 << LayerMask.NameToLayer("TeleportPointer"));
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, collider.bounds.size, 0, layerMask);
+        if (colliders.Length > 0)
+        {
+            foreach (Collider2D collider in colliders)
+            {
+                if (
+                    collider.gameObject != gameObject
+                && !collider.CompareTag("Player")
+                && !collider.CompareTag("Ground")
+                && !collider.CompareTag("CameraArea")
+                )
+                {
+                    isInteractable = false;
+                    return;
+                }
+            }
+            isInteractable = true;
+        }
+        else
+            isInteractable = true;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag.Equals("Player") && isInteractable)
+        if (other.CompareTag("Player") && isInteractable)
         {
             interactUI = Instantiate(interactPfb, collider.bounds.center + new Vector3(0, collider.bounds.size.y / 2 + interactPfb.transform.localScale.y / 2 + positionOffset, 0), Quaternion.identity, Fixedcanvas.transform);
             isPlayerIn = true;
@@ -80,7 +102,7 @@ public class Box : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.tag.Equals("Player"))
+        if (other.CompareTag("Player"))
         {
             isPlayerIn = false;
 

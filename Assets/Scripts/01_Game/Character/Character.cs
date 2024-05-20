@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 using CC = CinemachineCamera;
 using System.Linq;
-using Unity.VisualScripting;
 
 public class Character : Singleton<Character>
 {

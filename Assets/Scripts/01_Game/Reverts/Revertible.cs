@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Revertible : MonoBehaviour
+public class Revertible : MonoBehaviour
 {
     public bool isRevertible = false;
     bool isDoneInitChanged = false;
@@ -17,12 +17,14 @@ public abstract class Revertible : MonoBehaviour
     SpriteRenderer spriteRenderer;
     [SerializeField] Material detectedMaterial;
     Material originalMaterial;
+    Animator anim;
 
     protected virtual void Awake()
     {
         collider = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         detectedMaterial = Resources.Load<Material>("Materials/RevertMeterial");
+        anim = GetComponent<Animator>();
 
         originalMaterial = spriteRenderer.material;
         originalSize = collider.bounds.size.x * collider.bounds.size.y;
@@ -94,13 +96,37 @@ public abstract class Revertible : MonoBehaviour
 
     public virtual void Change()
     {
+        anim.SetTrigger("Change");
+
         if (!isDoneInitChanged)
             isDoneInitChanged = true;
     }
 
-    protected abstract void checkChangeCondition();
+    void OnChanged()
+    {
+        isRevertible = true;
+    }
 
-    protected abstract void Rewind();
+    protected virtual void checkChangeCondition()
+    {
+        if (Character.Instance != null)
+        {
+            if (Vector3.Distance(Character.Instance.transform.position, collider.bounds.center) < 5f && !isRevertible)
+            {
+                Change();
+            }
+        }
+    }
+
+    protected virtual void Rewind()
+    {
+        anim.SetTrigger("Revert");
+    }
+
+    void OnReverted()
+    {
+        isRevertible = false;
+    }
 
     void DoRewind()
     {
