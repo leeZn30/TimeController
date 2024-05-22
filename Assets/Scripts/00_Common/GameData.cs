@@ -8,11 +8,11 @@ public class GameData : Singleton<GameData>
     [Header("Player Data")]
     static float _hp = 16;
     public static float Hp { get { return _hp; } set { _hp = value; } }
-    static bool _teleportActive = true;
+    static bool _teleportActive = false;
     public static bool TeleportActive { get { return _teleportActive; } set { _teleportActive = value; } }
     static float _teleportChargeSpeed = 60f;
     public static float TeleportChargeSpeed { get { return _teleportChargeSpeed; } set { _teleportChargeSpeed = value; } }
-    static bool _rewindActive = true;
+    static bool _rewindActive = false;
     public static bool RewindActive { get { return _rewindActive; } set { _rewindActive = value; } }
     static bool _slowActive = false;
     public static bool SlowActive { get { return _slowActive; } set { _slowActive = value; } }
@@ -32,14 +32,6 @@ public class GameData : Singleton<GameData>
     public static int BossTryCnt = 0;
     public static List<ItemData> ItemDatas = new List<ItemData>();
     public static List<ObjectData> ObjectDatas = new List<ObjectData>();
-
-    // 씬 전환시 넘겨줘야 할 것들
-    // [Header("Scene Hand Over Data")]
-    // public static int NowGhosts;
-    // public static string Door;
-    // public static int NowTeleportGauge;
-    // public static int NowSlowGauge;
-
 
     private void Awake()
     {

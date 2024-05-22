@@ -510,6 +510,7 @@ public class Character : Singleton<Character>
             {
                 isRewind = true;
                 Instantiate(draggingPfb);
+                // Instantiate(draggingPfb, GameObject.Find("Canvas").transform);
             }
         }
     }
