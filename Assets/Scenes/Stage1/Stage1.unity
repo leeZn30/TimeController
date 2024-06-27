@@ -5010,7 +5010,7 @@ GameObject:
   - component: {fileID: 728628565}
   - component: {fileID: 728628564}
   - component: {fileID: 728628563}
-  - component: {fileID: 728628562}
+  - component: {fileID: 728628567}
   m_Layer: 13
   m_Name: Cloud
   m_TagString: Untagged
@@ -5018,22 +5018,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &728628562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 728628561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a85770b560a13ed4fa756a62d5263a86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isRevertible: 0
-  returnTime: 5
-  minOverlapArea: 0.4
-  detectedMaterial: {fileID: 0}
 --- !u!60 &728628563
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -5188,6 +5172,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 71
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &728628567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728628561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e176029afb80a449e73e4b18a80273, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRevertible: 0
+  returnTime: 5
+  minOverlapArea: 0.4
+  detectedMaterial: {fileID: 0}
 --- !u!1 &736489821
 GameObject:
   m_ObjectHideFlags: 0

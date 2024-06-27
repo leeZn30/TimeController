@@ -8372,7 +8372,7 @@ GameObject:
   - component: {fileID: 1639122871}
   - component: {fileID: 1639122870}
   - component: {fileID: 1639122869}
-  - component: {fileID: 1639122873}
+  - component: {fileID: 1639122874}
   m_Layer: 0
   m_Name: FallenStones
   m_TagString: Untagged
@@ -8520,7 +8520,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1639122873
+--- !u!114 &1639122874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8529,7 +8529,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1639122867}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a85770b560a13ed4fa756a62d5263a86, type: 3}
+  m_Script: {fileID: 11500000, guid: 28e176029afb80a449e73e4b18a80273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isRevertible: 0

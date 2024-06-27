@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Drawing.Inspector.PropertyDrawers;
 using UnityEngine;
 
-public class Revertible : MonoBehaviour
+public abstract class Revertible : MonoBehaviour
 {
     public bool isRevertible = false;
-    bool isDoneInitChanged = false;
+    protected bool isDoneInitChanged = false;
     bool isActive = false;
     bool isInDrag = false;
     [SerializeField] float returnTime = 5f;
@@ -96,8 +97,6 @@ public class Revertible : MonoBehaviour
 
     public virtual void Change()
     {
-        anim.SetTrigger("Change");
-
         if (!isDoneInitChanged)
             isDoneInitChanged = true;
     }
@@ -107,21 +106,9 @@ public class Revertible : MonoBehaviour
         isRevertible = true;
     }
 
-    protected virtual void checkChangeCondition()
-    {
-        if (Character.Instance != null)
-        {
-            if (Vector3.Distance(Character.Instance.transform.position, collider.bounds.center) < 5f && !isRevertible)
-            {
-                Change();
-            }
-        }
-    }
+    protected abstract void checkChangeCondition();
 
-    protected virtual void Rewind()
-    {
-        anim.SetTrigger("Revert");
-    }
+    protected abstract void Rewind();
 
     void OnReverted()
     {

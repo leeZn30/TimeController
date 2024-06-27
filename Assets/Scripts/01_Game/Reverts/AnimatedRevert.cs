@@ -2,19 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallingRevert : Revertible
+public class AnimatedRevert : Revertible
 {
-    Animator animator;
+    Animator anim;
 
     protected override void Awake()
     {
-        animator = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         base.Awake();
     }
 
     override protected void Update()
     {
         base.Update();
+    }
+
+    public override void Change()
+    {
+        base.Change();
+
+        anim.SetTrigger("Change");
+    }
+
+
+    protected override void Rewind()
+    {
+        anim.SetTrigger("Revert");
     }
 
     protected override void checkChangeCondition()
