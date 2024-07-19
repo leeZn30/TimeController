@@ -101,7 +101,7 @@ public abstract class Revertible : MonoBehaviour
             isDoneInitChanged = true;
     }
 
-    void OnChanged()
+    protected void OnChanged()
     {
         isRevertible = true;
     }
