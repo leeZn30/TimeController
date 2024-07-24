@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 using CC = CinemachineCamera;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class Character : Singleton<Character>
 {
@@ -42,6 +43,7 @@ public class Character : Singleton<Character>
     float maxJumpTime = 1f;         // 최대 점프 시간
     float jumpTimeMultiplier = 7f;  // 점프 시간에 대한 곱셈 계수
     public Queue<Trail> TrailQueue;
+    Vector3 platformDistance;
 
     // *************** 상호작용 박스 *************
     Vector2 hitPosition;
@@ -61,7 +63,7 @@ public class Character : Singleton<Character>
     SpriteRenderer sprite;
     Background background;
     Parriable bullet;
-
+    [SerializeField] GameObject platform;
     // ************* 그 외 *************
 
     private void Awake()
@@ -149,6 +151,14 @@ public class Character : Singleton<Character>
                 {
                     rigid.velocity = new Vector2(maxSpeed * h, rigid.velocity.y);
                 }
+
+                if (platform != null)
+                    platformDistance = platform.transform.position - transform.position;
+            }
+            else
+            {
+                if (platform != null)
+                    rigid.position = platform.transform.position - platformDistance;
             }
         }
     }
@@ -221,7 +231,7 @@ public class Character : Singleton<Character>
             Debug.DrawRay(rigid.position, Vector2.down, Color.red);
             List<RaycastHit2D> hit = Physics2D.RaycastAll(rigid.position, Vector2.down, 1f).ToList();
 
-            if (hit.Count > 0 && hit.Find(e => e.collider.CompareTag("Ground")))
+            if (hit.Count > 0 && hit.Find(e => e.collider.CompareTag("Ground") || e.collider.CompareTag("Platform")))
             {
                 jumpTime = 0f;
                 isJumping = false;
@@ -601,6 +611,21 @@ public class Character : Singleton<Character>
             if (e != null)
                 OnDamaged(other.transform.position, e.atk);
         }
+
+        if (other.gameObject.CompareTag("Platform"))
+        {
+            platform = other.gameObject;
+            platformDistance = platform.transform.position - transform.position;
+        }
+    }
+
+    void OnCollisionExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Platform"))
+        {
+            platform = null;
+            platformDistance = Vector3.zero;
+        }
     }
 
     // 충돌 감지 + 물리적 영향X
@@ -610,7 +635,14 @@ public class Character : Singleton<Character>
         {
             Dead();
         }
+
+        if (other.CompareTag("Platform"))
+        {
+            platform = other.gameObject;
+            platformDistance = platform.transform.position - transform.position;
+        }
     }
+
 
     #region 더미 메서드
     // 슬로우시 모든 행동은 그대로 유지하는 것 일단 남겨는 둠(미완성)
