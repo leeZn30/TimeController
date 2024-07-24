@@ -28,6 +28,7 @@ public class AnimatedRevert : Revertible
     protected override void Rewind()
     {
         anim.SetTrigger("Revert");
+        StartCoroutine(returnAfterRewind());
     }
 
     protected override void checkChangeCondition()

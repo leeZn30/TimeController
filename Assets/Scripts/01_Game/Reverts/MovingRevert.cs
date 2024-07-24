@@ -1,8 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
+
+[System.Serializable]
+public class MovingSnapshot
+{
+    public Vector3 Position { get; private set; }
+    public Vector3 Scale { get; private set; }
+    public Quaternion Rotation { get; private set; }
+
+    public MovingSnapshot(Vector3 position, Vector3 scale, Quaternion rotation)
+    {
+        Position = position;
+        Scale = scale;
+        Rotation = rotation;
+    }
+}
 
 public class MovingRevert : Revertible
 {
@@ -11,10 +24,10 @@ public class MovingRevert : Revertible
     [SerializeField] MovingEvent movingEvent;
     [SerializeField] bool isChanging = false;
     [SerializeField] bool isRewinding = false;
+    [SerializeField] Stack<MovingSnapshot> snapshots = new Stack<MovingSnapshot>();
 
     Collider2D playerCollider;
 
-    Stack<Vector3> moveStack = new Stack<Vector3>();
 
     protected override void Awake()
     {
@@ -37,7 +50,7 @@ public class MovingRevert : Revertible
 
         if (isChanging)
         {
-            rememberMoving();
+            RecordMovement();
         }
     }
 
@@ -55,58 +68,44 @@ public class MovingRevert : Revertible
 
     protected override void Rewind()
     {
-        StartCoroutine(moveRewind());
+        StartCoroutine(RewindMovement());
     }
 
-    IEnumerator moveRewind()
+    IEnumerator RewindMovement()
     {
         if (!isRewinding)
             isRewinding = true;
 
-        while (moveStack.Count > 0)
+        while (snapshots.Count > 0)
         {
-            // 스택에서 위치 가져오기
-            Vector3 targetPosition = moveStack.Pop();
-
-            // 현재 위치 저장
-            Vector3 startPosition = transform.position;
-
-            float elapsedTime = 0f;
-            float moveDurattion = 0.001f;
-
-            while (elapsedTime < moveDurattion)
-            {
-                // 위치를 보간하여 이동
-                transform.position = Vector3.Lerp(startPosition, targetPosition, (elapsedTime / moveDurattion));
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
-            // 최종 위치 설정
-            transform.position = targetPosition;
-
-            // 다음 위치로 이동 전 잠시 대기
-            yield return null; // Optional: 각 위치에서 잠시 대기 시간
+            MovingSnapshot snapshot = snapshots.Pop();
+            transform.position = snapshot.Position;
+            transform.localScale = snapshot.Scale;
+            transform.rotation = snapshot.Rotation;
+            yield return null; // 한 프레임 대기
         }
 
         if (isRewinding)
             isRewinding = false;
+
+        StartCoroutine(returnAfterRewind());
     }
 
-    void rememberMoving()
+    void RecordMovement()
     {
-        if (moveStack.Count > 0)
-        {
-            if (transform.position != moveStack.Peek())
-                moveStack.Push(transform.position);
-        }
-        else
-        {
-            moveStack.Push(transform.position);
-        }
-
-        Debug.Log(moveStack.Peek());
-
+        MovingSnapshot snapshot = new MovingSnapshot(
+            transform.position,
+            transform.localScale,
+            transform.rotation);
+        snapshots.Push(snapshot);
     }
 
+    protected override IEnumerator returnAfterRewind()
+    {
+        snapshots.Clear();
+
+        yield return new WaitForSeconds(3f);
+
+        Change();
+    }
 }

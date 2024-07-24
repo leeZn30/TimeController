@@ -115,18 +115,19 @@ public abstract class Revertible : MonoBehaviour
         isRevertible = false;
     }
 
-    void DoRewind()
+    virtual protected void DoRewind()
     {
         if (isInDrag && isRevertible)
         {
             isRevertible = false;
             Rewind();
-            StartCoroutine(returnAfterRewind());
+            // StartCoroutine(returnAfterRewind());
             Character.Instance.FinishRewind();
         }
     }
 
-    IEnumerator returnAfterRewind()
+    // rewind 후에 부르기
+    protected virtual IEnumerator returnAfterRewind()
     {
         yield return new WaitForSeconds(returnTime);
 
